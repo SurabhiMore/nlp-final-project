@@ -1,11 +1,11 @@
-# Project Name
+# Company Name - Echoes.ai
 
-## Team
+## Project Name - Interactive AI Museum
 
 | Member | Hat | Main Responsibility |
 |---|---|---|
-| Member 1 | Developer, Product | Product requirements, MVP, user workflow |
-| Member 2 | Developer, Engineering | NLP pipeline/model, application integration |
-| Member 3 | Developer, Data | Dataset, preprocessing, metrics, baselines |
-| Member 4 | Developer, Research | User discovery, testing, evidence |
-| Member 5 | Developer, Operations | Deployment, infrastructure, experiment tracking |
+| Pratham | Developer, Product | The user, the roadmap, the lean canvas, the pitch |
+| Saurabh | Developer, Engineering | NLP pipeline/model, application integration |
+| Surabhi | Developer, Data and Evaluation | Architecture, code review, repo health, deployment |
+| Kshiti | Developer, Users and Research | Recruiting users, running sessions, capturing the raw evidence |
+| Aditi | Developer, Operations | Planning, the board, the weekly report, keeping the repo honest |
