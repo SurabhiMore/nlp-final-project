@@ -2,6 +2,8 @@
 
 ## Project Name - Interactive AI Museum
 
+_We help museum visitors discover and understand exhibits through interactive conversations better, faster, and more engagingly than static audio guides and exhibit plaques._
+
 | Member | Hat | Main Responsibility |
 |---|---|---|
 | Pratham | Developer, Product | The user, the roadmap, the lean canvas, the pitch |
