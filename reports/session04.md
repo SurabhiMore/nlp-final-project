@@ -57,9 +57,9 @@ north_star:
 
 ## Individual contributions
 - **Pratham Bharati (Product)**: Authored Lean Canvas v2 and Product Roadmap v3 detailing session-by-session build deliverables for all team members (evidence: PR #4, Issue #3).
-- **Saurabh (Engineering)**: Designed the voice pipeline system architecture, component interaction flow, and initial `.gitignore` (evidence: PR #2, Issue #1).
+- **Saurabh Gujar (Engineering)**: Designed the voice pipeline system architecture, component interaction flow, and initial `.gitignore` (evidence: PR #2, Issue #1).
 - **Surabhi More (Data & Eval)**: Audited licensing and structured source text collection (van Gogh letters & Wikipedia) for the corpus.
-- **Kshiti Deshpande (Users & Research)**: Established user research methodology and testing protocol for Session 5 trial (evidence: Issue #5).
+- **Kshiti Deshpande (Users & Research)**: Established user research methodology and testing protocol for Session 5 trial (evidence: Issue #5, PR #10).
 - **Aditi Karanjkar (Operations)**: Verified repository branch protection compliance, configured project board and milestones, authored [`artifacts/team_process.md`](../artifacts/team_process.md), and compiled `reports/session04.md` (evidence: Issue #7, PR #9).
 
 ## Lean canvas changes (if any)
