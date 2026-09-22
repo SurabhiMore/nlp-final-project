@@ -6,7 +6,7 @@ members:
   - name: Pratham Bharati
     github: prathambharati
     hat: Product
-  - name: Saurabh
+  - name: Saurabh Gujar
     github: saurabh1712
     hat: Engineering
   - name: Surabhi More
@@ -16,7 +16,7 @@ members:
     github: kshitideshpande
     hat: Users&Research
   - name: Aditi Karanjkar
-    github: aditikaranjkar
+    github: aditik168
     hat: Operations
 north_star:
   metric: Grounded Answer Accuracy
@@ -27,9 +27,10 @@ north_star:
 ## Shipped this week
 - **Lean Canvas v2 & Product Roadmap v3** in [`artifacts/lean_canvas.md`](../artifacts/lean_canvas.md) and [`artifacts/roadmap.md`](../artifacts/roadmap.md) (evidence: Issue #3, PR #4).
 - **Voice Pipeline System Architecture & Git Setup** in [`artifacts/architecture.md`](../artifacts/architecture.md) and `.gitignore` (evidence: Issue #1, PR #2).
-- **Team Process ("How we work")** in [`artifacts/team_process.md`](../artifacts/team_process.md) (evidence: Issue #6).
-- **User Research Plan & Evidence Folder Setup** (evidence: Issue #5).
+- **Team Process ("How we work")** in [`artifacts/team_process.md`](../artifacts/team_process.md) (evidence: Issue #7, PR #9).
+- **User Research Plan & Evidence Folder Setup** (evidence: Issue #5, PR #10).
 - **Repository Setup & Branch Protection**: Configured `main` branch protection requiring 1 approving review per PR.
+- **Data sources and licensing** (evidence: Issue #6, PR #8).
 
 ## User evidence
 - Session 4 represents our initial setup and architecture phase. Kshiti (Users & Research) created the user research plan and structured the `evidence/` directory for raw artifact collection.
@@ -41,7 +42,7 @@ north_star:
 - **Recall@5 (BM25 Keyword Search)**: Evaluation dataset being curated by Surabhi for Session 5 execution.
 - **Target Voice Latency**: < 2.0 seconds end-to-end (Whisper STT -> RAG LLM -> TTS).
 - Measured on: Held-out synthetic and real visitor question dataset (Session 5).
-- Is this the same model that is running in the product? Yes (van Gogh pilot persona RAG pipeline).
+- Is this the same model that is running in the product? No model is running yet;our first measurement comes in Session 5.
 
 ## What did not work
 - **Dataset Limitation**: Our initial assumption was that The Met's CC0 dataset would provide rich descriptive text for exhibits. Upon inspection, we discovered it only contains catalog metadata (title, date, medium) without explanatory narratives.
@@ -59,7 +60,7 @@ north_star:
 - **Saurabh (Engineering)**: Designed the voice pipeline system architecture, component interaction flow, and initial `.gitignore` (evidence: PR #2, Issue #1).
 - **Surabhi More (Data & Eval)**: Audited licensing and structured source text collection (van Gogh letters & Wikipedia) for the corpus.
 - **Kshiti Deshpande (Users & Research)**: Established user research methodology and testing protocol for Session 5 trial (evidence: Issue #5).
-- **Aditi Karanjkar (Operations)**: Verified repository branch protection compliance, configured project board and milestones, authored [`artifacts/team_process.md`](../artifacts/team_process.md), and compiled `reports/session04.md` (evidence: Issue #6).
+- **Aditi Karanjkar (Operations)**: Verified repository branch protection compliance, configured project board and milestones, authored [`artifacts/team_process.md`](../artifacts/team_process.md), and compiled `reports/session04.md` (evidence: Issue #7, PR #9).
 
 ## Lean canvas changes (if any)
 - **Version 2 Updates (Sept 22)**: Shifted system design from hardcoded artwork guides to a persona-agnostic RAG pipeline. Selected Vincent van Gogh as the pilot persona due to open-access letters and museum collections. Added explicit risk tracking for source text depth.
