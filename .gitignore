@@ -1,0 +1,27 @@
+# Large downloaded data stays out of the repo.
+# The Met dataset alone is 318 MB, and GitHub rejects files over 100 MB.
+data/
+*.csv
+personas/*/sources/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Secrets such as API keys
+.env
+
+# Model weights and audio caches
+models/
+*.wav
+*.mp3
+*.webm
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
