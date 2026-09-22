@@ -1,19 +1,19 @@
 # Lean canvas
 
-Echoes.ai, version 1, September 21, 2026. Pratham keeps this page up to date and we go over it
+Echoes.ai, version 2, September 22, 2026. Pratham keeps this page up to date and we go over it
 as a team every week.
 
 ## Value proposition
 
-We help museum visitors understand what they are looking at by letting them talk to the
-artist, with answers taken from real sources. It is more engaging than a plaque and more
-flexible than a pre-recorded audio guide.
+We help museum visitors understand what they are looking at by letting them talk to the figure
+behind the exhibit, with answers taken from real sources. It is more engaging than a plaque and
+more flexible than a pre-recorded audio guide.
 
 ## Users and their problem
 
-Visitors: an audio guide plays the same recording for everyone. If you want to know why Van
-Gogh painted his bedroom three times, you can't ask it. Most people glance at the plaque for a
-few seconds and move on.
+Visitors: an audio guide plays the same recording for everyone. If you want to know why an
+artist painted the same bedroom three times, you can't ask it. Most people glance at the plaque
+for a few seconds and move on.
 
 Curators and education staff: audio guide devices have to be bought, charged and repaired, and
 every new exhibit means recording new tracks.
@@ -36,18 +36,23 @@ report that number.
 
 ## How it works
 
-We start with one artist, Vincent van Gogh. A visitor scans a QR code next to a painting, which
-opens a page on their phone. They ask a question out loud. We turn the speech into text,
-search Van Gogh's letters and other sources for relevant passages, and have the model answer in
-his voice while citing where the answer came from. If the sources don't cover the question, he
-says so instead of guessing. The answer is read back as speech.
+A visitor scans a QR code next to an exhibit, which opens a page on their phone. They ask a
+question out loud. We turn the speech into text, search that exhibit's sources for relevant
+passages, and have the model answer in the figure's voice while citing where the answer came
+from. If the sources don't cover the question, it says so instead of guessing. The answer is
+read back as speech.
+
+The system doesn't depend on any one figure. Everything except the source texts and a small
+settings file is the same for any persona. Our pilot is Vincent van Gogh, because his letters
+are free to use and two open museum collections hold his paintings. If he turns out to be a
+poor fit, we can swap in another figure without rebuilding the system.
 
 Later, curators get a page where they can upload material for their own exhibits and see what
 visitors ask.
 
 ## How users find it
 
-Visitors find it through the QR code next to each painting. For museums, we want to pilot with
+Visitors find it through the QR code next to each exhibit. For museums, we want to pilot with
 a campus gallery, which we haven't contacted yet. Until then we will test with classmates from
 outside our team on a mock gallery walk.
 
@@ -90,17 +95,21 @@ answer" button. Those reports feed our error analysis.
 ## Risks
 
 1. It makes things up and museums stop trusting it. Test: 20 trap questions (dates, events
-   after 1890, fake quotes) on the first prototype, in Session 5.
+   after the persona's lifetime, fake quotes) on the first prototype, in Session 5.
 2. Voice is too slow to feel like a conversation. Test: time one full round trip on free
    hardware, in Session 5.
 3. People feel awkward talking out loud in a quiet gallery. Test: a recorded task test with
    three people from outside the team in a quiet room, in Session 5.
 4. Others are already doing this. Test: focus on measured accuracy, and ask a curator what they
    would actually need, before October 6.
-5. Our sources are too thin to answer "why" questions. Test: check how many of our test
-   questions the letters and Wikipedia can answer, in Session 5.
+5. The sources are too thin to answer "why" questions. Test: check how many of our test
+   questions the persona's own writing and its Wikipedia article can answer, in Session 5.
+   If a figure has too little written material, that is a reason to pick a different one.
 
 ## Changes
 
 - Version 1, September 21: first version. After downloading the Met dataset we found it has no
-  descriptive text, so we added Van Gogh's letters and Wikipedia as sources and added risk 5.
+  descriptive text, so we added the persona's own letters and Wikipedia as sources, and added
+  risk 5.
+- Version 2, September 22, after Saurabh's review: rewritten so it works for any exhibit figure,
+  with Van Gogh named as the pilot rather than assumed throughout.
