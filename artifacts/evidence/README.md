@@ -12,4 +12,4 @@ People are P1, P2, and so on — no names, faces, or contact details, ever. If a
 catches something personal, we cut that part or just keep the written log. Raw audio gets
 deleted once we have the transcript.
 
-See `docs/user_research_plan.md` for how the tests themselves are run.
+See `artifacts/user_research_plan.md` for how the tests themselves are run.

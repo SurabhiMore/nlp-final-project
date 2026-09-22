@@ -63,9 +63,3 @@ whenever you want."
 We call people P1, P2 and so on, and we never commit names, faces or contact details. If a
 recording shows something personal, we cut that part or keep only the written log. Raw audio
 gets deleted once we have the transcript.
-
-## What doesn't count
-
-The course guidelines are clear that these don't count as user evidence: an interview about the
-idea, reactions to mockups or slides, feedback on our report, our own team using it, or notes
-written weeks after the fact.
