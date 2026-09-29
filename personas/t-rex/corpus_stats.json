@@ -1,19 +1,19 @@
 {
   "persona": "t-rex",
-  "built_on": "2026-09-28",
+  "built_on": "2026-09-27",
   "chunk_words_target": 190,
-  "total_chunks": 134,
-  "total_words_in_chunks": 19125,
+  "total_chunks": 133,
+  "total_words_in_chunks": 19224,
   "sources": [
     {
       "key": "wiki",
       "type": "wikipedia",
       "title": "Wikipedia: Tyrannosaurus",
       "licence": "CC BY-SA 4.0",
-      "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1377342193",
-      "revision": 1377342193,
-      "chunks": 110,
-      "words_in_chunks": 17450,
+      "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+      "revision": 1376818858,
+      "chunks": 109,
+      "words_in_chunks": 17549,
       "own_words_chunks": 0
     },
     {
