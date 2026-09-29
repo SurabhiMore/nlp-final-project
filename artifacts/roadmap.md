@@ -1,22 +1,23 @@
 # Roadmap
 
-Echoes.ai, version 3, September 22, 2026. Owned by Pratham.
+Echoes.ai, version 4, September 29, 2026. Owned by Pratham.
 
 We want to build something a museum would actually use, and we want to learn real NLP while we
 do it. So every week each of us builds a piece of the system, tests it on questions it hasn't
 seen, and merges it with a number attached. We don't count something as done if it's just a
 call to someone else's API.
 
-The system is built to work for any exhibit figure, not one specific person. The speech, search,
-answering and voice parts stay the same whoever the persona is. Only the source texts and a
-small settings file change. Our pilot persona is Vincent van Gogh, because his letters are free
-to use and two open museum collections hold his paintings. If he turns out to be a poor fit, we
-can swap in another figure without rebuilding anything.
+The system is built to work for any exhibit, not one specific person. The speech, search,
+answering and voice parts stay the same whatever the exhibit is. Only the source texts and a
+small settings file change. We test it on two very different exhibits: Vincent van Gogh, a
+person who left his own letters, and Tyrannosaurus rex, a creature known only through what
+scientists have written. If one of them turns out to be a poor fit, we can swap in another
+exhibit without rebuilding anything.
 
-When we say we want to scale it, we mean three things. First, more personas: the pilot now, then
-a second figure to show the pipeline isn't hand-built for one person, then exhibits built
-automatically from museum records. Second, more visitors, through voice and later other
-languages. Third, answers museums can trust, because every answer is checked against a source.
+When we say we want to scale it, we mean three things. First, more exhibits: two very different
+test exhibits now, then a third of another kind (an object), then exhibits built automatically
+from museum records. Second, more visitors, through voice and later other languages. Third,
+answers museums can trust, because every answer is checked against a source.
 
 ## Until the mid-semester presentation (October 6)
 
@@ -24,7 +25,7 @@ Everyone has something to build each session. The dates here are the course dead
 to hit. The schedule in `artifacts/architecture.md` is the engineering build order for the
 voice pipeline, so where the two differ, these dates are the ones that decide our grade.
 
-**Session 4 (this week): plan the product and pick the data**
+**Session 4: plan the product and pick the data (done)**
 
 - Pratham: lean canvas and roadmap
 - Surabhi: choose the pilot persona's sources, with licences and known problems
@@ -32,16 +33,16 @@ voice pipeline, so where the two differ, these dates are the ones that decide ou
 - Kshiti: user research plan and the evidence folder
 - Aditi: board, issues, milestones, and the weekly report
 
-**Session 5: first working loop, and our first numbers**
+**Session 5: a working system for two exhibits, and our first numbers (issues #11 to #15)**
 
-- Saurabh: voice loop (speech to text, then speech back), with each step timed
-- Saurabh: keyword search (BM25) over the persona's sources, measured with Recall@5
-- Pratham: the persona prompt with citations, plus a plain "museum guide" version to compare
-  against
-- Surabhi: build the corpus, and write held-out questions covering facts, dates, events after
-  the persona's lifetime, quote requests and off-topic questions
-- Kshiti: recruit three people from outside the team and run the first recorded task test
-- Aditi: keep the board honest, and write the Session 5 report with our first numbers
+- Saurabh (#11): repo skeleton, the server and speech to text, with every step timed
+- Surabhi (#12): one script that builds the corpus for any exhibit, run for Van Gogh and T. rex,
+  and 22 held-out questions per exhibit
+- Aditi (#13): keyword search (BM25) with its evaluation, and the Session 5 report
+- Pratham (#14): the answer engine, which adapts to the kind of exhibit, plus a plain museum
+  guide as the baseline and the evaluation that compares them
+- Kshiti (#15): the phone page and text to speech (moved from #11), plus the materials for
+  the recorded tests with people from outside the team, which run before October 6
 
 **Session 6 (October 6): the presentation**
 
@@ -56,18 +57,20 @@ voice pipeline, so where the two differ, these dates are the ones that decide ou
 Each of us owns one component, and all of them land in these three weeks.
 
 - Saurabh: search that matches on meaning as well as keywords (embeddings, then a reranker).
+  Session 5 showed the gap: "How heavy could you get?" misses because the source says "mass".
   We compare Recall@5 and MRR against the BM25 version.
 - Surabhi: an answer checker that breaks each answer into claims and tests every claim against
-  the source with an NLI model. We check it against our own labels.
-- Pratham: a quote checker ("did they really say that?") that looks for a quote in the
-  persona's own writing, using fuzzy and meaning-based matching. Scored on real quotes and
-  made-up ones.
+  the source with an NLI model, including flagging debated science stated as fact. We check it
+  against our own labels.
+- Pratham: a quote checker ("did they really say that?") for exhibits with their own writing,
+  which looks for a quote in the passages marked as their own words, using fuzzy and
+  meaning-based matching. Scored on real quotes and made-up ones.
 - Kshiti: a classifier that sorts visitor questions into types (fact, opinion, personal, off
-  topic, outside the persona's lifetime, unsafe). We label real questions together, check how
+  topic, outside the exhibit's time, unsafe). We label real questions together, check how
   much we agree, and fine-tune a small model.
-- Aditi: a lifetime check. It finds names and events in a question, looks up their dates on
-  Wikidata, and flags anything after the persona died (1890 for Van Gogh) so the guide doesn't
-  pretend to know about it.
+- Aditi: a time-boundary check. It finds names and events in a question, looks up their dates
+  on Wikidata, and flags anything after the exhibit's time. For people that means birth and
+  death dates; for species, Wikidata's temporal range (for T. rex, the Maastrichtian).
 - Pratham: a significance test on whether the persona really is less accurate than the plain
   guide, or whether the gap is noise.
 
@@ -75,7 +78,8 @@ Each of us owns one component, and all of them land in these three weeks.
 
 We'll pick two or three of these depending on what users ask for:
 
-- a second persona, and then building personas automatically from museum and Wikidata records
+- a third exhibit of a new kind (an object), and then building exhibits automatically from
+  museum and Wikidata records
 - answers in Hindi, Marathi, Kannada and Spanish
 - speech recognition errors by accent, and teaching it art words like "chiaroscuro"
 - a curator dashboard that groups visitor questions by topic
@@ -102,3 +106,6 @@ augmented generation (week 10), knowledge graphs (week 11), and bias and ethics 
   Session 5.
 - Version 3, September 22, after Saurabh's review: written so the plan works for any persona
   with Van Gogh as the pilot, and the schedule now lists what each of us does every session.
+- Version 4, September 29: extended from people to any exhibit, with T. rex as the second test
+  exhibit; Session 5 now matches issues #11 to #15, and the Sessions 7 to 9 components work
+  for any exhibit type.
