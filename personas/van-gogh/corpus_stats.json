@@ -1,0 +1,53 @@
+{
+  "persona": "van-gogh",
+  "built_on": "2026-09-28",
+  "chunk_words_target": 190,
+  "total_chunks": 363,
+  "total_words_in_chunks": 57977,
+  "sources": [
+    {
+      "key": "gut40393",
+      "type": "gutenberg",
+      "title": "The Letters of a Post-Impressionist (translated by Anthony M. Ludovici)",
+      "licence": "Public domain in the US",
+      "url": "https://www.gutenberg.org/cache/epub/40393/pg40393-images.html",
+      "revision": null,
+      "chunks": 252,
+      "words_in_chunks": 43628,
+      "own_words_chunks": 252
+    },
+    {
+      "key": "wiki",
+      "type": "wikipedia",
+      "title": "Wikipedia: Vincent van Gogh",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/w/index.php?title=Vincent_van_Gogh&oldid=1377111568",
+      "revision": 1377111568,
+      "chunks": 71,
+      "words_in_chunks": 11567,
+      "own_words_chunks": 0
+    },
+    {
+      "key": "aic",
+      "type": "artic",
+      "title": "Art Institute of Chicago",
+      "licence": "CC BY 4.0 (Art Institute of Chicago descriptions)",
+      "url": "https://api.artic.edu/api/v1/artworks/search",
+      "revision": null,
+      "chunks": 10,
+      "words_in_chunks": 1422,
+      "own_words_chunks": 0
+    },
+    {
+      "key": "met",
+      "type": "met",
+      "title": "The Metropolitan Museum of Art",
+      "licence": "CC0 (The Metropolitan Museum of Art)",
+      "url": "https://collectionapi.metmuseum.org/public/collection/v1/search",
+      "revision": null,
+      "chunks": 30,
+      "words_in_chunks": 1360,
+      "own_words_chunks": 0
+    }
+  ]
+}
