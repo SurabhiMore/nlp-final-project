@@ -70,6 +70,9 @@ def main():
     parser = argparse.ArgumentParser(description="Time each step of the voice pipeline.")
     parser.add_argument("--questions", type=int, default=5, help="questions per exhibit")
     parser.add_argument("--no-llm", action="store_true", help="skip the answer model")
+    parser.add_argument("--pause", type=float, default=0.0,
+                        help="seconds to wait between questions, outside the timed steps, so a free tier's "
+                             "tokens-per-minute limit does not add retry waits to the model time")
     args = parser.parse_args()
 
     engine = None
@@ -122,16 +125,19 @@ def main():
                 # than a real answer's, so speech time here is an overestimate.
                 answer_text = chunks[0]["text"] if chunks else "I do not know."
 
-            sentences = tts.split_sentences(answer_text) or [answer_text]
+            # The first piece the phone page actually plays (a long first sentence is split at its first comma).
+            pieces = tts.speech_chunks(answer_text) or [answer_text]
             start = time.perf_counter()
-            tts.synthesize(sentences[0], voice=voice, speed=speed, pitch=pitch)
+            tts.synthesize(pieces[0], voice=voice, speed=speed, pitch=pitch)
             row["tts_first_ms"] = ms_since(start)
 
             row["time_to_first_audio_ms"] = row["stt_ms"] + row["retrieval_ms"] + row["llm_ms"] + row["tts_first_ms"]
             rows.append(row)
             print(f"  {pid:9} {q['id']:6} stt {row['stt_ms']:>6} ms  search {row['retrieval_ms']:>4} ms  "
                   f"llm {row['llm_ms']:>6} ms  tts {row['tts_first_ms']:>6} ms  "
-                  f"first audio {row['time_to_first_audio_ms']:>6} ms  wer {row['wer']:.2f}")
+                  f"first audio {row['time_to_first_audio_ms']:>6} ms  wer {row['wer']:.2f}", flush=True)
+            if args.pause:
+                time.sleep(args.pause)
 
     if not rows:
         sys.exit("No questions found. Add eval/questions/<exhibit>.jsonl first.")
