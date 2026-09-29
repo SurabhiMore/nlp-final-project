@@ -72,7 +72,7 @@ north_star:
 - Saurabh Gujar (Engineering): repo structure, server, speech to text, the latency script and the roar generator, README (evidence: PR #17, #11)
 - Surabhi More (Data & Eval): corpus builder, the Van Gogh corpus and questions with a checker, data sources v2 (evidence: PR #16, #19, #12)
 - Kshiti Deshpande (Users & Research): phone page, text to speech (taken over from #11), user research plan v2, task sheet and log export for the user tests, and the T. rex exhibit files (evidence: PR #18, #15)
-- Aditi Karanjkar (Operations): BM25 search and its evaluation, Session 05 board and milestone, this report (evidence: PR #21, #13)
+- Aditi Karanjkar (Operations): BM25 search and its evaluation, Session 05 board and milestone, this report (evidence: PR #21, PR #24, #13)
 
 ## Lean canvas changes (if any)
 - Version 3: the product now covers any exhibit, not only historical people, with T. rex as a second test exhibit. Added the first measured numbers, the finding that voice on a CPU is too slow for our 2 second target, and a new risk: exhibits without their own words must not state debated science as fact.
