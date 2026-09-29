@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Echoes.ai</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Echoes.ai</h1>
+    <label class="picker">
+      <span class="visually-hidden">Choose an exhibit</span>
+      <select id="exhibit"></select>
+    </label>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p id="greeting" class="greeting">Loading exhibits...</p>
+      <p id="period" class="period"></p>
+    </section>
+
+    <section class="ask">
+      <button id="talk" class="talk" type="button" aria-describedby="talk-help">
+        <span id="talk-label">Hold to ask</span>
+      </button>
+      <p id="talk-help" class="help">Press and hold, ask your question, then let go.</p>
+
+      <form id="text-form" class="text-form">
+        <label for="text-question" class="visually-hidden">Or type a question</label>
+        <input id="text-question" type="text" placeholder="Or type a question" autocomplete="off" maxlength="300">
+        <button type="submit">Ask</button>
+      </form>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <button id="stop" class="stop" type="button" hidden>Stop speaking</button>
+    </section>
+
+    <section id="conversation" class="conversation" aria-live="polite"></section>
+  </main>
+
+  <footer class="note">
+    You are talking to an AI guide. Answers come from museum and public sources and can still be wrong.
+    Your voice is turned into text and not stored.
+    <span id="session-note" class="session-note" hidden></span>
+  </footer>
+
+  <template id="turn-template">
+    <article class="turn">
+      <p class="question"></p>
+      <p class="answer"></p>
+      <p class="badge" hidden></p>
+      <details class="sources" hidden>
+        <summary></summary>
+        <ul></ul>
+      </details>
+      <p class="timing"></p>
+    </article>
+  </template>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>
