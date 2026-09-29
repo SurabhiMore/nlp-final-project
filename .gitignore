@@ -14,9 +14,14 @@ venv/
 # Secrets such as API keys
 .env
 
+# Request logs contain visitors' questions. Anonymized extracts go in artifacts/evidence/.
+logs/
+
 # Model weights and audio caches
 models/
 *.wav
+# ...except the sound effects an exhibit can play, which are part of its config
+!personas/*/sounds/*.wav
 *.mp3
 *.webm
 
