@@ -16,6 +16,7 @@ for each sentence in turn, playing sentence one while sentence two is made.
 """
 
 import base64
+import mimetypes
 import json
 import os
 import threading
@@ -282,7 +283,8 @@ def exhibit_sound(persona_id: str, name: str):
         path = None
     if path is None:
         raise HTTPException(status_code=404, detail="No such sound.")
-    return FileResponse(path, media_type="audio/wav")
+    mime, _ = mimetypes.guess_type(str(path))
+    return FileResponse(path, media_type=mime or "audio/wav")
 
 
 def _stt_model_name():
