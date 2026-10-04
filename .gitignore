@@ -23,6 +23,7 @@ models/
 # ...except the sound effects an exhibit can play, which are part of its config
 !personas/*/sounds/*.wav
 *.mp3
+!personas/*/sounds/*.mp3
 *.webm
 
 # OS and editor files

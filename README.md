@@ -108,6 +108,9 @@ and its licence. The sources we use:
 - Collection records from [The Metropolitan Museum of Art](https://www.metmuseum.org) Open
   Access (CC0).
 - Specimen records from [Smithsonian Open Access](https://www.si.edu/openaccess) (CC0).
+- The T. rex roar: "Epic T-Rex Roaring Sound Effect - Powerful Dinosaur" by PWLPL, from
+  [Pixabay](https://pixabay.com/sound-effects/nature-epic-t-rex-roaring-sound-effect-powerful-dinosaur-444199/),
+  under the Pixabay Content License. It is AI-generated, not a recording.
 
 None of these institutions endorse this project. Details and known problems with each source
 are in `artifacts/data_sources.md`.
