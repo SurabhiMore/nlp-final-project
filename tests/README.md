@@ -7,6 +7,19 @@ python -m pytest            # the fast tests, about half a minute
 python -m pytest -m slow    # also the ones that load Whisper and Kokoro
 ```
 
+## Saving a report for your PR
+
+Before you open a pull request, commit your code, then run every test and save a report:
+
+```bash
+python -m pytest -m "slow or not slow" --save-report
+```
+
+This writes `tests/results/<date>_<branch>.md`: every test, whether it passed, how long it
+took, and the commit that was tested. Commit that file too and link it in the PR description.
+Reports are named by date and branch, so pull requests never edit the same file, and the
+folder keeps a record of every run for later sessions.
+
 ## Rules
 
 - No test calls a real language model. `conftest.py` sets `LLM_PROVIDER=offline` for every

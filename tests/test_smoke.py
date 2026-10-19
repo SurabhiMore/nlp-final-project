@@ -78,7 +78,7 @@ def test_ask_by_text_returns_a_cited_answer(client):
     ({"persona": "nobody", "text": "hi"}, 404),
     ({"persona": "t-rex", "text": "hi", "mode": "loud"}, 400),
     ({"persona": "t-rex", "text": "   "}, 400),
-])
+], ids=["unknown-exhibit", "bad-mode", "empty-question"])
 def test_ask_rejects_bad_requests(client, data, status_code):
     assert client.post("/ask", data=data).status_code == status_code
 
