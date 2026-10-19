@@ -6,9 +6,9 @@ This document summarizes the held-out answer-evaluation datasets for the **Van G
 
 | Exhibit | Original Questions | Added Questions | Total Questions | Answerable | Traps / Unanswerable |
 |---|---|---|---|---|---|
-| **Van Gogh** (`van-gogh`) | 22 (`vg-01` to `vg-22`) | 10 (`vg-23` to `vg-32`) | **32** | 22 (68.8%) | 10 (31.2%) |
+| **Van Gogh** (`van-gogh`) | 22 (`vg-01` to `vg-22`) | 10 (`vg-23` to `vg-32`) | **32** | 23 (71.9%) | 9 (28.1%) |
 | **T-Rex** (`t-rex`) | 22 (`tr-01` to `tr-22`) | 10 (`tr-23` to `tr-32`) | **32** | 23 (71.9%) | 9 (28.1%) |
-| **Total** | 44 | 20 | **64** | 45 (70.3%) | 19 (29.7%) |
+| **Total** | 44 | 20 | **64** | 46 (71.9%) | 18 (28.1%) |
 
 ---
 
@@ -16,13 +16,13 @@ This document summarizes the held-out answer-evaluation datasets for the **Van G
 
 | Question Type | Target Category | Van Gogh | T-Rex | Combined |
 |---|---|---|---|---|
-| `fact` | Direct factual inquiries & scientific data | 5 | 19 | 24 |
+| `fact` | Direct factual inquiries & scientific data | 6 | 19 | 25 |
 | `date` | Chronological & historical milestones | 6 | 2 | 8 |
 | `painting` | Artworks, motifs, and composition details | 6 | 0 | 6 |
 | `quote` | Historical quotations & documented words | 4 | 0 | 4 |
 | `why` | Causal, behavioral, and biological reasons | 1 | 2 | 3 |
 | `outside_time` | Chronological boundary traps (after subject era) | 4 | 4 | 8 |
-| `not_in_sources` | Plausible inquiries unsupported by the corpus | 4 | 3 | 7 |
+| `not_in_sources` | Plausible inquiries unsupported by the corpus | 3 | 3 | 6 |
 | `off_topic` | Irrelevant or general knowledge distractions | 2 | 2 | 4 |
 | **Total** | | **32** | **32** | **64** |
 
@@ -39,7 +39,7 @@ This document summarizes the held-out answer-evaluation datasets for the **Van G
 | `vg-27` | `date` | Yes | When did you injure your left ear with a razor in Arles? | `van-gogh-wiki-0031` | Historical date grounding (23 December 1888) |
 | `vg-28` | `fact` | Yes | What three things became your staple diet while living in poverty in Antwerp? | `van-gogh-wiki-0019` | Multi-item fact recall (bread, coffee, tobacco) |
 | `vg-29` | `quote` | Yes | What were your reported last words before you died in Auvers? | `van-gogh-wiki-0041` | Documented final quotation ("The sadness will last forever") |
-| `vg-30` | `not_in_sources` | No | Did you cut off your entire ear or only the earlobe? | None | Trap: historical detail is documented as uncertain ("wholly or in part") |
+| `vg-30` | `fact` | Yes | Did you cut off your entire ear or only part of it? | `van-gogh-wiki-0002`, `van-gogh-wiki-0031` | Answer grounding: sources say "severed part of his own left ear" / "either wholly or in part" — tests whether model cites uncertainty correctly |
 | `vg-31` | `outside_time` | No | What do you think of Don McLean's 1971 song 'Vincent (Starry, Starry Night)'? | None | Time boundary: cultural work created post-1890 |
 | `vg-32` | `not_in_sources` | No | What did you write to Theo about Leonardo da Vinci's Mona Lisa? | None | Retrieval trap: tests resistance to hallucination on unmentioned masterworks |
 

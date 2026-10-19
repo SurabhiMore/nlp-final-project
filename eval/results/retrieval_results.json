@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-10-19T20:25:12+00:00",
+  "run_at": "2026-10-19T20:48:58+00:00",
   "retriever": "BM25 (rank-bm25, light stemming, stopwords removed)",
   "exhibits": {
     "t-rex": {
