@@ -57,13 +57,26 @@ def pytest_deselected(items):
     _run["not_run"].extend(item.nodeid for item in items)
 
 
+def _reason(report):
+    """The most useful line of a failure, for the report."""
+    lines = [line.strip() for line in (getattr(report, "longreprtext", "") or "").splitlines() if line.strip()]
+    errors = [line.lstrip("E").strip() for line in lines if line.startswith("E ")]
+    return (errors[-1] if errors else lines[-1] if lines else "")[:160]
+
+
+def pytest_collectreport(report):
+    # A test file that cannot even be imported must show up as an error, not vanish.
+    if report.failed:
+        _run["results"][report.nodeid] = ("error", 0.0, _reason(report))
+
+
 def pytest_runtest_logreport(report):
     # Keep the call phase, or the setup phase when the test never got to run.
     if report.when == "call" or (report.when == "setup" and not report.passed):
         outcome = "error" if report.when == "setup" and report.failed else report.outcome
-        _run["results"][report.nodeid] = (outcome, report.duration)
+        _run["results"][report.nodeid] = (outcome, report.duration, _reason(report) if report.failed else "")
     elif report.when == "teardown" and report.failed:
-        _run["results"][report.nodeid] = ("error", report.duration)
+        _run["results"][report.nodeid] = ("error", report.duration, _reason(report))
 
 
 def _git(*args):
@@ -75,7 +88,7 @@ def _git(*args):
 
 def _split(nodeid):
     path, _, name = nodeid.partition("::")
-    return name, Path(path).name
+    return name or "(file could not be loaded)", Path(path).name
 
 
 def pytest_sessionfinish(session, exitstatus):
@@ -90,12 +103,20 @@ def pytest_sessionfinish(session, exitstatus):
 
     results = _run["results"]
     counts = {}
-    for outcome, _ in results.values():
+    for outcome, _, _ in results.values():
         counts[outcome] = counts.get(outcome, 0) + 1
-    summary = ", ".join(f"{n} {outcome}" for outcome, n in sorted(counts.items()))
+    parts = [f"{n} {outcome}" for outcome, n in sorted(counts.items())]
     if _run["not_run"]:
-        summary += f", {len(_run['not_run'])} not run"
+        parts.append(f"{len(_run['not_run'])} not run")
+    summary = ", ".join(parts) or "no tests ran"
     failing = counts.get("failed", 0) + counts.get("error", 0)
+    code = int(exitstatus)
+    if failing:
+        verdict = f"{failing} test(s) failed or could not run."
+    elif code != 0 or not results:
+        verdict = f"No complete test run (pytest exit code {code}), so this report does not show a pass."
+    else:
+        verdict = "All tests that ran passed."
 
     lines = [
         "# Test report",
@@ -106,16 +127,21 @@ def pytest_sessionfinish(session, exitstatus):
         f"- Command: python -m pytest {args}",
         f"- Python {platform.python_version()} on {platform.system()}",
         f"- Result: {summary} in {time.time() - _run['start']:.1f} s",
-        f"- {'All tests that ran passed.' if not failing else f'{failing} test(s) failed.'}",
+        f"- {verdict}",
         "",
         "| Test | File | Result | Time (s) |",
         "|---|---|---|---|",
     ]
-    for nodeid, (outcome, duration) in results.items():
+    for nodeid, (outcome, duration, _) in results.items():
         name, file = _split(nodeid)
         lines.append(f"| {name} | {file} | {outcome} | {duration:.2f} |")
+    problems = [(nodeid, reason) for nodeid, (outcome, _, reason) in results.items() if outcome in ("failed", "error")]
+    if problems:
+        lines += ["", "Why they failed:", ""]
+        lines += [f"- {_split(nodeid)[0]} ({_split(nodeid)[1]}): {reason or 'see the pytest output'}"
+                  for nodeid, reason in problems]
     if _run["not_run"]:
-        lines += ["", "Not run (left out by the -m option):", ""]
+        lines += ["", "Not run (left out by -m or -k):", ""]
         lines += [f"- {name} ({file})" for name, file in map(_split, _run["not_run"])]
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
