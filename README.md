@@ -69,6 +69,8 @@ python scripts/measure_latency.py      # how long each step takes
 
 Results are written to `eval/results/` and are what the weekly reports quote.
 
+Run the tests with `python -m pytest` (see `tests/README.md`).
+
 ## Add a new exhibit (no code changes)
 
 1. Create `personas/<id>/persona.json` (copy one of the existing ones). Set the name, the type
