@@ -73,6 +73,7 @@ The validation harness (`eval/datasets.py`) enforces:
    - Unanswerable traps must have empty `evidence: []` and `key_facts: []`.
    - Answerable questions must have verified, non-empty `evidence` strings and `key_facts` groups.
 5. **Corpus & Chunk Grounding**:
-   - Explicit chunk citations in `chunks` or `chunk_ids` are checked against the exhibit's `chunks.jsonl`.
-   - Every evidence substring must be present in the supporting chunk(s).
+   - Supporting passages are mapped through exact `evidence` text snippets rather than hardcoded chunk IDs. Because chunk IDs shift whenever the corpus is rebuilt (`scripts/build_corpus.py`), anchoring to verified evidence text ensures long-term dataset stability.
+   - For every answerable question, `datasets.supporting_chunk_ids` dynamically resolves the supporting chunk IDs from the corpus at runtime.
+   - Every evidence substring is validated to exist in at least one corpus passage.
    - Every group in `key_facts` must have at least one alternative present in the cited chunk(s) and in the `gold_answer`.
