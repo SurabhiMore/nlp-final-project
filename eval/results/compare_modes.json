@@ -1,0 +1,432 @@
+{
+  "source": {
+    "file": "eval/results/answers_results.json",
+    "run_at": "2026-09-29T14:57:27+00:00",
+    "model": "openai/gpt-oss-120b",
+    "passages_per_question": 8
+  },
+  "matched_by": "exhibit and question id",
+  "correct_means": "grounded, as scored by eval_answers.py",
+  "overall": {
+    "questions": 44,
+    "persona_correct": 38,
+    "plain_guide_correct": 39,
+    "persona_accuracy": 0.864,
+    "plain_guide_accuracy": 0.886,
+    "difference_points": -2.3,
+    "difference_interval_95": [
+      -12.1,
+      7.0
+    ],
+    "outcomes": {
+      "both correct": 37,
+      "persona only": 1,
+      "plain guide only": 2,
+      "both wrong": 4
+    },
+    "discordant": 3,
+    "mcnemar_exact_p": 1.0,
+    "smallest_possible_p": 0.25,
+    "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 3 questions, and even a 3 to 0 split would give p = 0.250, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -12.1 to +7.0 points (persona minus plain guide)."
+  },
+  "by_exhibit": {
+    "t-rex": {
+      "questions": 22,
+      "persona_correct": 19,
+      "plain_guide_correct": 19,
+      "persona_accuracy": 0.864,
+      "plain_guide_accuracy": 0.864,
+      "difference_points": 0.0,
+      "difference_interval_95": [
+        -15.9,
+        15.9
+      ],
+      "outcomes": {
+        "both correct": 18,
+        "persona only": 1,
+        "plain guide only": 1,
+        "both wrong": 2
+      },
+      "discordant": 2,
+      "mcnemar_exact_p": 1.0,
+      "smallest_possible_p": 0.5,
+      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 2 questions, and even a 2 to 0 split would give p = 0.500, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -15.9 to +15.9 points (persona minus plain guide)."
+    },
+    "van-gogh": {
+      "questions": 22,
+      "persona_correct": 19,
+      "plain_guide_correct": 20,
+      "persona_accuracy": 0.864,
+      "plain_guide_accuracy": 0.909,
+      "difference_points": -4.5,
+      "difference_interval_95": [
+        -19.6,
+        8.3
+      ],
+      "outcomes": {
+        "both correct": 19,
+        "persona only": 0,
+        "plain guide only": 1,
+        "both wrong": 2
+      },
+      "discordant": 1,
+      "mcnemar_exact_p": 1.0,
+      "smallest_possible_p": 1.0,
+      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 1 question, and even a 1 to 0 split would give p = 1.000, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -19.6 to +8.3 points (persona minus plain guide)."
+    }
+  },
+  "questions": [
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-01",
+      "question": "When did you live?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-02",
+      "question": "Where did you live?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-03",
+      "question": "What does the rex in your name mean?",
+      "persona_correct": false,
+      "plain_guide_correct": false,
+      "outcome": "both wrong"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-04",
+      "question": "Who gave you the name Tyrannosaurus rex, and when?",
+      "persona_correct": false,
+      "plain_guide_correct": true,
+      "outcome": "plain guide only"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-05",
+      "question": "When and where was the first partial skeleton of T. rex found?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-06",
+      "question": "Who discovered the famous skeleton called Sue?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-07",
+      "question": "How long is the most complete T. rex skeleton?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-08",
+      "question": "How heavy could you get?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-09",
+      "question": "How strong was your bite?",
+      "persona_correct": false,
+      "plain_guide_correct": false,
+      "outcome": "both wrong"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-10",
+      "question": "How many fingers did you have on each hand?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-11",
+      "question": "How fast could you run?",
+      "persona_correct": true,
+      "plain_guide_correct": false,
+      "outcome": "persona only"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-12",
+      "question": "Were you a hunter or a scavenger?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-13",
+      "question": "Did you have scales or feathers?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-14",
+      "question": "Is the Tyrannosaurus rex tooth in the Smithsonian's education collection real?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-15",
+      "question": "How old was Sue when she died?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-16",
+      "question": "In which rock formation was Sue found?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-17",
+      "question": "Did you ever see a human?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-18",
+      "question": "What do you think of the Jurassic Park movies?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-19",
+      "question": "Have you ever ridden in a car?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-20",
+      "question": "What colour were your eyes?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-21",
+      "question": "What is the capital of France?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-22",
+      "question": "Can you help me write my chemistry homework?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-01",
+      "question": "When and where were you born?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-02",
+      "question": "When did you move to Paris, and whose apartment did you share?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-03",
+      "question": "What was your brother Theo's job in Paris?",
+      "persona_correct": false,
+      "plain_guide_correct": true,
+      "outcome": "plain guide only"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-04",
+      "question": "When did you arrive in Arles?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-05",
+      "question": "What is considered your first major work?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-06",
+      "question": "When did Paul Gauguin arrive to stay with you in Arles?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-07",
+      "question": "In the portrait Gauguin painted of you, what were you doing?",
+      "persona_correct": false,
+      "plain_guide_correct": false,
+      "outcome": "both wrong"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-08",
+      "question": "What did the countryside around Arles remind you of?",
+      "persona_correct": false,
+      "plain_guide_correct": false,
+      "outcome": "both wrong"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-09",
+      "question": "What did you say a painter should have a feeling for, to make life a joy?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-10",
+      "question": "When did you go into the asylum at Saint-Remy?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-11",
+      "question": "Where was the room you painted in The Bedroom?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-12",
+      "question": "How many versions of The Bedroom did you paint?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-13",
+      "question": "What feeling did you want The Bedroom to give?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-14",
+      "question": "When did you paint Wheat Field with Cypresses?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-15",
+      "question": "When did you paint Irises?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-16",
+      "question": "What did you think of Picasso's painting Guernica?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-17",
+      "question": "Did you enjoy the 1956 film Lust for Life about your life?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-18",
+      "question": "How does it feel to be one of the most famous painters in history today?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-19",
+      "question": "How much money did you get for The Red Vineyard?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-20",
+      "question": "What was the name of your childhood dog?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-21",
+      "question": "What is 17 times 23?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-22",
+      "question": "Can you recommend a good phone to buy?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    }
+  ]
+}
