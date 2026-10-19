@@ -52,26 +52,77 @@ def load_questions(persona_id):
     if not path.exists():
         raise FileNotFoundError(f"No question file at {path}")
     questions = []
+    seen_ids = set()
+    duplicate_ids = []
     with open(path, encoding="utf-8") as handle:
         for number, line in enumerate(handle, 1):
             if not line.strip():
                 continue
-            q = json.loads(line)
+            try:
+                q = json.loads(line)
+            except json.JSONDecodeError as err:
+                raise ValueError(f"{path}:{number} is malformed JSON: {err}") from err
+            if not isinstance(q, dict):
+                raise ValueError(f"{path}:{number} record must be a JSON object")
+
             for key in ("id", "question", "type", "answerable", "gold_answer", "key_facts", "evidence"):
                 if key not in q:
                     raise ValueError(f"{path}:{number} is missing '{key}'")
+
+            qid = q["id"]
+            if not isinstance(qid, str) or not qid.strip():
+                raise ValueError(f"{path}:{number} 'id' must be a non-empty string")
+            if qid in seen_ids:
+                duplicate_ids.append(qid)
+            seen_ids.add(qid)
+
+            if not isinstance(q["question"], str) or not q["question"].strip():
+                raise ValueError(f"{path}:{number} 'question' must be a non-empty string")
+            if not isinstance(q["answerable"], bool):
+                raise ValueError(f"{path}:{number} 'answerable' must be a boolean")
             if q["type"] not in QUESTION_TYPES:
                 raise ValueError(f"{path}:{number} has unknown type {q['type']!r}")
             if q["answerable"] == (q["type"] in DECLINE_TYPES):
                 raise ValueError(f"{path}:{number}: type {q['type']!r} does not match answerable={q['answerable']}")
+
+            if "persona" in q and q["persona"] != persona_id:
+                raise ValueError(f"{path}:{number}: persona '{q['persona']}' does not match '{persona_id}'")
+
+            explicit_chunks = q.get("chunks") or q.get("chunk_ids")
+            if explicit_chunks is not None:
+                if not isinstance(explicit_chunks, list) or not all(isinstance(c, str) and c.strip() for c in explicit_chunks):
+                    raise ValueError(f"{path}:{number}: 'chunks' must be a list of non-empty string chunk IDs")
+                if not q["answerable"] and explicit_chunks:
+                    raise ValueError(f"{path}:{number}: unanswerable question cannot cite chunks")
+
+            if q["answerable"]:
+                if not isinstance(q["gold_answer"], str) or not q["gold_answer"].strip():
+                    raise ValueError(f"{path}:{number}: answerable question requires non-empty 'gold_answer'")
+                if not isinstance(q["evidence"], list) or not q["evidence"] or not all(isinstance(e, str) and e.strip() for e in q["evidence"]):
+                    raise ValueError(f"{path}:{number}: answerable question requires non-empty list of evidence strings")
+                if not isinstance(q["key_facts"], list) or not q["key_facts"]:
+                    raise ValueError(f"{path}:{number}: answerable question requires non-empty list of key_fact groups")
+                for group in q["key_facts"]:
+                    if not isinstance(group, list) or not group or not all(isinstance(alt, str) and alt.strip() for alt in group):
+                        raise ValueError(f"{path}:{number}: each key_fact group must be a non-empty list of strings")
+            else:
+                if q["evidence"]:
+                    raise ValueError(f"{path}:{number}: unanswerable question must have empty evidence, got {q['evidence']}")
+                if q["key_facts"]:
+                    raise ValueError(f"{path}:{number}: unanswerable question must have empty key_facts, got {q['key_facts']}")
+
             questions.append(q)
-    ids = [q["id"] for q in questions]
-    if len(ids) != len(set(ids)):
-        raise ValueError(f"{path} has duplicate question ids")
+
+    if duplicate_ids:
+        raise ValueError(f"{path} has duplicate question ids: {', '.join(sorted(set(duplicate_ids)))}")
     return questions
 
 def supporting_chunk_ids(question, chunks):
-    """Ids of passages that contain any of the question's evidence text."""
+    """Ids of passages that support the question, either via explicit chunk citation or evidence text matching."""
+    chunks_by_id = {c["id"]: c for c in chunks}
+    explicit = [cid for cid in (question.get("chunks") or question.get("chunk_ids") or []) if cid in chunks_by_id]
+    if explicit:
+        return set(explicit)
     targets = [normalize(e) for e in question.get("evidence", []) if e.strip()]
     if not targets:
         return set()
@@ -85,9 +136,16 @@ def key_facts_present(text, key_facts):
 def check(persona_id):
     """Report problems with one exhibit's question file. Returns the number of problems."""
     chunks = load_chunks(persona_id)
+    chunks_by_id = {c["id"]: c for c in chunks}
     questions = load_questions(persona_id)
     problems = 0
     for q in questions:
+        explicit = q.get("chunks") or q.get("chunk_ids") or []
+        for cid in explicit:
+            if cid not in chunks_by_id:
+                print(f"  {q['id']}: cited chunk '{cid}' not found in {persona_id} corpus")
+                problems += 1
+
         if not q["answerable"]:
             continue
         support = supporting_chunk_ids(q, chunks)
@@ -95,6 +153,15 @@ def check(persona_id):
             print(f"  {q['id']}: evidence not found in any passage")
             problems += 1
             continue
+
+        # If explicit chunks were provided, verify that each evidence string appears in the cited chunks
+        if explicit:
+            cited_text = " ".join(chunks_by_id[cid]["text"] for cid in explicit if cid in chunks_by_id)
+            for ev in q.get("evidence", []):
+                if normalize(ev) not in normalize(cited_text):
+                    print(f"  {q['id']}: evidence snippet not found in cited chunks ({explicit})")
+                    problems += 1
+
         support_text = " ".join(c["text"] for c in chunks if c["id"] in support)
         if not key_facts_present(support_text, q["key_facts"]):
             print(f"  {q['id']}: key facts are not all in the supporting passages")
