@@ -106,7 +106,7 @@ def test_phone_page_is_served(client):
 @pytest.mark.slow
 def test_voice_round_trip():
     pytest.importorskip("kokoro", reason="kokoro is not installed; skipping voice round-trip test")
-    pytest.importorskip("whisper", reason="whisper is not installed; skipping voice round-trip test")
+    pytest.importorskip("faster_whisper", reason="faster_whisper is not installed; skipping voice round-trip test")
     from pipeline import stt, tts
 
     wav = tts.synthesize("When did you move to Paris?", voice="af_heart")
