@@ -108,3 +108,47 @@ def test_saved_answer_results_pair_cleanly():
     data = json.loads((cm.RESULTS_DIR / "answers_results.json").read_text(encoding="utf-8"))
     pairs = cm.pair_results(data["answers"])
     assert len(pairs) == len({(r["exhibit"], r["question_id"]) for r in data["answers"]})
+
+
+def test_interval_contains_the_observed_gap():
+    s = cm.summarize(cm.pair_results(rows_for(SAMPLE)))
+    low, high = s["difference_interval_95"]
+    assert low <= s["difference_points"] <= high
+
+
+def test_identical_modes_give_an_interval_centred_on_zero():
+    low, high = cm.newcombe_interval(20, 0, 0, 2)
+    assert low < 0 < high
+    assert low == -high
+
+
+def test_interval_allows_a_persona_win_even_with_none_observed():
+    # Van Gogh in the saved results: the persona never won a disagreement.
+    low, high = cm.newcombe_interval(19, 0, 1, 2)
+    assert low < 0 < high
+
+
+def test_interval_covers_the_true_gap_about_95_percent_of_the_time():
+    rng = random.Random(3)
+    probs, n, hits, sims = (0.6, 0.15, 0.05, 0.2), 44, 0, 2000
+    for _ in range(sims):
+        cells = [0, 0, 0, 0]
+        for _ in range(n):
+            cells[rng.choices(range(4), weights=probs)[0]] += 1
+        low, high = cm.newcombe_interval(*cells)
+        hits += low <= (probs[1] - probs[2]) * 100 <= high
+    assert 0.92 <= hits / sims <= 0.98
+
+
+@pytest.mark.parametrize("content, message", [
+    (None, "not found"),
+    ("not json", "not valid JSON"),
+    ('{"summary": {}}', "no answers list"),
+    ('{"answers": []}', "no persona or plain guide answers"),
+], ids=["missing-file", "not-json", "no-answers-key", "empty-answers"])
+def test_bad_results_files_give_clear_errors(tmp_path, content, message):
+    path = tmp_path / "answers_results.json"
+    if content is not None:
+        path.write_text(content, encoding="utf-8")
+    with pytest.raises(ValueError, match=message):
+        cm.compare(path)

@@ -14,6 +14,10 @@
     "persona_accuracy": 0.864,
     "plain_guide_accuracy": 0.886,
     "difference_points": -2.3,
+    "difference_interval_95": [
+      -12.1,
+      7.0
+    ],
     "outcomes": {
       "both correct": 37,
       "persona only": 1,
@@ -23,7 +27,7 @@
     "discordant": 3,
     "mcnemar_exact_p": 1.0,
     "smallest_possible_p": 0.25,
-    "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 3 questions, and even a 3 to 0 split would give p = 0.250, so this sample is too small to show a difference either way."
+    "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 3 questions, and even a 3 to 0 split would give p = 0.250, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -12.1 to +7.0 points (persona minus plain guide)."
   },
   "by_exhibit": {
     "t-rex": {
@@ -33,6 +37,10 @@
       "persona_accuracy": 0.864,
       "plain_guide_accuracy": 0.864,
       "difference_points": 0.0,
+      "difference_interval_95": [
+        -15.9,
+        15.9
+      ],
       "outcomes": {
         "both correct": 18,
         "persona only": 1,
@@ -42,7 +50,7 @@
       "discordant": 2,
       "mcnemar_exact_p": 1.0,
       "smallest_possible_p": 0.5,
-      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 2 questions, and even a 2 to 0 split would give p = 0.500, so this sample is too small to show a difference either way."
+      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 2 questions, and even a 2 to 0 split would give p = 0.500, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -15.9 to +15.9 points (persona minus plain guide)."
     },
     "van-gogh": {
       "questions": 22,
@@ -51,6 +59,10 @@
       "persona_accuracy": 0.864,
       "plain_guide_accuracy": 0.909,
       "difference_points": -4.5,
+      "difference_interval_95": [
+        -19.6,
+        8.3
+      ],
       "outcomes": {
         "both correct": 19,
         "persona only": 0,
@@ -60,7 +72,7 @@
       "discordant": 1,
       "mcnemar_exact_p": 1.0,
       "smallest_possible_p": 1.0,
-      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 1 question, and even a 1 to 0 split would give p = 1.000, so this sample is too small to show a difference either way."
+      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 1 question, and even a 1 to 0 split would give p = 1.000, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -19.6 to +8.3 points (persona minus plain guide)."
     }
   },
   "questions": [

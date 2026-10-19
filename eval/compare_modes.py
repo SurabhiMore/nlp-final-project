@@ -19,6 +19,11 @@ split at least this uneven would be if both modes were equally good, treating
 each discordant question as a coin flip. With few discordant questions the test
 cannot reach significance however the split falls, and the output says so.
 
+To show how big the gap could plausibly be, it also gives a 95% interval for
+persona minus plain guide accuracy, using Newcombe's method for paired yes/no
+results (Newcombe 1998, method 10). It stays sensible with very few
+disagreements, where simpler intervals collapse to zero width.
+
 Outputs, in eval/results/:
   compare_modes.json   every number, plus each question's outcome
   compare_modes.md     the same as tables
@@ -28,7 +33,7 @@ import argparse
 import json
 import sys
 from fractions import Fraction
-from math import comb
+from math import comb, sqrt
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -39,6 +44,7 @@ MODES = ("persona", "neutral")
 LABEL = {"persona": "persona", "neutral": "plain guide"}
 OUTCOMES = ("both correct", "persona only", "plain guide only", "both wrong")
 ALPHA = 0.05
+Z = 1.959964  # two-sided 95%
 
 
 def pair_results(rows):
@@ -99,6 +105,32 @@ def smallest_p(n):
     return 1.0 if n == 0 else min(1.0, 2 / 2 ** n)
 
 
+def wilson(x, n):
+    """Wilson score 95% interval for a proportion x / n."""
+    p = x / n
+    denom = 1 + Z * Z / n
+    centre = (p + Z * Z / (2 * n)) / denom
+    half = Z * sqrt(p * (1 - p) / n + Z * Z / (4 * n * n)) / denom
+    return centre - half, centre + half
+
+
+def newcombe_interval(a, b, c, d):
+    """95% interval, in points, for persona minus plain guide accuracy from paired counts.
+
+    a = both correct, b = persona only, c = plain guide only, d = both wrong.
+    """
+    n = a + b + c + d
+    p1, p2 = (a + b) / n, (a + c) / n
+    l1, u1 = wilson(a + b, n)
+    l2, u2 = wilson(a + c, n)
+    margins = (a + b) * (c + d) * (a + c) * (b + d)
+    phi = (a * d - b * c) / sqrt(margins) if margins > 0 else 0.0
+    diff = p1 - p2
+    low = diff - sqrt(max(0.0, (p1 - l1) ** 2 - 2 * phi * (p1 - l1) * (u2 - p2) + (u2 - p2) ** 2))
+    high = diff + sqrt(max(0.0, (p2 - l2) ** 2 - 2 * phi * (p2 - l2) * (u1 - p1) + (u1 - p1) ** 2))
+    return round(low * 100, 1), round(high * 100, 1)
+
+
 def conclusion(b, c, p):
     n = b + c
     if n == 0:
@@ -125,25 +157,38 @@ def summarize(pairs):
     neutral = counts["both correct"] + counts["plain guide only"]
     b, c = counts["persona only"], counts["plain guide only"]
     p = exact_mcnemar(b, c)
+    low, high = newcombe_interval(counts["both correct"], b, c, counts["both wrong"])
+    text = conclusion(b, c, p) + (f" The 95% interval for the gap runs from {low:+.1f} to {high:+.1f} points "
+                                  f"(persona minus plain guide).")
     return {
         "questions": n,
         "persona_correct": persona,
         "plain_guide_correct": neutral,
-        "persona_accuracy": round(persona / n, 3) if n else None,
-        "plain_guide_accuracy": round(neutral / n, 3) if n else None,
-        "difference_points": round((persona - neutral) / n * 100, 1) if n else None,
+        "persona_accuracy": round(persona / n, 3),
+        "plain_guide_accuracy": round(neutral / n, 3),
+        "difference_points": round((persona - neutral) / n * 100, 1),
+        "difference_interval_95": [low, high],
         "outcomes": counts,
         "discordant": b + c,
         "mcnemar_exact_p": round(p, 4),
         "smallest_possible_p": round(smallest_p(b + c), 4),
-        "conclusion": conclusion(b, c, p),
+        "conclusion": text,
     }
 
 
 def compare(results_path):
     path = Path(results_path)
-    data = json.loads(path.read_text(encoding="utf-8"))
+    if not path.exists():
+        raise ValueError(f"{path} not found. Run python -m eval.eval_answers first.")
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"{path} is not valid JSON: {error}") from error
+    if not isinstance(data, dict) or not isinstance(data.get("answers"), list):
+        raise ValueError(f"{path} has no answers list. Is it the output of eval_answers.py?")
     pairs = pair_results(data["answers"])
+    if not pairs:
+        raise ValueError(f"{path} has no persona or plain guide answers to compare.")
     exhibits = sorted({exhibit for exhibit, _ in pairs})
     try:
         source = path.resolve().relative_to(config.ROOT).as_posix()
@@ -167,6 +212,7 @@ def compare(results_path):
 def _row(label, s):
     return (f"| {label} | {s['questions']} | {s['persona_accuracy']:.3f} ({s['persona_correct']}) | "
             f"{s['plain_guide_accuracy']:.3f} ({s['plain_guide_correct']}) | {s['difference_points']:+.1f} | "
+            f"{s['difference_interval_95'][0]:+.1f} to {s['difference_interval_95'][1]:+.1f} | "
             f"{s['outcomes']['both correct']} | {s['outcomes']['persona only']} | "
             f"{s['outcomes']['plain guide only']} | {s['outcomes']['both wrong']} | {s['mcnemar_exact_p']:.2f} |")
 
@@ -181,9 +227,9 @@ def to_markdown(report):
         f"{src['passages_per_question']} passages per question). "
         f"Correct means {report['correct_means']}.",
         "",
-        "| | Questions | Persona | Plain guide | Difference (points) | Both correct | Persona only "
-        "| Plain guide only | Both wrong | Exact McNemar p |",
-        "|---|---|---|---|---|---|---|---|---|---|",
+        "| | Questions | Persona | Plain guide | Difference (points) | 95% interval (points) | Both correct "
+        "| Persona only | Plain guide only | Both wrong | Exact McNemar p |",
+        "|---|---|---|---|---|---|---|---|---|---|---|",
         _row("All", report["overall"]),
     ]
     lines += [_row(ex, s) for ex, s in report["by_exhibit"].items()]
@@ -230,7 +276,8 @@ def main():
         sys.exit(str(error))
     s = report["overall"]
     print(f"{s['questions']} questions | persona {s['persona_accuracy']:.3f} | plain guide "
-          f"{s['plain_guide_accuracy']:.3f} | difference {s['difference_points']:+.1f} points | "
+          f"{s['plain_guide_accuracy']:.3f} | difference {s['difference_points']:+.1f} points "
+          f"(95% interval {s['difference_interval_95'][0]:+.1f} to {s['difference_interval_95'][1]:+.1f}) | "
           f"persona only {s['outcomes']['persona only']} | plain guide only {s['outcomes']['plain guide only']} | "
           f"exact McNemar p = {s['mcnemar_exact_p']:.2f}")
     print(s["conclusion"])
