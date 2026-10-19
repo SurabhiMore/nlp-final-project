@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-10-19T17:15:46+00:00",
+  "run_at": "2026-10-19T20:25:12+00:00",
   "retriever": "BM25 (rank-bm25, light stemming, stopwords removed)",
   "exhibits": {
     "t-rex": {
@@ -354,7 +354,8 @@
           "question": "How good was your sense of smell?",
           "type": "fact",
           "supporting": [
-            "t-rex-wiki-0082"
+            "t-rex-wiki-0082",
+            "t-rex-wiki-0083"
           ],
           "top5": [
             "t-rex-wiki-0092",
@@ -375,7 +376,8 @@
           "question": "What kind of vision did you have, and how far could you see objects clearly?",
           "type": "fact",
           "supporting": [
-            "t-rex-wiki-0080"
+            "t-rex-wiki-0080",
+            "t-rex-wiki-0081"
           ],
           "top5": [
             "t-rex-wiki-0080",
@@ -500,12 +502,12 @@
     },
     "van-gogh": {
       "summary": {
-        "questions": 22,
-        "hit@1": 0.636,
-        "hit@5": 0.818,
-        "hit@8": 0.909,
-        "recall@5": 0.795,
-        "mrr@10": 0.719
+        "questions": 23,
+        "hit@1": 0.696,
+        "hit@5": 0.826,
+        "hit@8": 0.913,
+        "recall@5": 0.804,
+        "mrr@10": 0.753
       },
       "questions": [
         {
@@ -871,6 +873,7 @@
           "question": "Which two chairs did you paint while preparing for or living with Gauguin in Arles?",
           "type": "painting",
           "supporting": [
+            "van-gogh-wiki-0029",
             "van-gogh-wiki-0030"
           ],
           "top5": [
@@ -880,12 +883,12 @@
             "van-gogh-wiki-0028",
             "van-gogh-wiki-0055"
           ],
-          "first_hit_rank": 2,
-          "hit@1": false,
+          "first_hit_rank": 1,
+          "hit@1": true,
           "hit@5": true,
           "hit@8": true,
           "recall@5": 1.0,
-          "rr@10": 0.5
+          "rr@10": 1.0
         },
         {
           "id": "vg-26",
@@ -934,6 +937,7 @@
           "question": "What three things became your staple diet while living in poverty in Antwerp?",
           "type": "fact",
           "supporting": [
+            "van-gogh-wiki-0018",
             "van-gogh-wiki-0019"
           ],
           "top5": [
@@ -963,6 +967,28 @@
             "van-gogh-wiki-0039",
             "van-gogh-wiki-0042",
             "van-gogh-gut40393-0251"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-30",
+          "question": "Did you cut off your entire ear or only part of it?",
+          "type": "fact",
+          "supporting": [
+            "van-gogh-wiki-0002",
+            "van-gogh-wiki-0031"
+          ],
+          "top5": [
+            "van-gogh-wiki-0031",
+            "van-gogh-gut40393-0128",
+            "van-gogh-wiki-0032",
+            "van-gogh-gut40393-0064",
+            "van-gogh-wiki-0002"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
