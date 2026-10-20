@@ -67,6 +67,8 @@ def evaluate(persona_id, depth=10):
 def main():
     parser = argparse.ArgumentParser(description="Evaluate BM25 search on the held-out questions.")
     parser.add_argument("--persona", help="only this exhibit")
+    parser.add_argument("--out", default="retrieval_results.json",
+                        help="file name to write under eval/results/")
     args = parser.parse_args()
 
     ids = [args.persona] if args.persona else [p.stem for p in datasets.question_files()]
@@ -84,7 +86,7 @@ def main():
             print(f"{'':10} missed in top 5: {', '.join(misses)}")
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    path = RESULTS_DIR / "retrieval_results.json"
+    path = RESULTS_DIR / args.out
     path.write_text(json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nSaved to {path.relative_to(config.ROOT)}")
 
