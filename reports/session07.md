@@ -30,8 +30,8 @@ north_star:
 - **More held-out questions.** 20 new questions (64 in total, 46 answerable and 18 traps), stricter checks on the question files, and a [coverage summary](../eval/coverage_summary.md) (evidence: #27, PR #35).
 - **Better T. rex search.** Query clean-up, `-ed`/`-ing` stemming and a three-word T. rex term map in [`pipeline/retrieve.py`](../pipeline/retrieve.py), checked on 10 new T. rex questions written before tuning, with a [before and after report](../eval/results/retrieval_comparison.md) that lists every question that got worse (evidence: #31, PR #36).
 - **Clearer answer states on the phone page.** Each answer card shows whether it is loading, answered, not covered by the sources, or failed, and the sources are set apart from the answer (evidence: #29, PR #37).
-- **A check on every model reply before the visitor sees it** (PR open, not merged yet). It replaces declines that answer anyway from the model's own knowledge, uncited answers and unreadable replies, measured before and after on the same 128 model replies ([summary](../eval/results/grounding_summary.md)) (evidence: #28, PR to be linked).
-- **Second round of user tests** with three people from outside the team ([`artifacts/evidence/session07/`](../artifacts/evidence/session07/)) (evidence: #28).
+- **A check on every model reply before the visitor sees it** (PR #38, open). It replaces declines that answer anyway from the model's own knowledge, uncited answers and unreadable replies, measured before and after on the same 128 model replies ([summary](../eval/results/grounding_summary.md)) (evidence: #28, PR #38).
+- **Second round of user tests** with three people from outside the team ([`artifacts/evidence/session07/`](../artifacts/evidence/session07/)) (evidence: #28, PR #38).
 
 ## User evidence
 - Three people from outside the team (P2, P3 and P4: a teammate's roommate, a teammate's friend, and one more person) used the running product in person on a laptop, on October 20. Each did five tasks across both exhibits: a question the sources cover and one they don't for each exhibit, then an off-topic question. P2 used the task sheet's wording. P3 and P4 asked their own questions of each kind. 12 questions were asked by voice and 3 typed.
@@ -73,7 +73,7 @@ north_star:
 - Pratham Bharati (Product): the shared test setup and per-PR test reports, and the paired persona against plain guide comparison (evidence: #32, PR #33, #30, PR #34)
 - Saurabh Gujar (Engineering): answer states and source cards on the phone page, with 12 server tests (evidence: #29, PR #37)
 - Surabhi More (Data & Eval): 20 new held-out questions, stricter question checks with 22 tests, and the coverage summary (evidence: #27, PR #35)
-- Kshiti Deshpande (Users & Research): the reply check with a before and after evaluation and 40 tests, the second round of user tests with three people, and this report (evidence: #28)
+- Kshiti Deshpande (Users & Research): the reply check with a before and after evaluation and 40 tests, the second round of user tests with three people, and this report (evidence: #28, PR #38)
 - Aditi Karanjkar (Operations): T. rex search improvements with 10 new held-out questions, the before and after search report and 47 tests (evidence: #31, PR #36)
 
 ## Lean canvas changes (if any)
