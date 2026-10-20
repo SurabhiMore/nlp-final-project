@@ -7,11 +7,26 @@
   --accent: #2f5d50;
   --accent-ink: #ffffff;
   --warn: #8a4b12;
+
+  /* answer state tokens */
+  --state-ok-bg:          #f0f7f4;
+  --state-ok-border:      #2f5d50;
+  --state-ok-label:       #1f4438;
+
+  --state-low-bg:         #fdf5ec;
+  --state-low-border:     #c97a30;
+  --state-low-label:      #8a4b12;
+
+  --state-err-bg:         #fdf0ee;
+  --state-err-border:     #c0392b;
+  --state-err-label:      #a12a1b;
+
+  --state-loading-bg:     #f4f4f6;
+  --state-loading-border: #9b97a0;
 }
 
 * { box-sizing: border-box; }
 
-/* Classes below set display, which would otherwise override the hidden attribute. */
 [hidden] { display: none !important; }
 
 body {
@@ -22,6 +37,8 @@ body {
   color: var(--ink);
   background: var(--paper);
 }
+
+/* ------------------------------------------------------------------ header */
 
 .top {
   display: flex;
@@ -45,10 +62,14 @@ select {
   background: var(--card);
 }
 
+/* ------------------------------------------------------------------ layout */
+
 main { max-width: 640px; margin: 0 auto; padding: 18px; }
 
 .greeting { font-size: 1.1rem; margin: 0 0 4px; }
 .period { color: var(--muted); margin: 0; font-size: 0.95rem; }
+
+/* ------------------------------------------------------------------ ask area */
 
 .ask { margin: 22px 0; text-align: center; }
 
@@ -96,40 +117,153 @@ main { max-width: 640px; margin: 0 auto; padding: 18px; }
 }
 
 .status { min-height: 1.5em; color: var(--muted); margin: 14px 0 6px; }
-.status.error { color: #a12a1b; }
+.status.error { color: var(--state-err-label); }
 .stop { margin-top: 6px; }
 
-.conversation { display: flex; flex-direction: column-reverse; gap: 14px; }
+/* ------------------------------------------------------------------ conversation */
+
+.conversation { display: flex; flex-direction: column-reverse; gap: 16px; }
 
 .turn {
   background: var(--card);
   border: 1px solid var(--line);
+  border-left: 4px solid var(--line);
   border-radius: 12px;
   padding: 14px 16px;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.question { margin: 0 0 8px; color: var(--muted); font-style: italic; }
+.turn[data-state="ok"] {
+  border-left-color: var(--state-ok-border);
+  background: var(--state-ok-bg);
+}
+.turn[data-state="low"] {
+  border-left-color: var(--state-low-border);
+  background: var(--state-low-bg);
+}
+.turn[data-state="error"] {
+  border-left-color: var(--state-err-border);
+  background: var(--state-err-bg);
+}
+.turn[data-state="loading"] {
+  border-left-color: var(--state-loading-border);
+  background: var(--state-loading-bg);
+}
+
+.question { margin: 0 0 10px; color: var(--muted); font-style: italic; font-size: 0.95rem; }
 .answer { margin: 0; font-size: 1.05rem; }
 
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   margin: 10px 0 0;
-  padding: 2px 10px;
+  padding: 3px 10px;
   border-radius: 999px;
-  background: #f4e7d9;
-  color: var(--warn);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.badge::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.turn[data-state="ok"]    .badge { background: #d4eddf; color: var(--state-ok-label); }
+.turn[data-state="low"]   .badge { background: #fde8cc; color: var(--state-low-label); }
+.turn[data-state="error"] .badge { background: #fad7d3; color: var(--state-err-label); }
+
+/* ------------------------------------------------------------------ sources */
+
+.sources-divider {
+  margin: 14px 0 0;
+  border: none;
+  border-top: 1px solid var(--line);
 }
 
 .sources { margin-top: 10px; font-size: 0.92rem; }
-.sources summary { cursor: pointer; color: var(--accent); }
-.sources ul { margin: 8px 0 0; padding-left: 18px; }
-.sources li { margin-bottom: 6px; }
-.sources .licence { color: var(--muted); font-size: 0.85rem; }
-.sources .snippet { display: block; color: var(--muted); }
+
+.sources summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+.sources summary::-webkit-details-marker { display: none; }
+.sources summary::before {
+  content: "▶";
+  display: inline-block;
+  font-size: 0.65rem;
+  transition: transform 0.18s ease;
+}
+details[open] > summary::before { transform: rotate(90deg); }
+
+.sources ul {
+  margin: 10px 0 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sources li {
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.sources a { color: var(--accent); text-decoration: underline; word-break: break-word; }
+.sources .source-name { font-weight: 600; }
+.sources .licence { color: var(--muted); font-size: 0.82rem; display: block; margin-top: 2px; }
+.sources .snippet {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* ------------------------------------------------------------------ loading */
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.loading-dots { display: flex; gap: 5px; }
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ------------------------------------------------------------------ misc */
 
 .sound-note { margin: 10px 0 0; color: var(--muted); font-size: 0.85rem; font-style: italic; }
-
 .timing { margin: 8px 0 0; color: var(--muted); font-size: 0.8rem; }
 
 .note {
@@ -160,4 +294,6 @@ button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-v
 @media (prefers-reduced-motion: reduce) {
   .talk { transition: none; }
   .talk.recording { transform: none; }
+  .sources summary::before { transition: none; }
+  .loading-dots span { animation: none; opacity: 0.6; }
 }
