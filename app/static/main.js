@@ -199,60 +199,93 @@
 
   function addTurn(question) {
     const node = el.template.content.firstElementChild.cloneNode(true);
+    node.setAttribute("data-state", "loading");
     node.querySelector(".question").textContent = question ? "You asked: " + question : "Listening...";
+
+    // Show animated loading skeleton while waiting for the server
+    const answerEl = node.querySelector(".answer");
+    answerEl.innerHTML =
+      '<span class="loading-indicator">' +
+        '<span class="loading-dots"><span></span><span></span><span></span></span>' +
+        'Thinking…' +
+      '</span>';
+
     el.conversation.appendChild(node);
     return node;
   }
 
   function showAnswer(node, data, askedAt) {
-    node.querySelector(".question").textContent = "You asked: " + data.question;
-    node.querySelector(".answer").textContent = data.answer;
+    // Determine state for visual styling
+    var isLowEvidence = Boolean(STATUS_LABELS[data.status]);
+    node.setAttribute("data-state", isLowEvidence ? "low" : "ok");
 
-    const badge = node.querySelector(".badge");
-    if (STATUS_LABELS[data.status]) {
+    node.querySelector(".question").textContent = "You asked: " + data.question;
+
+    // Clear loading skeleton, set real answer
+    var answerEl = node.querySelector(".answer");
+    answerEl.textContent = data.answer;
+
+    // Badge for insufficient-evidence / off-topic statuses
+    var badge = node.querySelector(".badge");
+    if (isLowEvidence) {
       badge.textContent = STATUS_LABELS[data.status];
       badge.hidden = false;
     }
 
-    const sources = node.querySelector(".sources");
-    const list = sources.querySelector("ul");
+    // Sources — only shown when there are valid citations
+    var sources = node.querySelector(".sources");
+    var list = sources.querySelector("ul");
     (data.citations || []).forEach(function (c) {
-      const item = document.createElement("li");
-      const url = safeUrl(c.url);
-      const name = document.createElement(url ? "a" : "span");
-      name.textContent = c.source || c.id;
+      var item = document.createElement("li");
+
+      // Source name: link only when URL is a real http(s) URL
+      var url = safeUrl(c.url);
+      var nameEl = document.createElement(url ? "a" : "span");
+      nameEl.textContent = c.source || c.id;
+      nameEl.className = "source-name";
       if (url) {
-        name.href = url;
-        name.target = "_blank";
-        name.rel = "noopener";
+        nameEl.href = url;
+        nameEl.target = "_blank";
+        nameEl.rel = "noopener";
       }
-      item.appendChild(name);
+      item.appendChild(nameEl);
+
       if (c.licence) {
-        const licence = document.createElement("span");
+        var licence = document.createElement("span");
         licence.className = "licence";
-        // "CC0 (The Metropolitan Museum of Art)" -> "CC0": the source name is already shown.
-        licence.textContent = " (" + c.licence.split(" (")[0] + ")";
+        // "CC0 (The Metropolitan Museum of Art)" -> "CC0": source name already shown.
+        licence.textContent = c.licence.split(" (")[0];
         item.appendChild(licence);
       }
-      const snippet = document.createElement("span");
-      snippet.className = "snippet";
-      snippet.textContent = c.snippet ? '"' + c.snippet.trim() + '..."' : "";
-      item.appendChild(snippet);
+
+      if (c.snippet) {
+        var snippet = document.createElement("span");
+        snippet.className = "snippet";
+        snippet.textContent = '\u201c' + c.snippet.trim() + '\u2026\u201d';
+        item.appendChild(snippet);
+      }
+
       list.appendChild(item);
     });
+
     if (list.children.length) {
-      sources.querySelector("summary").textContent = "Sources (" + list.children.length + ")";
+      // Insert a visual divider between answer and sources
+      var divider = document.createElement("hr");
+      divider.className = "sources-divider";
+      sources.before(divider);
+      sources.querySelector("summary").textContent =
+        "Sources (" + list.children.length + ")";
       sources.hidden = false;
     }
 
     if (data.sound && data.sound.note) {
-      const note = document.createElement("p");
+      var note = document.createElement("p");
       note.className = "sound-note";
       note.textContent = "Sound: " + data.sound.note + ".";
       node.querySelector(".timing").before(note);
     }
 
-    const seconds = ((performance.now() - askedAt) / 1000).toFixed(1);
+    var seconds = ((performance.now() - askedAt) / 1000).toFixed(1);
     node.querySelector(".timing").textContent = "Answer shown after " + seconds + " s";
   }
 
@@ -283,8 +316,15 @@
         timing.textContent += ", voice started after " + seconds + " s";
       }, data.sound && data.sound.url);
     } catch (error) {
-      node.remove();
-      setStatus(error.message, true);
+      // Keep the turn card visible but mark it as an error state
+      node.setAttribute("data-state", "error");
+      const answerEl = node.querySelector(".answer");
+      answerEl.textContent = error.message || "Something went wrong.";
+      const badge = node.querySelector(".badge");
+      badge.textContent = "Request failed";
+      badge.hidden = false;
+      node.querySelector(".timing").textContent = "";
+      setStatus("");
     } finally {
       setBusy(false);
     }
