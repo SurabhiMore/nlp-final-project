@@ -1,10 +1,10 @@
 # Test report
 
-- Run: 2026-10-20 14:03 (UTC-04:00)
-- Code tested: commit 0a47dc7 on branch feat/answer-grounding, no uncommitted changes
+- Run: 2026-10-20 14:05 (UTC-04:00)
+- Code tested: commit 3509190 on branch feat/answer-grounding, no uncommitted changes
 - Command: python -m pytest -m "slow or not slow" --save-report -p no:warnings
 - Python 3.12.15 on Darwin
-- Result: 161 passed in 6.4 s
+- Result: 161 passed in 7.7 s
 - All tests that ran passed.
 
 | Test | File | Result | Time (s) |
@@ -76,13 +76,13 @@
 | test_regressions_and_improvements_are_reported | test_compare_retrieval.py | passed | 0.00 |
 | test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
 | test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
-| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.15 |
+| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.16 |
 | test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.42 |
 | test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
 | test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
 | test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
 | test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.16 |
-| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.42 |
+| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.43 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[t-rex] | test_datasets.py | passed | 0.00 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[van-gogh] | test_datasets.py | passed | 0.00 |
 | test_validation_detects_duplicate_ids | test_datasets.py | passed | 0.00 |
@@ -147,7 +147,7 @@
 | test_ask_citations_have_required_fields | test_server.py | passed | 0.00 |
 | test_citation_url_is_empty_string_or_valid_https | test_server.py | passed | 0.00 |
 | test_citation_snippet_is_string | test_server.py | passed | 0.00 |
-| test_updated_static_files_are_served | test_server.py | passed | 0.00 |
+| test_updated_static_files_are_served | test_server.py | passed | 0.01 |
 | test_style_css_contains_state_tokens | test_server.py | passed | 0.00 |
 | test_main_js_references_data_state_attribute | test_server.py | passed | 0.00 |
 | test_main_js_has_loading_indicator_markup | test_server.py | passed | 0.00 |
@@ -155,8 +155,8 @@
 | test_ask_empty_question_returns_400 | test_server.py | passed | 0.00 |
 | test_ask_bad_mode_returns_400 | test_server.py | passed | 0.00 |
 | test_both_exhibits_load | test_smoke.py | passed | 0.00 |
-| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.15 |
-| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.42 |
+| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.16 |
+| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.43 |
 | test_search_returns_ranked_passages[t-rex] | test_smoke.py | passed | 0.00 |
 | test_search_returns_ranked_passages[van-gogh] | test_smoke.py | passed | 0.00 |
 | test_search_finds_the_passage_for_an_exact_wording_question | test_smoke.py | passed | 0.01 |
@@ -169,4 +169,4 @@
 | test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.00 |
 | test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
 | test_phone_page_is_served | test_smoke.py | passed | 0.00 |
-| test_voice_round_trip | test_smoke.py | passed | 4.28 |
+| test_voice_round_trip | test_smoke.py | passed | 5.52 |
