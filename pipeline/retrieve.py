@@ -80,6 +80,27 @@ def normalize_query(question):
     return " ".join(text.split())
 
 
+# Visitor words that never appear in an exhibit's passages, mapped to the words the
+# passages use instead. Each entry fixes a failure found in the T-Rex retrieval
+# analysis (eval/results/trex_failure_analysis.md); add one only with such evidence.
+# The visitor's word is kept, and the passage words are added to the search.
+# "heavy -> mass, weigh" was tried for tr-08 and left out: it made tr-08 worse.
+TERM_MAP = {
+    "t-rex": {
+        "finger": ["digit"],        # tr-10: passages say "two clawed digits"
+        "horned": ["ceratopsian"],  # tr-26: passages say "ceratopsians such as Triceratops"
+        "bite": ["force"],          # tr-09: passages say "bite force"
+    },
+}
+
+
+def query_terms(persona_id, question):
+    """The search terms for a visitor question: normalized, tokenized, then expanded with TERM_MAP."""
+    terms = tokenize(normalize_query(question))
+    mapping = {_stem(k): [_stem(v) for v in vs] for k, vs in TERM_MAP.get(persona_id, {}).items()}
+    return terms + [extra for term in terms for extra in mapping.get(term, [])]
+
+
 class _Index:
     def __init__(self, persona_id):
         path = config.chunks_path(persona_id)
@@ -106,7 +127,7 @@ def _get_index(persona_id):
 def retrieve(persona_id, question, k=5):
     """The k passages that best match the question, best first."""
     index = _get_index(persona_id)
-    query = tokenize(normalize_query(question))
+    query = query_terms(persona_id, question)
     if not query:
         return []
     scores = index.bm25.get_scores(query)

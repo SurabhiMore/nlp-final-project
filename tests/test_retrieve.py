@@ -107,3 +107,48 @@ def test_ordinary_questions_still_work(exhibit, question, expected):
     assert top, "an ordinary question should find passages"
     if expected:
         assert expected in [r["id"] for r in top]
+
+
+# ------------------------------------------------------------ terminology map
+
+from pipeline.retrieve import TERM_MAP, query_terms  # noqa: E402
+
+
+@pytest.mark.parametrize("question, added", [
+    ("How many fingers did you have?", "digit"),
+    ("How many FINGERS did you have?", "digit"),
+    ("Which horned dinosaurs did you eat?", "ceratopsian"),
+    ("How strong was your bite?", "forc"),
+])
+def test_terminology_variants_add_the_passage_word(question, added):
+    terms = query_terms("t-rex", question)
+    assert added in terms
+    # the visitor's own words are kept too
+    assert set(tokenize(normalize_query(question))) <= set(terms)
+
+
+def test_ordinary_questions_are_not_expanded():
+    question = "Who discovered the famous skeleton called Sue?"
+    assert query_terms("t-rex", question) == tokenize(normalize_query(question))
+
+
+def test_map_only_applies_to_its_exhibit():
+    assert "digit" not in query_terms("van-gogh", "How many fingers did you paint?")
+
+
+def test_every_mapped_word_is_in_the_t_rex_passages():
+    from eval import datasets
+    corpus = set()
+    for c in datasets.load_chunks("t-rex"):
+        corpus.update(tokenize(c["text"]))
+    for words in TERM_MAP["t-rex"].values():
+        for w in words:
+            assert tokenize(w)[0] in corpus, f"{w!r} never appears in the passages"
+
+
+@pytest.mark.parametrize("question, expected", [
+    ("How many fingers did you have on each hand?", "t-rex-wiki-0000"),  # tr-10
+    ("How strong was your bite?", "t-rex-wiki-0001"),                    # tr-09
+])
+def test_terminology_map_finds_the_passage(question, expected):
+    assert expected in [r["id"] for r in retrieve("t-rex", question, k=5)]
