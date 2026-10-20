@@ -65,6 +65,7 @@ are not committed).
 python -m eval.eval_retrieval          # does search find the right passages?
 python -m eval.eval_answers            # grounded answer accuracy, persona vs plain guide
 python -m eval.compare_modes           # is the gap between persona and plain guide real or chance?
+python -m eval.eval_grounding          # reply check before and after, on frozen passages (see the script)
 python scripts/measure_latency.py      # how long each step takes
 ```
 
