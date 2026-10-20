@@ -25,7 +25,7 @@ north_star:
 ---
 
 ## Shipped this week
-- **Shared test setup.** `python -m pytest` with a smoke test of everything that already works, a rule that no test calls a real language model, and `--save-report`, which writes a per-PR test report to `tests/results/` (evidence: #32, PR #33). The test suite grew from 16 tests to 89 this week.
+- **Shared test setup.** `python -m pytest` with a smoke test of everything that already works, a rule that no test calls a real language model, and `--save-report`, which writes a per-PR test report to `tests/results/` (evidence: #32, PR #33). The test suite grew from 16 tests to 161 this week.
 - **Is the persona really less accurate than the plain guide?** [`eval/compare_modes.py`](../eval/compare_modes.py) pairs the two modes question by question and runs an exact McNemar test with a 95% interval for the gap (evidence: #30, PR #34).
 - **More held-out questions.** 20 new questions (64 in total, 46 answerable and 18 traps), stricter checks on the question files, and a [coverage summary](../eval/coverage_summary.md) (evidence: #27, PR #35).
 - **Better T. rex search.** Query clean-up, `-ed`/`-ing` stemming and a three-word T. rex term map in [`pipeline/retrieve.py`](../pipeline/retrieve.py), checked on 10 new T. rex questions written before tuning, with a [before and after report](../eval/results/retrieval_comparison.md) that lists every question that got worse (evidence: #31, PR #36).
