@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
 
 QUESTIONS_DIR = config.EVAL_DIR / "questions"
+HELDOUT_DIR = QUESTIONS_DIR / "heldout"   # written before tuning search; never used to pick synonyms
 QUESTION_TYPES = {"fact", "date", "why", "painting", "quote", "outside_time", "not_in_sources", "off_topic"}
 DECLINE_TYPES = {"outside_time", "not_in_sources", "off_topic"}
 
@@ -44,11 +45,11 @@ def load_chunks(persona_id):
     with open(path, encoding="utf-8") as handle:
         return [json.loads(line) for line in handle if line.strip()]
 
-def question_files():
-    return sorted(QUESTIONS_DIR.glob("*.jsonl"))
+def question_files(questions_dir=None):
+    return sorted(Path(questions_dir or QUESTIONS_DIR).glob("*.jsonl"))
 
-def load_questions(persona_id):
-    path = QUESTIONS_DIR / f"{persona_id}.jsonl"
+def load_questions(persona_id, questions_dir=None):
+    path = Path(questions_dir or QUESTIONS_DIR) / f"{persona_id}.jsonl"
     if not path.exists():
         raise FileNotFoundError(f"No question file at {path}")
     questions = []
@@ -133,11 +134,11 @@ def key_facts_present(text, key_facts):
     norm = normalize(text)
     return all(any(normalize(alt) in norm for alt in group) for group in key_facts)
 
-def check(persona_id):
+def check(persona_id, questions_dir=None):
     """Report problems with one exhibit's question file. Returns the number of problems."""
     chunks = load_chunks(persona_id)
     chunks_by_id = {c["id"]: c for c in chunks}
-    questions = load_questions(persona_id)
+    questions = load_questions(persona_id, questions_dir) if questions_dir else load_questions(persona_id)
     problems = 0
     for q in questions:
         explicit = q.get("chunks") or q.get("chunk_ids") or []
@@ -181,9 +182,10 @@ def main():
     parser = argparse.ArgumentParser(description="Check the held-out question files.")
     parser.add_argument("--check", action="store_true", help="check every question file")
     parser.add_argument("--persona", help="check only this exhibit")
+    parser.add_argument("--questions-dir", help="folder of question files (default: eval/questions)")
     args = parser.parse_args()
-    ids = [args.persona] if args.persona else [p.stem for p in question_files()]
-    total = sum(check(pid) for pid in ids)
+    ids = [args.persona] if args.persona else [p.stem for p in question_files(args.questions_dir)]
+    total = sum(check(pid, args.questions_dir) for pid in ids)
     sys.exit(1 if total else 0)
 
 if __name__ == "__main__":

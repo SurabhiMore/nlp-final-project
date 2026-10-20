@@ -29,10 +29,10 @@ from pipeline.retrieve import retrieve  # noqa: E402
 RESULTS_DIR = config.EVAL_DIR / "results"
 
 
-def evaluate(persona_id, depth=10):
+def evaluate(persona_id, depth=10, questions_dir=None):
     chunks = datasets.load_chunks(persona_id)
     rows = []
-    for q in datasets.load_questions(persona_id):
+    for q in datasets.load_questions(persona_id, questions_dir):
         if not q["answerable"]:
             continue
         support = datasets.supporting_chunk_ids(q, chunks)
@@ -67,15 +67,20 @@ def evaluate(persona_id, depth=10):
 def main():
     parser = argparse.ArgumentParser(description="Evaluate BM25 search on the held-out questions.")
     parser.add_argument("--persona", help="only this exhibit")
+    parser.add_argument("--out", default="retrieval_results.json",
+                        help="file name to write under eval/results/")
+    parser.add_argument("--questions-dir", help="folder of question files (default: eval/questions)")
     args = parser.parse_args()
 
-    ids = [args.persona] if args.persona else [p.stem for p in datasets.question_files()]
+    ids = [args.persona] if args.persona else [p.stem for p in datasets.question_files(args.questions_dir)]
     output = {"run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-              "retriever": "BM25 (rank-bm25, light stemming, stopwords removed)", "exhibits": {}}
+              "retriever": "BM25 (rank-bm25, light stemming, stopwords removed)",
+              "questions_dir": str(Path(args.questions_dir or datasets.QUESTIONS_DIR).resolve().relative_to(config.ROOT)),
+              "exhibits": {}}
 
     print(f"{'exhibit':10} {'questions':>9} {'Hit@1':>7} {'Hit@5':>7} {'Hit@8':>7} {'Recall@5':>9} {'MRR@10':>7}")
     for persona_id in ids:
-        summary, rows = evaluate(persona_id)
+        summary, rows = evaluate(persona_id, questions_dir=args.questions_dir)
         output["exhibits"][persona_id] = {"summary": summary, "questions": rows}
         print(f"{persona_id:10} {summary['questions']:>9} {summary['hit@1']:>7.2f} {summary['hit@5']:>7.2f} "
               f"{summary['hit@8']:>7.2f} {summary['recall@5']:>9.2f} {summary['mrr@10']:>7.2f}")
@@ -84,7 +89,7 @@ def main():
             print(f"{'':10} missed in top 5: {', '.join(misses)}")
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    path = RESULTS_DIR / "retrieval_results.json"
+    path = RESULTS_DIR / args.out
     path.write_text(json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nSaved to {path.relative_to(config.ROOT)}")
 

@@ -70,6 +70,22 @@ python scripts/measure_latency.py      # how long each step takes
 
 Results are written to `eval/results/` and are what the weekly reports quote.
 
+Search is also scored on held-out T-Rex questions (`eval/questions/heldout/`) that were written
+before search was tuned and are never used to choose terminology mappings. To reproduce the
+before/after search comparison (issue #31):
+
+```bash
+python -m eval.eval_retrieval                                   # main questions -> retrieval_results.json
+python -m eval.eval_retrieval --questions-dir eval/questions/heldout --out retrieval_results_heldout.json
+python -m eval.compare_retrieval \
+  --set "Main questions" eval/results/retrieval_baseline.json eval/results/retrieval_results.json \
+  --set "Held-out questions" eval/results/retrieval_baseline_heldout.json eval/results/retrieval_results_heldout.json \
+  --out eval/results/retrieval_comparison.md
+```
+
+The baseline files were produced by the same commands with `--out retrieval_baseline*.json`
+on the code before the change.
+
 Run the tests with `python -m pytest` (see `tests/README.md`).
 
 ## Add a new exhibit (no code changes)
