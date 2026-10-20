@@ -149,7 +149,7 @@ def run(persona_ids, modes, limit=None, sleep=0.0, done=None):
                     "retrieved": [c["id"] for c in retrieved],
                     "support_in_retrieved": bool(support & {c["id"] for c in retrieved}),
                     **{k: result.get(k) for k in ("answer", "status", "citations", "invalid_citations",
-                                                  "model", "llm_ms", "warning", "parse_error")},
+                                                  "model", "llm_ms", "warning", "parse_error", "check")},
                     "passages_per_question": TOP_K,
                 }
                 row.update(score(q, result, chunks_by_id, support))

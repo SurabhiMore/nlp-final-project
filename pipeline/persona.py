@@ -18,7 +18,9 @@ The model must reply with JSON: {"answer", "status", "citations"}, plus
 "sound" when the exhibit has sounds in its persona.json (the T. rex can roar)
 and the visitor asks for one. Citations that are not among the passages we
 sent are dropped, so an answer can never cite a passage the model was not
-given, and a sound the exhibit does not have is ignored.
+given, and a sound the exhibit does not have is ignored. check_reply() then
+makes sure the visitor never sees unreadable model output, an uncited answer,
+or a "decline" that answers anyway from the model's own knowledge.
 
 Settings (environment variables or .env, see .env.example):
   LLM_PROVIDER     "openai_compatible" (default) or "offline" (no model, for testing)
@@ -227,7 +229,11 @@ def _call_llm(messages, s):
 
 
 def parse_reply(text, allowed_ids, allowed_sounds=()):
-    """Turn the model's reply into {"answer", "status", "citations", "invalid_citations", "sound"}."""
+    """Turn the model's reply into {"answer", "status", "citations", "invalid_citations", "sound"}.
+
+    Never raises. A reply that is not a JSON object, or has an answer that is not
+    text, comes back with parse_error set, and check_reply() replaces it.
+    """
     obj = None
     try:
         obj = json.loads(text)
@@ -238,17 +244,19 @@ def parse_reply(text, allowed_ids, allowed_sounds=()):
                 obj = json.loads(match.group(0))
             except json.JSONDecodeError:
                 obj = None
-    if not isinstance(obj, dict):
-        return {"answer": (text or "").strip(), "status": "answered", "citations": [],
-                "invalid_citations": [], "sound": None, "parse_error": True}
+    if not isinstance(obj, dict) or not isinstance(obj.get("answer", ""), (str, type(None))):
+        return {"answer": (text or "").strip() if isinstance(text, str) else "", "status": "answered",
+                "citations": [], "invalid_citations": [], "sound": None, "parse_error": True}
 
-    answer_text = str(obj.get("answer", "")).strip()
-    status = str(obj.get("status", "")).strip().lower()
+    answer_text = (obj.get("answer") or "").strip()
+    status = str(obj.get("status") or "").strip().lower()
     if status not in STATUSES:
         status = "answered" if answer_text else "declined"
     raw = obj.get("citations") or []
-    if isinstance(raw, str):
+    if isinstance(raw, (str, int, float)):
         raw = [raw]
+    elif not isinstance(raw, list):
+        raw = [json.dumps(raw)]  # a dict or other shape: no usable ids, keep it visible as invalid
     cited, invalid = [], []
     for item in raw:
         cid = str(item).strip().strip("[]")
@@ -257,9 +265,68 @@ def parse_reply(text, allowed_ids, allowed_sounds=()):
                 cited.append(cid)
         else:
             invalid.append(cid)
-    sound = str(obj.get("sound") or "").strip().lower()
+    sound = obj.get("sound")
+    sound = sound.strip().lower() if isinstance(sound, str) else ""
     return {"answer": answer_text, "status": status, "citations": cited, "invalid_citations": invalid,
             "sound": sound if sound in allowed_sounds else None}
+
+
+# ---------------------------------------------------------------- checking the reply
+
+# A real decline says no somewhere: "my sources do not say", "after my time, so I cannot
+# know it", "I can only help with...". In our evaluation the model sometimes set a decline
+# status but then answered anyway from its own knowledge ("rex is Latin for king"), with
+# nothing to cite. A decline without any of these words is replaced with a fixed line.
+_SAYS_NO = re.compile(r"\b(?:not|no|never|cannot|nothing|only|beyond)\b|n't\b", re.I)
+# Greetings and "who are you" questions are answered from persona.json, not from passages,
+# so they may be answered without a citation (rule 6 and 7 of the prompt).
+_ABOUT_YOU = re.compile(
+    r"^\W*(?:hi|hello|hey|good (?:morning|afternoon|evening)|greetings)\b"
+    r"|\bwho (?:are|r) (?:you|u)\b|\bwhat are you\b|\bintroduce yourself\b|\bare you (?:real|an? ai|a robot)\b",
+    re.I)
+
+
+def _fixed_line(status, persona, mode):
+    name = persona["name"]
+    if mode == "persona":
+        return {
+            "not_in_sources": "My sources do not say anything about that.",
+            "outside_time": "That came after my time, so I cannot know it.",
+            "declined": "That is not something I can talk about here. Ask me about my own story instead.",
+        }[status]
+    return {
+        "not_in_sources": "The sources do not say anything about that.",
+        "outside_time": f"That came after {name}'s time, so {name} could not have known it.",
+        "declined": f"I can only answer questions about {name} and the museum.",
+    }[status]
+
+
+def check_reply(result, persona, question, mode="persona"):
+    """Make sure what the visitor sees is backed by the passages, whatever the model sent.
+
+    Three deterministic rules, applied after parse_reply():
+      1. a reply that could not be read (not JSON, cut off, no answer text) becomes a
+         short "not in my sources" line instead of raw model text
+      2. "answered" with no valid citation becomes "not_in_sources", unless the visitor
+         greeted the exhibit, asked who it is, or asked for a sound
+      3. a decline whose text does not actually decline (it answers from the model's own
+         knowledge) has its text replaced with a fixed decline line for that status
+
+    Returns the same dict shape, plus "check": which rule changed it, or None.
+    """
+    result = dict(result)
+    result["check"] = None
+    if result.get("parse_error") or not (result.get("answer", "").strip() or result.get("sound")):
+        result.update(answer=_fixed_line("not_in_sources", persona, mode), status="not_in_sources",
+                      citations=[], sound=None, check="unreadable_reply")
+    elif result["status"] == "answered":
+        if not result["citations"] and not result.get("sound") and not _ABOUT_YOU.search(question or ""):
+            result.update(answer=_fixed_line("not_in_sources", persona, mode), status="not_in_sources",
+                          check="uncited_answer")
+    elif not _SAYS_NO.search(result["answer"].replace("\u2019", "'")):
+        result.update(answer=_fixed_line(result["status"], persona, mode), citations=[],
+                      check="decline_that_answers")
+    return result
 
 
 def _offline_answer(chunks):
@@ -284,6 +351,7 @@ def answer(persona_id, question, chunks, mode="persona"):
         reply = _call_llm(build_messages(persona, question, chunks, mode), s)
         sounds = tuple(persona.get("sounds", {})) if mode == "persona" else ()
         result = parse_reply(reply, {c["id"] for c in chunks}, sounds)
+    result = check_reply(result, persona, question, mode)
     result["model"] = model_label()
     result["mode"] = mode
     result["llm_ms"] = round((time.perf_counter() - start) * 1000)
