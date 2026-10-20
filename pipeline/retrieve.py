@@ -13,6 +13,7 @@ import json
 import re
 import sys
 import threading
+import unicodedata
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -35,17 +36,48 @@ _lock = threading.Lock()
 
 
 def _stem(word):
-    """A very light stemmer so "paintings" matches "painting" and "stories" matches "story"."""
+    """A very light stemmer, applied to passages and questions alike.
+
+    Plurals:    "paintings" -> "painting", "stories" -> "story"
+    -ed / -ing: "lived" -> "liv", "live" -> "liv"; "meaning" -> "mean"; "named" -> "nam", "name" -> "nam"
+    A final "e" is dropped so the base word and its -ed/-ing forms meet.
+    Words ending in "ss" or "us" keep their "s" ("class", "Tyrannosaurus").
+    """
     if len(word) > 4 and word.endswith("ies"):
         return word[:-3] + "y"
-    if len(word) > 3 and word.endswith("s") and not word.endswith("ss"):
-        return word[:-1]
+    if len(word) > 3 and word.endswith("s") and not word.endswith(("ss", "us")):
+        word = word[:-1]
+    if len(word) > 5 and word.endswith("ing"):
+        word = word[:-3]
+    elif len(word) > 4 and word.endswith("ed") and not word.endswith("eed"):
+        word = word[:-2]
+    if len(word) > 3 and word.endswith("e"):
+        word = word[:-1]
     return word
 
 
 def tokenize(text):
     words = re.findall(r"[a-z0-9]+", (text or "").lower())
     return [_stem(w) for w in words if w not in STOPWORDS]
+
+
+_QUOTES = str.maketrans({"\u2018": "'", "\u2019": "'", "\u201c": '"', "\u201d": '"'})
+
+
+def normalize_query(question):
+    """Clean up a visitor's question before searching. Used for search only:
+    the original question is what the answer model sees.
+
+    - Unicode is folded to plain characters and curly quotes made straight
+      (speech-to-text and phones often produce them).
+    - Lowercased, extra whitespace collapsed.
+    - Possessive 's is dropped ("Sue's" -> "sue"), so it does not leave a stray "s" term.
+    - "trex", "t-rex" and "t rex" are all written "t rex", the way the passages tokenize "T. rex".
+    """
+    text = unicodedata.normalize("NFKC", question or "").translate(_QUOTES).lower()
+    text = re.sub(r"(\w)'s\b", r"\1", text)
+    text = re.sub(r"\bt[\s.\-]*rex\b", "t rex", text)
+    return " ".join(text.split())
 
 
 class _Index:
@@ -74,7 +106,7 @@ def _get_index(persona_id):
 def retrieve(persona_id, question, k=5):
     """The k passages that best match the question, best first."""
     index = _get_index(persona_id)
-    query = tokenize(question)
+    query = tokenize(normalize_query(question))
     if not query:
         return []
     scores = index.bm25.get_scores(query)
