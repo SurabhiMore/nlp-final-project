@@ -10,14 +10,14 @@ chunks file changes.
 """
 
 import json
+import os
 import re
 import sys
 import threading
 import unicodedata
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
+import numpy as np
 from rank_bm25 import BM25Okapi
 from pipeline import config
 
@@ -31,8 +31,31 @@ these they this those through to too under until up very was we were what when w
 while who whom why will with would you your yours yourself yourselves
 """.split())
 
+DEFAULT_SEARCH_MODE = "bm25"
+VALID_SEARCH_MODES = {"bm25", "dense", "hybrid"}
+EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
+RRF_K = 60
+
 _indexes = {}
 _lock = threading.Lock()
+_embedding_model = None
+_model_lock = threading.Lock()
+
+
+def get_search_mode():
+    mode = os.environ.get("SEARCH_MODE", DEFAULT_SEARCH_MODE).lower().strip()
+    return mode if mode in VALID_SEARCH_MODES else DEFAULT_SEARCH_MODE
+
+
+def _get_embedding_model():
+    """Load sentence-transformers lazily so BM25-only runs don't incur startup cost."""
+    global _embedding_model
+    if _embedding_model is None:
+        with _model_lock:
+            if _embedding_model is None:
+                from sentence_transformers import SentenceTransformer
+                _embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+    return _embedding_model
 
 
 def _stem(word):
@@ -103,6 +126,7 @@ def query_terms(persona_id, question):
 
 class _Index:
     def __init__(self, persona_id):
+        self.persona_id = persona_id
         path = config.chunks_path(persona_id)
         if not path.exists():
             raise FileNotFoundError(
@@ -112,6 +136,33 @@ class _Index:
             self.chunks = [json.loads(line) for line in handle if line.strip()]
         corpus = [tokenize(f"{c.get('section', '')} {c['text']}") for c in self.chunks]
         self.bm25 = BM25Okapi(corpus)
+        self.embeddings = None
+        self.cache_path = config.persona_dir(persona_id) / "embeddings.npy"
+
+    def get_embeddings(self):
+        """Passage embeddings, loaded from cache or computed and saved if missing/outdated."""
+        if self.embeddings is not None:
+            return self.embeddings
+
+        if self.cache_path.exists() and self.cache_path.stat().st_mtime >= self.mtime:
+            try:
+                cached = np.load(self.cache_path)
+                if len(cached) == len(self.chunks):
+                    self.embeddings = cached
+                    return self.embeddings
+            except Exception:
+                pass  # corrupted or invalid cache; recompute below
+
+        texts = [f"{c['section']}: {c['text']}" if c.get("section") else c["text"]
+                 for c in self.chunks]
+        model = _get_embedding_model()
+        self.embeddings = model.encode(texts, batch_size=64, show_progress_bar=False,
+                                       normalize_embeddings=True)
+        try:
+            np.save(self.cache_path, self.embeddings)
+        except OSError:
+            pass
+        return self.embeddings
 
 
 def _get_index(persona_id):
@@ -124,18 +175,63 @@ def _get_index(persona_id):
     return index
 
 
-def retrieve(persona_id, question, k=5):
-    """The k passages that best match the question, best first."""
+def reciprocal_rank_fusion(rankings, k=RRF_K):
+    """Combine ranked candidate lists using Reciprocal Rank Fusion.
+
+    Each ranking is a sequence of chunk indices ordered from best to worst.
+    Returns a dict mapping chunk_index -> rrf_score.
+    """
+    scores = {}
+    for ranking in rankings:
+        for rank, idx in enumerate(ranking, 1):
+            scores[idx] = scores.get(idx, 0.0) + (1.0 / (k + rank))
+    return scores
+
+
+def retrieve(persona_id, question, k=5, mode=None):
+    """The k passages that best match the question, best first.
+
+    mode can be "bm25", "dense", or "hybrid" (defaults to SEARCH_MODE env var, then "bm25").
+    """
+    search_mode = (mode or get_search_mode()).lower().strip()
+    if search_mode not in VALID_SEARCH_MODES:
+        search_mode = DEFAULT_SEARCH_MODE
+
     index = _get_index(persona_id)
-    query = query_terms(persona_id, question)
-    if not query:
+    terms = query_terms(persona_id, question)
+    if not terms:
         return []
-    scores = index.bm25.get_scores(query)
-    order = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
+
+    if search_mode == "bm25":
+        scores = index.bm25.get_scores(terms)
+        order = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
+        assigned_scores = scores
+
+    elif search_mode == "dense":
+        embeddings = index.get_embeddings()
+        q_emb = _get_embedding_model().encode(question, normalize_embeddings=True)
+        scores = embeddings @ q_emb
+        order = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
+        assigned_scores = scores
+
+    elif search_mode == "hybrid":
+        bm25_scores = index.bm25.get_scores(terms)
+        bm25_order = [i for i in sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)
+                      if bm25_scores[i] > 0]
+
+        embeddings = index.get_embeddings()
+        q_emb = _get_embedding_model().encode(question, normalize_embeddings=True)
+        dense_scores = embeddings @ q_emb
+        dense_order = sorted(range(len(dense_scores)), key=lambda i: dense_scores[i], reverse=True)
+
+        rrf = reciprocal_rank_fusion([bm25_order, dense_order], k=RRF_K)
+        order = sorted(rrf.keys(), key=lambda i: rrf[i], reverse=True)[:k]
+        assigned_scores = rrf
+
     results = []
     for rank, i in enumerate(order, 1):
         chunk = dict(index.chunks[i])
-        chunk["score"] = float(scores[i])
+        chunk["score"] = float(assigned_scores[i])
         chunk["rank"] = rank
         results.append(chunk)
     return results

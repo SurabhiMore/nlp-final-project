@@ -1,15 +1,16 @@
 {
-  "run_at": "2026-10-20T15:29:46+00:00",
+  "run_at": "2026-10-24T19:26:02+00:00",
   "retriever": "BM25 (rank-bm25, light stemming, stopwords removed)",
+  "questions_dir": "eval/questions",
   "exhibits": {
     "t-rex": {
       "summary": {
         "questions": 23,
-        "hit@1": 0.304,
-        "hit@5": 0.652,
-        "hit@8": 0.739,
-        "recall@5": 0.652,
-        "mrr@10": 0.44
+        "hit@1": 0.348,
+        "hit@5": 0.739,
+        "hit@8": 0.957,
+        "recall@5": 0.717,
+        "mrr@10": 0.5
       },
       "questions": [
         {
@@ -20,18 +21,18 @@
             "t-rex-wiki-0000"
           ],
           "top5": [
-            "t-rex-wiki-0043",
             "t-rex-wiki-0046",
-            "t-rex-wiki-0010",
-            "t-rex-wiki-0042",
-            "t-rex-wiki-0000"
+            "t-rex-wiki-0054",
+            "t-rex-wiki-0102",
+            "t-rex-wiki-0103",
+            "t-rex-wiki-0053"
           ],
-          "first_hit_rank": 5,
+          "first_hit_rank": 7,
           "hit@1": false,
-          "hit@5": true,
+          "hit@5": false,
           "hit@8": true,
-          "recall@5": 1.0,
-          "rr@10": 0.2
+          "recall@5": 0.0,
+          "rr@10": 0.14285714285714285
         },
         {
           "id": "tr-02",
@@ -41,10 +42,31 @@
             "t-rex-wiki-0000"
           ],
           "top5": [
-            "t-rex-wiki-0043",
             "t-rex-wiki-0046",
-            "t-rex-wiki-0010",
-            "t-rex-wiki-0042",
+            "t-rex-wiki-0054",
+            "t-rex-wiki-0102",
+            "t-rex-wiki-0103",
+            "t-rex-wiki-0053"
+          ],
+          "first_hit_rank": 7,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": true,
+          "recall@5": 0.0,
+          "rr@10": 0.14285714285714285
+        },
+        {
+          "id": "tr-03",
+          "question": "What does the rex in your name mean?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0000"
+          ],
+          "top5": [
+            "t-rex-wiki-0005",
+            "t-rex-wiki-0033",
+            "t-rex-wiki-0026",
+            "t-rex-wiki-0003",
             "t-rex-wiki-0000"
           ],
           "first_hit_rank": 5,
@@ -55,27 +77,6 @@
           "rr@10": 0.2
         },
         {
-          "id": "tr-03",
-          "question": "What does the rex in your name mean?",
-          "type": "fact",
-          "supporting": [
-            "t-rex-wiki-0000"
-          ],
-          "top5": [
-            "t-rex-wiki-0063",
-            "t-rex-si-0014",
-            "t-rex-wiki-0004",
-            "t-rex-si-0019",
-            "t-rex-si-0021"
-          ],
-          "first_hit_rank": null,
-          "hit@1": false,
-          "hit@5": false,
-          "hit@8": false,
-          "recall@5": 0.0,
-          "rr@10": 0.0
-        },
-        {
           "id": "tr-04",
           "question": "Who gave you the name Tyrannosaurus rex, and when?",
           "type": "fact",
@@ -83,10 +84,10 @@
             "t-rex-wiki-0005"
           ],
           "top5": [
+            "t-rex-wiki-0108",
             "t-rex-si-0014",
             "t-rex-si-0019",
             "t-rex-si-0021",
-            "t-rex-wiki-0108",
             "t-rex-si-0001"
           ],
           "first_hit_rank": null,
@@ -190,16 +191,16 @@
           "top5": [
             "t-rex-wiki-0090",
             "t-rex-wiki-0091",
+            "t-rex-wiki-0001",
             "t-rex-wiki-0096",
-            "t-rex-wiki-0013",
             "t-rex-wiki-0097"
           ],
-          "first_hit_rank": 10,
+          "first_hit_rank": 3,
           "hit@1": false,
-          "hit@5": false,
-          "hit@8": false,
-          "recall@5": 0.0,
-          "rr@10": 0.1
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.3333333333333333
         },
         {
           "id": "tr-10",
@@ -211,17 +212,17 @@
           ],
           "top5": [
             "t-rex-wiki-0018",
+            "t-rex-wiki-0057",
             "t-rex-wiki-0035",
             "t-rex-wiki-0099",
-            "t-rex-wiki-0015",
-            "t-rex-wiki-0054"
+            "t-rex-wiki-0000"
           ],
-          "first_hit_rank": null,
+          "first_hit_rank": 5,
           "hit@1": false,
-          "hit@5": false,
-          "hit@8": false,
-          "recall@5": 0.0,
-          "rr@10": 0.0
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 0.5,
+          "rr@10": 0.2
         },
         {
           "id": "tr-11",
@@ -277,7 +278,7 @@
             "t-rex-wiki-0048",
             "t-rex-wiki-0049",
             "t-rex-wiki-0015",
-            "t-rex-wiki-0000"
+            "t-rex-wiki-0050"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -297,8 +298,8 @@
             "t-rex-si-0004",
             "t-rex-si-0003",
             "t-rex-si-0000",
-            "t-rex-si-0001",
-            "t-rex-si-0002"
+            "t-rex-si-0002",
+            "t-rex-si-0001"
           ],
           "first_hit_rank": 3,
           "hit@1": false,
@@ -401,18 +402,18 @@
             "t-rex-wiki-0011"
           ],
           "top5": [
-            "t-rex-wiki-0052",
             "t-rex-wiki-0011",
+            "t-rex-wiki-0052",
+            "t-rex-wiki-0035",
             "t-rex-wiki-0000",
-            "t-rex-wiki-0058",
-            "t-rex-wiki-0017"
+            "t-rex-wiki-0034"
           ],
-          "first_hit_rank": 2,
-          "hit@1": false,
+          "first_hit_rank": 1,
+          "hit@1": true,
           "hit@5": true,
           "hit@8": true,
           "recall@5": 1.0,
-          "rr@10": 0.5
+          "rr@10": 1.0
         },
         {
           "id": "tr-26",
@@ -422,18 +423,18 @@
             "t-rex-wiki-0081"
           ],
           "top5": [
-            "t-rex-wiki-0099",
             "t-rex-wiki-0001",
-            "t-rex-wiki-0071",
-            "t-rex-wiki-0000",
-            "t-rex-wiki-0060"
+            "t-rex-wiki-0095",
+            "t-rex-wiki-0103",
+            "t-rex-wiki-0096",
+            "t-rex-wiki-0099"
           ],
-          "first_hit_rank": null,
+          "first_hit_rank": 7,
           "hit@1": false,
           "hit@5": false,
-          "hit@8": false,
+          "hit@8": true,
           "recall@5": 0.0,
-          "rr@10": 0.0
+          "rr@10": 0.14285714285714285
         },
         {
           "id": "tr-27",
@@ -466,16 +467,16 @@
           "top5": [
             "t-rex-wiki-0092",
             "t-rex-wiki-0097",
-            "t-rex-wiki-0076",
-            "t-rex-wiki-0081",
-            "t-rex-wiki-0101"
+            "t-rex-wiki-0082",
+            "t-rex-wiki-0101",
+            "t-rex-wiki-0072"
           ],
-          "first_hit_rank": 9,
+          "first_hit_rank": 3,
           "hit@1": false,
-          "hit@5": false,
-          "hit@8": false,
-          "recall@5": 0.0,
-          "rr@10": 0.1111111111111111
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.3333333333333333
         },
         {
           "id": "tr-29",
@@ -488,8 +489,8 @@
             "t-rex-wiki-0061",
             "t-rex-wiki-0062",
             "t-rex-wiki-0063",
-            "t-rex-wiki-0044",
-            "t-rex-wiki-0011"
+            "t-rex-wiki-0064",
+            "t-rex-wiki-0067"
           ],
           "first_hit_rank": 3,
           "hit@1": false,
@@ -504,10 +505,10 @@
       "summary": {
         "questions": 23,
         "hit@1": 0.696,
-        "hit@5": 0.826,
-        "hit@8": 0.913,
-        "recall@5": 0.804,
-        "mrr@10": 0.753
+        "hit@5": 0.87,
+        "hit@8": 0.87,
+        "recall@5": 0.848,
+        "mrr@10": 0.762
       },
       "questions": [
         {
@@ -520,9 +521,9 @@
           "top5": [
             "van-gogh-wiki-0007",
             "van-gogh-gut40393-0158",
+            "van-gogh-gut40393-0053",
             "van-gogh-wiki-0000",
-            "van-gogh-gut40393-0000",
-            "van-gogh-gut40393-0001"
+            "van-gogh-wiki-0015"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -542,8 +543,8 @@
             "van-gogh-wiki-0022",
             "van-gogh-aic-0007",
             "van-gogh-aic-0005",
-            "van-gogh-gut40393-0034",
-            "van-gogh-wiki-0050"
+            "van-gogh-wiki-0024",
+            "van-gogh-gut40393-0138"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -561,10 +562,10 @@
           ],
           "top5": [
             "van-gogh-wiki-0022",
-            "van-gogh-gut40393-0198",
             "van-gogh-aic-0007",
-            "van-gogh-gut40393-0134",
-            "van-gogh-gut40393-0054"
+            "van-gogh-gut40393-0198",
+            "van-gogh-gut40393-0181",
+            "van-gogh-gut40393-0134"
           ],
           "first_hit_rank": null,
           "hit@1": false,
@@ -581,18 +582,18 @@
             "van-gogh-wiki-0058"
           ],
           "top5": [
-            "van-gogh-wiki-0026",
             "van-gogh-wiki-0033",
-            "van-gogh-wiki-0059",
-            "van-gogh-wiki-0032",
-            "van-gogh-gut40393-0182"
+            "van-gogh-wiki-0030",
+            "van-gogh-wiki-0026",
+            "van-gogh-gut40393-0058",
+            "van-gogh-aic-0007"
           ],
-          "first_hit_rank": 6,
+          "first_hit_rank": null,
           "hit@1": false,
           "hit@5": false,
-          "hit@8": true,
+          "hit@8": false,
           "recall@5": 0.0,
-          "rr@10": 0.16666666666666666
+          "rr@10": 0.0
         },
         {
           "id": "vg-05",
@@ -604,9 +605,9 @@
           "top5": [
             "van-gogh-wiki-0018",
             "van-gogh-wiki-0055",
-            "van-gogh-wiki-0016",
-            "van-gogh-wiki-0050",
-            "van-gogh-wiki-0057"
+            "van-gogh-gut40393-0232",
+            "van-gogh-wiki-0057",
+            "van-gogh-gut40393-0240"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -623,18 +624,18 @@
             "van-gogh-wiki-0030"
           ],
           "top5": [
+            "van-gogh-wiki-0033",
+            "van-gogh-wiki-0030",
             "van-gogh-wiki-0001",
             "van-gogh-aic-0006",
-            "van-gogh-wiki-0026",
-            "van-gogh-wiki-0033",
-            "van-gogh-wiki-0005"
+            "van-gogh-wiki-0031"
           ],
-          "first_hit_rank": 8,
+          "first_hit_rank": 2,
           "hit@1": false,
-          "hit@5": false,
+          "hit@5": true,
           "hit@8": true,
-          "recall@5": 0.0,
-          "rr@10": 0.125
+          "recall@5": 1.0,
+          "rr@10": 0.5
         },
         {
           "id": "vg-07",
@@ -670,7 +671,7 @@
             "van-gogh-wiki-0005",
             "van-gogh-wiki-0034",
             "van-gogh-wiki-0055",
-            "van-gogh-gut40393-0124"
+            "van-gogh-wiki-0060"
           ],
           "first_hit_rank": null,
           "hit@1": false,
@@ -689,9 +690,9 @@
           "top5": [
             "van-gogh-gut40393-0050",
             "van-gogh-gut40393-0007",
-            "van-gogh-gut40393-0157",
-            "van-gogh-gut40393-0138",
-            "van-gogh-gut40393-0058"
+            "van-gogh-gut40393-0058",
+            "van-gogh-gut40393-0148",
+            "van-gogh-gut40393-0143"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -732,8 +733,8 @@
             "van-gogh-aic-0000",
             "van-gogh-gut40393-0046",
             "van-gogh-gut40393-0152",
-            "van-gogh-wiki-0027",
-            "van-gogh-wiki-0028"
+            "van-gogh-wiki-0037",
+            "van-gogh-gut40393-0021"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -754,7 +755,7 @@
             "van-gogh-wiki-0035",
             "van-gogh-wiki-0037",
             "van-gogh-wiki-0055",
-            "van-gogh-gut40393-0046"
+            "van-gogh-wiki-0051"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -771,11 +772,11 @@
             "van-gogh-aic-0000"
           ],
           "top5": [
-            "van-gogh-gut40393-0004",
+            "van-gogh-wiki-0028",
             "van-gogh-aic-0000",
-            "van-gogh-gut40393-0194",
-            "van-gogh-gut40393-0094",
-            "van-gogh-gut40393-0176"
+            "van-gogh-gut40393-0004",
+            "van-gogh-gut40393-0160",
+            "van-gogh-gut40393-0002"
           ],
           "first_hit_rank": 2,
           "hit@1": false,
@@ -795,8 +796,8 @@
             "van-gogh-met-0006",
             "van-gogh-wiki-0056",
             "van-gogh-wiki-0060",
-            "van-gogh-met-0023",
-            "van-gogh-wiki-0061"
+            "van-gogh-wiki-0061",
+            "van-gogh-wiki-0067"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -815,9 +816,9 @@
           "top5": [
             "van-gogh-met-0003",
             "van-gogh-gut40393-0064",
+            "van-gogh-wiki-0054",
             "van-gogh-wiki-0067",
-            "van-gogh-gut40393-0065",
-            "van-gogh-wiki-0054"
+            "van-gogh-gut40393-0065"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -856,10 +857,10 @@
           ],
           "top5": [
             "van-gogh-wiki-0035",
+            "van-gogh-wiki-0028",
+            "van-gogh-gut40393-0066",
             "van-gogh-wiki-0049",
-            "van-gogh-wiki-0056",
-            "van-gogh-wiki-0057",
-            "van-gogh-wiki-0031"
+            "van-gogh-wiki-0048"
           ],
           "first_hit_rank": 1,
           "hit@1": true,
@@ -941,11 +942,11 @@
             "van-gogh-wiki-0019"
           ],
           "top5": [
-            "van-gogh-wiki-0019",
             "van-gogh-wiki-0018",
+            "van-gogh-wiki-0019",
+            "van-gogh-wiki-0016",
             "van-gogh-gut40393-0240",
-            "van-gogh-wiki-0011",
-            "van-gogh-aic-0003"
+            "van-gogh-wiki-0011"
           ],
           "first_hit_rank": 1,
           "hit@1": true,

@@ -25,6 +25,8 @@ models/
 *.mp3
 !personas/*/sounds/*.mp3
 *.webm
+*.npy
+personas/*/embeddings.npy
 
 # OS and editor files
 .DS_Store

@@ -29,7 +29,7 @@ Tyrannosaurus rex (a creature, with only expert sources). The same code runs bot
 
 ## Run it locally
 
-Needs Python 3.10 or newer.
+Needs Python 3.10 to 3.12 (Kokoro does not install on Python 3.13, and `av` is pinned to `<19` in `requirements.txt`).
 
 ```bash
 python -m venv .venv
@@ -86,6 +86,21 @@ python -m eval.compare_retrieval \
 
 The baseline files were produced by the same commands with `--out retrieval_baseline*.json`
 on the code before the change.
+
+Search supports three modes via `SEARCH_MODE` (`bm25`, `dense`, or `hybrid`; defaults to `bm25`):
+
+```bash
+# Evaluate each search mode
+python -m eval.eval_retrieval --mode bm25 --out retrieval_bm25.json
+python -m eval.eval_retrieval --mode dense --out retrieval_dense.json
+python -m eval.eval_retrieval --mode hybrid --out retrieval_hybrid.json
+
+# Compare BM25 vs Hybrid
+python -m eval.compare_retrieval \
+  --set "Main questions" eval/results/retrieval_bm25.json eval/results/retrieval_hybrid.json \
+  --set "Held-out questions" eval/results/retrieval_bm25_heldout.json eval/results/retrieval_hybrid_heldout.json \
+  --out eval/results/hybrid_search_comparison.md
+```
 
 Run the tests with `python -m pytest` (see `tests/README.md`).
 

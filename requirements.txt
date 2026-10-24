@@ -8,6 +8,7 @@ uvicorn>=0.29
 python-multipart>=0.0.9
 
 # Speech to text (Whisper through faster-whisper) and text to speech (Kokoro)
+av<19
 faster-whisper>=1.1.0
 kokoro>=0.7.0
 soundfile>=0.12
@@ -15,6 +16,7 @@ numpy>=1.26
 
 # Search
 rank-bm25>=0.2.2
+sentence-transformers>=2.7.0
 
 # Building the corpus and calling the language model
 requests>=2.31
