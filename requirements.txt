@@ -22,3 +22,6 @@ requests>=2.31
 # Tests (run with: python -m pytest). httpx is what FastAPI's test client uses.
 pytest>=8.0
 httpx>=0.27
+
+# Checking quotes against an exhibit's own words (pipeline/quotes.py)
+rapidfuzz>=3.0
