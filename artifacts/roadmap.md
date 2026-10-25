@@ -1,6 +1,6 @@
 # Roadmap
 
-Echoes.ai, version 4, September 29, 2026. Owned by Pratham.
+Echoes.ai, version 5, October 25, 2026. Owned by Pratham.
 
 We want to build something a museum would actually use, and we want to learn real NLP while we
 do it. So every week each of us builds a piece of the system, tests it on questions it hasn't
@@ -33,7 +33,7 @@ voice pipeline, so where the two differ, these dates are the ones that decide ou
 - Kshiti: user research plan and the evidence folder
 - Aditi: board, issues, milestones, and the weekly report
 
-**Session 5: a working system for two exhibits, and our first numbers (issues #11 to #15)**
+**Session 5: a working system for two exhibits, and our first numbers (issues #11 to #15, done)**
 
 - Saurabh (#11): repo skeleton, the server and speech to text, with every step timed
 - Surabhi (#12): one script that builds the corpus for any exhibit, run for Van Gogh and T. rex,
@@ -44,7 +44,7 @@ voice pipeline, so where the two differ, these dates are the ones that decide ou
 - Kshiti (#15): the phone page and text to speech (moved from #11), plus the materials for
   the recorded tests with people from outside the team, which run before October 6
 
-**Session 6 (October 6): the presentation**
+**Session 6 (October 6): the presentation (done)**
 
 - Saurabh: the live demo, with a recorded backup
 - Surabhi: the accuracy number next to the plain guide baseline
@@ -54,27 +54,46 @@ voice pipeline, so where the two differ, these dates are the ones that decide ou
 
 ## Sessions 7 to 9: the NLP work
 
-Each of us owns one component, and all of them land in these three weeks.
+The plan slipped by a week. Session 7 went into a shared test setup, more held-out questions and
+fixing failures we had measured, so the NLP components started in Session 8.
 
-- Saurabh: search that matches on meaning as well as keywords (embeddings, then a reranker).
-  Session 5 showed the gap: "How heavy could you get?" misses because the source says "mass".
-  We compare Recall@5 and MRR against the BM25 version.
-- Surabhi: an answer checker that breaks each answer into claims and tests every claim against
-  the source with an NLI model, including flagging debated science stated as fact. We check it
-  against our own labels.
-- Pratham: a quote checker ("did they really say that?") for exhibits with their own writing,
-  which looks for a quote in the passages marked as their own words, using fuzzy and
-  meaning-based matching. Scored on real quotes and made-up ones.
-- Kshiti: a classifier that sorts visitor questions into types (fact, opinion, personal, off
-  topic, outside the exhibit's time, unsafe). We label real questions together, check how
-  much we agree, and fine-tune a small model.
-- Aditi: a time-boundary check. It finds names and events in a question, looks up their dates
-  on Wikidata, and flags anything after the exhibit's time. For people that means birth and
-  death dates; for species, Wikidata's temporal range (for T. rex, the Maastrichtian).
-- Pratham: a significance test on whether the persona really is less accurate than the plain
-  guide, or whether the gap is noise.
+**Session 7 (October 20): tests, more questions and measured fixes (done)**
 
-## Sessions 10 to 12: scaling up
+- Pratham (#32, #30): the shared test setup with a test report for every pull request, and a
+  paired test of whether the persona is less accurate than the plain guide
+- Surabhi (#27): 20 more held-out questions and stricter checks on the question files
+- Aditi (#31): T. rex search fixes, checked on 10 new T. rex questions written before tuning
+- Saurabh (#29): clearer answer states and source cards on the phone page
+- Kshiti (#28): a check on every model reply before the visitor sees it, and user tests with
+  three people from outside the team
+
+**Session 8 (October 27): the NLP components (issues #39 to #43)**
+
+- Saurabh (#39): search that matches on meaning as well as keywords (embeddings combined with
+  BM25), and install steps that work on a fresh clone
+- Surabhi (#40): a claim checker that flags dates, numbers and names the cited passage does not
+  contain, and the north star measured again on what is on main
+- Kshiti (#41): speech to text tuned to each exhibit and measured by word error rate, a
+  transcript the visitor can fix before sending, and user tests with two people
+- Pratham (#42): a quote checker ("did you really say that?") that looks for a quote in the
+  exhibit's own words, plus this roadmap and the lean canvas
+- Aditi (#43): a time-boundary check that looks up dates on Wikidata, and the Session 8 report
+
+The question classifier planned for Kshiti moved to the Sessions 10 to 12 list. Session 8 went
+to speech to text instead, because all three people in the Session 7 user tests brought up being
+misheard.
+
+**Session 9 (November 3): the checks in the product**
+
+- Connect the Session 8 checks to `/ask`, each behind a setting so it can be switched off, and
+  measure the north star with and without them.
+- Fix what the Session 8 results show. For the quote checker that means short quotes, and
+  quotes from other translations of the letters, which need meaning-based matching.
+- Put the product on a public https link, so user tests can run on phones from the QR code.
+
+Owners for Session 9 onwards are picked when we write the issues each week.
+
+## Sessions 10 to 12: scaling up (November 10, 17 and 24)
 
 We'll pick two or three of these depending on what users ask for:
 
@@ -84,6 +103,28 @@ We'll pick two or three of these depending on what users ask for:
 - speech recognition errors by accent, and teaching it art words like "chiaroscuro"
 - a curator dashboard that groups visitor questions by topic
 - testing whether people can trick the persona into breaking its rules
+- the question classifier (moved from Sessions 7 to 9)
+
+Fixed dates in these weeks:
+
+- Session 11 (November 17): our demo day slot is assigned.
+- Session 12 (November 24): the last weekly report. Final numbers are measured on held-out
+  questions with the model that runs in the demo.
+
+## Demo day (Sessions 13 and 14: December 1 and 8)
+
+Everything is due at 5:00pm on Tuesday December 1, whichever of the two days we present.
+Nothing committed after that is graded. On `main`, in `reports/final/`:
+
+- `README.md`: a short summary, the live link and setup instructions
+- slides, as a PDF or Markdown with the images committed
+- `report.md`: 2 to 5 pages with the five areas as headings (problem and users, product, NLP
+  method and evaluation, user evidence, ethics and limitations)
+- optionally `demo.mp4`, a recorded demo
+
+The talk is 12 minutes plus 3 for questions, with a demo; if it is live, we bring a recorded
+backup. Before submitting we check that a stranger can set it up from the README, that the model
+we report numbers for is the one in the demo, and that we name something that did not work.
 
 ## Course topics this touches
 
@@ -98,6 +139,8 @@ augmented generation (week 10), knowledge graphs (week 11), and bias and ethics 
 - From Session 5, someone outside the team uses the product every week, and we commit what we
   recorded that same week.
 - If something does worse than its baseline, we say so.
+- Every pull request gets an approving review from a teammate before it merges.
+- Evidence for a claim is committed in the same week the claim is made.
 
 ## Changes
 
@@ -109,3 +152,6 @@ augmented generation (week 10), knowledge graphs (week 11), and bias and ethics 
 - Version 4, September 29: extended from people to any exhibit, with T. rex as the second test
   exhibit; Session 5 now matches issues #11 to #15, and the Sessions 7 to 9 components work
   for any exhibit type.
+- Version 5, October 25: the real schedule. Session 7 lists what we did, Session 8 matches issues
+  #39 to #43, the question classifier moved to Sessions 10 to 12, and the plan now runs to demo
+  day on December 1 and 8.
