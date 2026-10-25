@@ -5,7 +5,7 @@
 The quote set, eval/questions/quotes/van-gogh.jsonl, has four kinds of quote:
 
   real          sentences copied from his letters                  expected: verbatim
-  altered       real sentences with one to three words changed     expected: close paraphrase
+  altered       real sentences with one to five words changed      expected: close paraphrase
   other_person  lines commonly attributed to other people          expected: not found
   popular       popular quotes credited to Van Gogh that are not   expected: not found
                 in our letters

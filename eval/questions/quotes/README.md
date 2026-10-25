@@ -6,12 +6,13 @@
 | Kind | Quotes | Label | What it is |
 |---|---|---|---|
 | `real` | 44 | verbatim | A sentence copied from one of his letters, each from a different passage |
-| `altered` | 18 | close paraphrase | A real sentence from another passage with one to three words changed. `original` is the sentence it came from and `change` says what changed |
+| `altered` | 18 | close paraphrase | A real sentence from another passage with one to five words changed. `original` is the sentence it came from and `change` says what changed |
 | `other_person` | 16 | not found | A line commonly attributed to someone else, such as Picasso, Monet or Gauguin |
 | `popular` | 14 | not found | A popular quote credited to Van Gogh that is not in our letters |
 
-Each kind has 4 short quotes, of 7 words or fewer. We added them after seeing that short quotes
-score higher by chance, to test that weakness on purpose.
+14 of the quotes are short, 7 words or fewer. We added 12 of them (4 real, 4 altered, 3 by other
+people and 1 popular) after seeing that short quotes score higher by chance, to test that
+weakness on purpose.
 
 ## Labelling rules
 
