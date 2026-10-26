@@ -4,9 +4,11 @@ faster-whisper runs the same Whisper weights with CTranslate2, which is much
 faster than plain PyTorch on a CPU. A model loads the first time it is used.
 
 Which model we use depends on the hardware. On our laptops, large-v3-turbo took
-about 14 seconds to transcribe a 2.5 second question on the CPU, while "base"
-took about 1.6 seconds and gave the same transcript. So the default is "base"
-on a CPU and "large-v3-turbo" on a GPU.
+about 14 seconds to transcribe a 2.5 second question on the CPU, so on a GPU the
+default is "large-v3-turbo" and on a CPU it is "small". On 40 spoken questions
+(eval/eval_stt.py), "small" with the vocabulary prompt halved the word error rate
+of "base" without one (0.053 against 0.101) and heard 19 of 20 exhibit names
+right against 11, at 0.8 seconds per clip against 0.25.
 
 Each exhibit gets its own vocabulary prompt (Whisper's initial_prompt): the
 exhibit's name and the proper nouns from persona.json and its passages, such as
@@ -27,7 +29,7 @@ Settings (environment variables, all optional):
   WHISPER_COMPUTE_TYPE    default "int8" on CPU, "float16" on GPU
   WHISPER_BEAM_SIZE       default 1
   WHISPER_PROMPT          "1" (default) to use the exhibit's vocabulary prompt, "0" to turn it off
-  WHISPER_LOW_CONFIDENCE  average log probability below which a transcript is flagged, default -0.6
+  WHISPER_LOW_CONFIDENCE  average log probability below which a transcript is flagged, default -0.35
   WHISPER_TIMEOUT         seconds before giving up on one clip, default 30 (0 means no limit)
 """
 
@@ -41,7 +43,7 @@ import threading
 from collections import Counter
 
 DEFAULT_BEAM_SIZE = 1
-DEFAULT_LOW_CONFIDENCE = -0.6
+DEFAULT_LOW_CONFIDENCE = -0.35  # flagged 7 of 11 misheard clips and 4 of 29 right ones
 PROMPT_WORDS = 40  # Whisper keeps only the last 223 tokens of a prompt, so keep it well under that
 
 _models = {}
@@ -57,7 +59,7 @@ def device():
 
 
 def model_name():
-    default = "large-v3-turbo" if device() == "cuda" else "base"
+    default = "large-v3-turbo" if device() == "cuda" else "small"
     return os.getenv("WHISPER_MODEL", default)
 
 
