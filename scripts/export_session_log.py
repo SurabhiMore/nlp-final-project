@@ -25,8 +25,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LOG_PATH = ROOT / "logs" / "qa_log.jsonl"
 
-KEEP = ["timestamp", "request_id", "session_id", "persona", "mode", "input", "question", "status",
-        "answer", "citations", "retrieved", "model", "stt_model", "timings"]
+KEEP = ["timestamp", "request_id", "session_id", "persona", "mode", "input", "question", "heard", "edited",
+        "status", "answer", "citations", "retrieved", "model", "stt_model", "timings"]
 
 
 def read_log(path):
@@ -74,6 +74,9 @@ def summarize(entries):
     print("exhibits: " + ", ".join(f"{k} {v}" for k, v in Counter(e.get("persona") for e in entries).items()))
     print("asked by: " + ", ".join(f"{k} {v}" for k, v in Counter(e.get("input") for e in entries).items()))
     print("status: " + ", ".join(f"{k} {v}" for k, v in Counter(e.get("status") for e in entries).items()))
+    transcripts = [e for e in entries if e.get("input") == "transcript"]
+    if transcripts:
+        print(f"transcripts changed before sending: {sum(bool(e.get('edited')) for e in transcripts)} of {len(transcripts)}")
     for key in ("stt_ms", "retrieval_ms", "llm_ms", "total_ms"):
         value = median_of(entries, key)
         if value is not None:

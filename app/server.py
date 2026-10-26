@@ -7,12 +7,15 @@ Endpoints:
     GET  /            the phone page (app/static/index.html)
     GET  /health      what is loaded and working
     GET  /personas    the exhibits visitors can talk to
+    POST /transcribe  a recording in, the text Whisper heard out (nothing is answered yet)
     POST /ask         a question (voice or text) in, a cited answer out
     POST /speak       one sentence in, a WAV clip out
     GET  /sound/{exhibit}/{name}   an exhibit's sound effect, such as the T. rex roar
 
-The page calls /ask first and shows the answer straight away, then asks /speak
-for each sentence in turn, playing sentence one while sentence two is made.
+For a spoken question the page calls /transcribe first and shows what was heard,
+so the visitor can fix it or record again, then sends the text to /ask. It shows
+the answer straight away, then asks /speak for each sentence in turn, playing
+sentence one while sentence two is made.
 """
 
 import base64
@@ -127,6 +130,34 @@ def personas():
     ]
 
 
+@app.post("/transcribe")
+async def transcribe(persona: str = Form(...), audio: UploadFile = File(...)):
+    """Turn a recording into text with the exhibit's vocabulary prompt, without answering it.
+
+    `low_confidence` is true when Whisper was unsure, so the page can ask the
+    visitor to check the text before sending it to /ask.
+    """
+    _get_persona(persona)
+    audio_bytes = await audio.read()  # kept in memory only, never saved
+    if not audio_bytes:
+        raise HTTPException(status_code=400, detail="The recording was empty. Please try again.")
+    from pipeline import stt
+
+    start = time.perf_counter()
+    try:
+        heard = stt.transcribe_detailed(audio_bytes, persona_id=persona)
+    except RuntimeError as error:
+        raise HTTPException(status_code=503, detail=str(error))
+    return {
+        "persona": persona,
+        "text": heard["text"],
+        "low_confidence": heard["low_confidence"],
+        "avg_logprob": heard["avg_logprob"],
+        "stt_model": heard["model"],
+        "timings": {"stt_ms": _ms(start)},
+    }
+
+
 @app.post("/ask")
 async def ask(
     persona: str = Form(...),
@@ -135,12 +166,17 @@ async def ask(
     mode: str = Form("persona"),
     speak: bool = Form(False),
     session_id: str | None = Form(None),
+    heard: str | None = Form(None),
+    stt_ms: int | None = Form(None),
 ):
     """Answer one visitor question.
 
     Send either `audio` (a recording) or `text`. `mode` is "persona" (the
     exhibit talks) or "neutral" (a plain museum guide, our baseline). Set
     `speak` to true to get audio for every sentence in this same response.
+    When `text` started as a /transcribe result, send what /transcribe heard as
+    `heard`, so the log shows whether the visitor changed it, and its
+    timings.stt_ms as `stt_ms`.
     """
     if retrieval is None or persona_engine is None:
         missing = [label for label, mod in [("search", retrieval), ("answer generation", persona_engine)] if mod is None]
@@ -154,14 +190,17 @@ async def ask(
     total_start = time.perf_counter()
 
     question = (text or "").strip()
-    source = "text"
+    heard = (heard or "").strip()
+    source = "transcript" if heard else "text"
+    if heard and stt_ms is not None:
+        timings["stt_ms"] = stt_ms
     if audio is not None:
         audio_bytes = await audio.read()  # kept in memory only, never saved
         if audio_bytes:
             from pipeline import stt
 
             start = time.perf_counter()
-            question = stt.transcribe(audio_bytes)
+            question = stt.transcribe(audio_bytes, persona_id=persona)
             timings["stt_ms"] = _ms(start)
             source = "audio"
     if not question:
@@ -227,13 +266,15 @@ async def ask(
         "mode": mode,
         "input": source,
         "question": question,
+        "heard": heard,
+        "edited": bool(heard) and heard != question,
         "retrieved": [{"id": c["id"], "score": round(float(c.get("score", 0)), 3)} for c in chunks],
         "status": result["status"],
         "answer": result["answer"],
         "citations": result["citations"],
         "sound": sound["name"] if sound else "",
         "model": result.get("model", ""),
-        "stt_model": _stt_model_name() if source == "audio" else "",
+        "stt_model": _stt_model_name() if source in ("audio", "transcript") else "",
         "timings": timings,
     })
 

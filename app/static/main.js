@@ -1,9 +1,12 @@
 // Echoes.ai phone page.
-// Flow: pick an exhibit, hold the button and speak (or type), send the question
-// to /ask, show the answer and its sources, then play the answer one piece at a
-// time using /speak, fetching the next piece while the current one plays. If the
-// answer comes with a sound (the T. rex can roar), it plays after the spoken
-// lead-in, with a note from persona.json saying what the sound is.
+// Flow: pick an exhibit, hold the button and speak (or type). A recording goes to
+// /transcribe first and the page shows what was heard, so the visitor can fix it
+// or record again before sending it (with a warning when Whisper was unsure).
+// The question goes to /ask, the page shows the answer and its sources, then
+// plays the answer one piece at a time using /speak, fetching the next piece
+// while the current one plays. If the answer comes with a sound (the T. rex can
+// roar), it plays after the spoken lead-in, with a note from persona.json saying
+// what the sound is.
 //
 // URL options: ?persona=t-rex picks the exhibit (use this in QR codes),
 //              ?mode=neutral asks the plain museum guide instead (for demos),
@@ -36,6 +39,11 @@
     conversation: document.getElementById("conversation"),
     template: document.getElementById("turn-template"),
     sessionNote: document.getElementById("session-note"),
+    heard: document.getElementById("heard"),
+    heardText: document.getElementById("heard-text"),
+    heardWarning: document.getElementById("heard-warning"),
+    heardSend: document.getElementById("heard-send"),
+    heardRedo: document.getElementById("heard-redo"),
   };
 
   const STATUS_LABELS = {
@@ -53,6 +61,7 @@
   let audioContext = null;
   let currentSource = null;
   let playbackId = 0;
+  let pending = null;  // what /transcribe heard, until it is sent or dropped
   const soundCache = new Map();
 
   // ------------------------------------------------------------ helpers
@@ -70,6 +79,7 @@
     busy = value;
     el.talk.disabled = value;
     el.form.querySelector("button").disabled = value;
+    el.heardSend.disabled = value;
   }
 
   function safeUrl(url) {
@@ -112,6 +122,7 @@
     el.period.textContent = e.name + ", " + e.time_period;
     el.talkLabel.textContent = "Hold to ask";
     el.conversation.innerHTML = "";
+    hideHeard();
     setStatus("");
   }
 
@@ -301,8 +312,11 @@
     body.append("persona", el.exhibit.value);
     body.append("mode", mode);
     body.append("session_id", sessionId);
-    if (fields.text) body.append("text", fields.text);
-    if (fields.audio) body.append("audio", fields.audio, fields.filename);
+    body.append("text", fields.text);
+    if (fields.heard) {
+      body.append("heard", fields.heard);
+      if (fields.sttMs != null) body.append("stt_ms", fields.sttMs);
+    }
 
     try {
       const response = await fetch("/ask", { method: "POST", body: body });
@@ -330,6 +344,60 @@
     }
   }
 
+  // ------------------------------------------------------------ transcript
+
+  function showHeard(data) {
+    pending = { heard: data.text, sttMs: data.timings && data.timings.stt_ms };
+    el.heardText.value = data.text;
+    el.heardWarning.hidden = !data.low_confidence;
+    el.heard.classList.toggle("unsure", Boolean(data.low_confidence));
+    el.heard.hidden = false;
+    setStatus("");
+  }
+
+  function hideHeard() {
+    pending = null;
+    el.heard.hidden = true;
+    el.heardText.value = "";
+  }
+
+  function sendHeard() {
+    const question = el.heardText.value.trim();
+    if (!pending || busy) return;
+    if (!question) {
+      setStatus("Type your question, or record it again.", true);
+      return;
+    }
+    const sent = { text: question, heard: pending.heard, sttMs: pending.sttMs };
+    hideHeard();
+    ask(sent);
+  }
+
+  async function transcribe(audio, filename) {
+    if (busy) return;
+    hideHeard();
+    setBusy(true);
+    setStatus("Checking what I heard...");
+    const body = new FormData();
+    body.append("persona", el.exhibit.value);
+    body.append("audio", audio, filename);
+    try {
+      const response = await fetch("/transcribe", { method: "POST", body: body });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || "Something went wrong.");
+      if (!data.text) {
+        setStatus("We could not hear a question. Please try again, or type it.", true);
+        return;
+      }
+      showHeard(data);
+    } catch (error) {
+      setStatus(error.message || "Something went wrong.", true);
+    } finally {
+      setBusy(false);
+    }
+    if (!el.heard.hidden) el.heardSend.focus();
+  }
+
   // ------------------------------------------------------------ recording
 
   function pickMimeType() {
@@ -342,6 +410,7 @@
     if (busy || recorder) return;
     unlockAudio();
     stopSpeaking();
+    hideHeard();
     if (window.isSecureContext === false) {
       setStatus("The microphone only works on a secure (https) link. Please type your question.", true);
       return;
@@ -379,7 +448,7 @@
         return;
       }
       const extension = type.indexOf("mp4") !== -1 ? "mp4" : type.indexOf("ogg") !== -1 ? "ogg" : "webm";
-      ask({ audio: new Blob(chunks, { type: type }), filename: "question." + extension });
+      transcribe(new Blob(chunks, { type: type }), "question." + extension);
     };
     recordStart = performance.now();
     recorder.start();
@@ -423,7 +492,25 @@
     if (!question) return;
     unlockAudio();
     el.text.value = "";
+    hideHeard();
     ask({ text: question });
+  });
+
+  el.heardSend.addEventListener("click", function () {
+    unlockAudio();
+    sendHeard();
+  });
+  el.heardText.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      unlockAudio();
+      sendHeard();
+    }
+  });
+  el.heardRedo.addEventListener("click", function () {
+    hideHeard();
+    setStatus("Hold the button and ask again.");
+    el.talk.focus();
   });
 
   el.stop.addEventListener("click", stopSpeaking);
