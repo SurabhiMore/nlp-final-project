@@ -152,3 +152,132 @@ def test_every_mapped_word_is_in_the_t_rex_passages():
 ])
 def test_terminology_map_finds_the_passage(question, expected):
     assert expected in [r["id"] for r in retrieve("t-rex", question, k=5)]
+
+
+# ------------------------------------------------------------ reciprocal rank fusion
+
+from pipeline.retrieve import get_search_mode, reciprocal_rank_fusion  # noqa: E402
+
+
+def test_rrf_combines_and_ranks_candidates():
+    # doc 1 is rank 2 in list A and rank 1 in list B -> should score highest overall
+    ranking_a = [0, 1]
+    ranking_b = [1, 2]
+    scores = reciprocal_rank_fusion([ranking_a, ranking_b], k=60)
+
+    # 1/(60+1) ~ 0.01639; 1/(60+2) ~ 0.01613
+    assert scores[1] > scores[0]
+    assert scores[0] > scores[2]
+
+    ordered = sorted(scores.keys(), key=lambda idx: scores[idx], reverse=True)
+    assert ordered == [1, 0, 2]
+
+
+def test_rrf_empty_rankings():
+    assert reciprocal_rank_fusion([]) == {}
+    assert reciprocal_rank_fusion([[]]) == {}
+
+
+# ------------------------------------------------------------ search mode setting
+
+def test_search_mode_defaults_to_bm25(monkeypatch):
+    monkeypatch.delenv("SEARCH_MODE", raising=False)
+    assert get_search_mode() == "bm25"
+
+
+@pytest.mark.parametrize("mode", ["bm25", "dense", "hybrid"])
+def test_search_mode_reads_env_var(monkeypatch, mode):
+    monkeypatch.setenv("SEARCH_MODE", mode)
+    assert get_search_mode() == mode
+
+
+def test_search_mode_falls_back_on_invalid_value(monkeypatch):
+    monkeypatch.setenv("SEARCH_MODE", "super-vector-search")
+    assert get_search_mode() == "bm25"
+
+
+# ------------------------------------------------------------ embedding cache rebuild
+
+import json  # noqa: E402
+import numpy as np  # noqa: E402
+from pipeline.retrieve import _Index  # noqa: E402
+
+
+def test_embedding_cache_rebuild_and_reload(tmp_path, monkeypatch):
+    chunks_file = tmp_path / "chunks.jsonl"
+    chunks_data = [
+        {"id": "c-01", "text": "Sunflowers in a vase.", "section": "Art"},
+        {"id": "c-02", "text": "A bedroom in Arles.", "section": "Letters"},
+    ]
+    chunks_file.write_text("\n".join(json.dumps(c) for c in chunks_data) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr("pipeline.config.chunks_path", lambda pid: chunks_file)
+    monkeypatch.setattr("pipeline.config.persona_dir", lambda pid: tmp_path)
+
+    encode_calls = []
+
+    class DummyModel:
+        def encode(self, texts, **kwargs):
+            encode_calls.append(texts)
+            return np.ones((len(texts), 384), dtype=np.float32)
+
+    monkeypatch.setattr("pipeline.retrieve._get_embedding_model", lambda: DummyModel())
+
+    # 1. First retrieval must compute embeddings and save cache file
+    idx = _Index("dummy")
+    emb1 = idx.get_embeddings()
+    assert len(encode_calls) == 1
+    assert emb1.shape == (2, 384)
+    cache_path = tmp_path / "embeddings.npy"
+    assert cache_path.exists()
+
+    # 2. Second index instance with same mtime loads from cache without calling encode
+    idx2 = _Index("dummy")
+    emb2 = idx2.get_embeddings()
+    assert len(encode_calls) == 1  # no new call
+    assert np.array_equal(emb1, emb2)
+
+    # 3. Touch chunks file with newer timestamp -> index must rebuild embeddings
+    import time
+    time.sleep(0.01)
+    chunks_file.touch()
+    idx3 = _Index("dummy")
+    emb3 = idx3.get_embeddings()
+    assert len(encode_calls) == 2  # re-encoded because chunks changed
+    assert emb3.shape == (2, 384)
+
+
+def test_retrieve_all_modes_return_compatible_structure(tmp_path, monkeypatch):
+    chunks_file = tmp_path / "chunks.jsonl"
+    chunks_data = [
+        {"id": "c-01", "text": "Sunflowers in a vase.", "section": "Art"},
+        {"id": "c-02", "text": "A bedroom in Arles.", "section": "Letters"},
+        {"id": "c-03", "text": "Starry night over the Rhone.", "section": "Night"},
+    ]
+    chunks_file.write_text("\n".join(json.dumps(c) for c in chunks_data) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr("pipeline.config.chunks_path", lambda pid: chunks_file)
+    monkeypatch.setattr("pipeline.config.persona_dir", lambda pid: tmp_path)
+
+    class DummyModel:
+        def encode(self, texts, **kwargs):
+            if isinstance(texts, str):
+                return np.ones(384, dtype=np.float32)
+            return np.ones((len(texts), 384), dtype=np.float32)
+
+    monkeypatch.setattr("pipeline.retrieve._get_embedding_model", lambda: DummyModel())
+
+    from pipeline.retrieve import _indexes
+    _indexes.pop("dummy_exhibit", None)
+
+    question = "Sunflowers?"
+    for mode in ("bm25", "dense", "hybrid"):
+        results = retrieve("dummy_exhibit", question, k=3, mode=mode)
+        assert len(results) == 3
+        assert [r["rank"] for r in results] == [1, 2, 3]
+        scores = [r["score"] for r in results]
+        assert scores == sorted(scores, reverse=True)
+        for r in results:
+            assert {"id", "text", "score", "rank"} <= set(r)
+            assert isinstance(r["score"], float)
+

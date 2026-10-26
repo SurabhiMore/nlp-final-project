@@ -1,0 +1,232 @@
+{
+  "run_at": "2026-10-24T19:36:19+00:00",
+  "search_mode": "dense",
+  "retriever": "Search mode: dense",
+  "questions_dir": "eval/questions/heldout",
+  "exhibits": {
+    "t-rex": {
+      "summary": {
+        "questions": 10,
+        "hit@1": 0.4,
+        "hit@5": 0.8,
+        "hit@8": 0.9,
+        "recall@5": 0.75,
+        "mrr@10": 0.531
+      },
+      "questions": [
+        {
+          "id": "tr-h01",
+          "question": "When was the very first tooth of yours found?",
+          "type": "date",
+          "supporting": [
+            "t-rex-wiki-0003"
+          ],
+          "top5": [
+            "t-rex-wiki-0043",
+            "t-rex-wiki-0014",
+            "t-rex-wiki-0025",
+            "t-rex-wiki-0003",
+            "t-rex-wiki-0009"
+          ],
+          "first_hit_rank": 4,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.25
+        },
+        {
+          "id": "tr-h02",
+          "question": "How much did the museum pay for Sue?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0007",
+            "t-rex-wiki-0008"
+          ],
+          "top5": [
+            "t-rex-wiki-0008",
+            "t-rex-wiki-0007",
+            "t-rex-wiki-0011",
+            "t-rex-wiki-0006",
+            "t-rex-wiki-0035"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-h03",
+          "question": "How big was your skull?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0013"
+          ],
+          "top5": [
+            "t-rex-wiki-0013",
+            "t-rex-wiki-0014",
+            "t-rex-wiki-0015",
+            "t-rex-wiki-0012",
+            "t-rex-wiki-0011"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-h04",
+          "question": "Who is your closest relative?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0020"
+          ],
+          "top5": [
+            "t-rex-wiki-0053",
+            "t-rex-wiki-0098",
+            "t-rex-wiki-0036",
+            "t-rex-wiki-0021",
+            "t-rex-wiki-0045"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-h05",
+          "question": "How long were your arms?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0057"
+          ],
+          "top5": [
+            "t-rex-wiki-0017",
+            "t-rex-wiki-0018",
+            "t-rex-wiki-0057",
+            "t-rex-wiki-0060",
+            "t-rex-wiki-0059"
+          ],
+          "first_hit_rank": 3,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.3333333333333333
+        },
+        {
+          "id": "tr-h06",
+          "question": "How clever were you compared to other animals?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0086"
+          ],
+          "top5": [
+            "t-rex-wiki-0072",
+            "t-rex-wiki-0075",
+            "t-rex-wiki-0086",
+            "t-rex-wiki-0083",
+            "t-rex-wiki-0050"
+          ],
+          "first_hit_rank": 3,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.3333333333333333
+        },
+        {
+          "id": "tr-h07",
+          "question": "How many of you were alive at the same time?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0105"
+          ],
+          "top5": [
+            "t-rex-wiki-0105",
+            "t-rex-wiki-0107",
+            "t-rex-wiki-0046",
+            "t-rex-wiki-0106",
+            "t-rex-wiki-0037"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-h08",
+          "question": "Did a Triceratops ever fight back against you?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0095"
+          ],
+          "top5": [
+            "t-rex-wiki-0095",
+            "t-rex-wiki-0101",
+            "t-rex-wiki-0100",
+            "t-rex-wiki-0056",
+            "t-rex-wiki-0096"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-h09",
+          "question": "Did you hunt in packs?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0072",
+            "t-rex-wiki-0073"
+          ],
+          "top5": [
+            "t-rex-wiki-0088",
+            "t-rex-wiki-0087",
+            "t-rex-wiki-0089",
+            "t-rex-wiki-0072",
+            "t-rex-wiki-0092"
+          ],
+          "first_hit_rank": 4,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 0.5,
+          "rr@10": 0.25
+        },
+        {
+          "id": "tr-h10",
+          "question": "How big is the cast tooth in the Smithsonian education collection?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-si-0005"
+          ],
+          "top5": [
+            "t-rex-wiki-0014",
+            "t-rex-si-0002",
+            "t-rex-si-0000",
+            "t-rex-si-0003",
+            "t-rex-si-0004"
+          ],
+          "first_hit_rank": 7,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": true,
+          "recall@5": 0.0,
+          "rr@10": 0.14285714285714285
+        }
+      ]
+    }
+  }
+}

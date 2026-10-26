@@ -1,0 +1,1005 @@
+{
+  "run_at": "2026-10-24T19:36:15+00:00",
+  "search_mode": "hybrid",
+  "retriever": "Search mode: hybrid",
+  "questions_dir": "eval/questions",
+  "exhibits": {
+    "t-rex": {
+      "summary": {
+        "questions": 23,
+        "hit@1": 0.391,
+        "hit@5": 0.652,
+        "hit@8": 0.696,
+        "recall@5": 0.652,
+        "mrr@10": 0.48
+      },
+      "questions": [
+        {
+          "id": "tr-01",
+          "question": "When did you live?",
+          "type": "date",
+          "supporting": [
+            "t-rex-wiki-0000"
+          ],
+          "top5": [
+            "t-rex-wiki-0046",
+            "t-rex-wiki-0054",
+            "t-rex-wiki-0105",
+            "t-rex-wiki-0106",
+            "t-rex-wiki-0063"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-02",
+          "question": "Where did you live?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0000"
+          ],
+          "top5": [
+            "t-rex-wiki-0105",
+            "t-rex-wiki-0103",
+            "t-rex-wiki-0102",
+            "t-rex-wiki-0106",
+            "t-rex-wiki-0054"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-03",
+          "question": "What does the rex in your name mean?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0000"
+          ],
+          "top5": [
+            "t-rex-wiki-0005",
+            "t-rex-wiki-0108",
+            "t-rex-wiki-0004",
+            "t-rex-si-0001",
+            "t-rex-si-0004"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-04",
+          "question": "Who gave you the name Tyrannosaurus rex, and when?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0005"
+          ],
+          "top5": [
+            "t-rex-wiki-0108",
+            "t-rex-si-0008",
+            "t-rex-si-0006",
+            "t-rex-si-0007",
+            "t-rex-si-0015"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-05",
+          "question": "When and where was the first partial skeleton of T. rex found?",
+          "type": "date",
+          "supporting": [
+            "t-rex-wiki-0005"
+          ],
+          "top5": [
+            "t-rex-wiki-0005",
+            "t-rex-wiki-0054",
+            "t-rex-wiki-0009",
+            "t-rex-wiki-0076",
+            "t-rex-wiki-0010"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-06",
+          "question": "Who discovered the famous skeleton called Sue?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0007"
+          ],
+          "top5": [
+            "t-rex-wiki-0007",
+            "t-rex-wiki-0010",
+            "t-rex-wiki-0008",
+            "t-rex-wiki-0009",
+            "t-rex-wiki-0057"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-07",
+          "question": "How long is the most complete T. rex skeleton?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0001"
+          ],
+          "top5": [
+            "t-rex-wiki-0010",
+            "t-rex-wiki-0057",
+            "t-rex-wiki-0009",
+            "t-rex-wiki-0011",
+            "t-rex-wiki-0054"
+          ],
+          "first_hit_rank": 7,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": true,
+          "recall@5": 0.0,
+          "rr@10": 0.14285714285714285
+        },
+        {
+          "id": "tr-08",
+          "question": "How heavy could you get?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0001"
+          ],
+          "top5": [
+            "t-rex-wiki-0058",
+            "t-rex-wiki-0056",
+            "t-rex-wiki-0017",
+            "t-rex-wiki-0059",
+            "t-rex-wiki-0081"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-09",
+          "question": "How strong was your bite?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0001"
+          ],
+          "top5": [
+            "t-rex-wiki-0090",
+            "t-rex-wiki-0096",
+            "t-rex-wiki-0091",
+            "t-rex-wiki-0097",
+            "t-rex-wiki-0001"
+          ],
+          "first_hit_rank": 5,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.2
+        },
+        {
+          "id": "tr-10",
+          "question": "How many fingers did you have on each hand?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0000",
+            "t-rex-wiki-0001"
+          ],
+          "top5": [
+            "t-rex-wiki-0018",
+            "t-rex-wiki-0057",
+            "t-rex-wiki-0099",
+            "t-rex-wiki-0054",
+            "t-rex-wiki-0014"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-11",
+          "question": "How fast could you run?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0069"
+          ],
+          "top5": [
+            "t-rex-wiki-0069",
+            "t-rex-wiki-0070",
+            "t-rex-wiki-0059",
+            "t-rex-wiki-0046",
+            "t-rex-wiki-0074"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-12",
+          "question": "Were you a hunter or a scavenger?",
+          "type": "why",
+          "supporting": [
+            "t-rex-wiki-0001"
+          ],
+          "top5": [
+            "t-rex-wiki-0091",
+            "t-rex-wiki-0093",
+            "t-rex-wiki-0001",
+            "t-rex-wiki-0087",
+            "t-rex-wiki-0059"
+          ],
+          "first_hit_rank": 3,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.3333333333333333
+        },
+        {
+          "id": "tr-13",
+          "question": "Did you have scales or feathers?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0047"
+          ],
+          "top5": [
+            "t-rex-wiki-0047",
+            "t-rex-wiki-0048",
+            "t-rex-wiki-0050",
+            "t-rex-wiki-0049",
+            "t-rex-wiki-0015"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-14",
+          "question": "Is the Tyrannosaurus rex tooth in the Smithsonian's education collection real?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-si-0000"
+          ],
+          "top5": [
+            "t-rex-si-0004",
+            "t-rex-si-0003",
+            "t-rex-si-0000",
+            "t-rex-si-0001",
+            "t-rex-si-0002"
+          ],
+          "first_hit_rank": 3,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.3333333333333333
+        },
+        {
+          "id": "tr-15",
+          "question": "How old was Sue when she died?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0037"
+          ],
+          "top5": [
+            "t-rex-wiki-0037",
+            "t-rex-wiki-0038",
+            "t-rex-wiki-0008",
+            "t-rex-wiki-0046",
+            "t-rex-wiki-0025"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-16",
+          "question": "In which rock formation was Sue found?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0007"
+          ],
+          "top5": [
+            "t-rex-wiki-0008",
+            "t-rex-wiki-0007",
+            "t-rex-wiki-0030",
+            "t-rex-wiki-0025",
+            "t-rex-wiki-0010"
+          ],
+          "first_hit_rank": 2,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.5
+        },
+        {
+          "id": "tr-23",
+          "question": "How good was your sense of smell?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0082",
+            "t-rex-wiki-0083"
+          ],
+          "top5": [
+            "t-rex-wiki-0082",
+            "t-rex-wiki-0092",
+            "t-rex-wiki-0083",
+            "t-rex-wiki-0080",
+            "t-rex-wiki-0084"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-24",
+          "question": "What kind of vision did you have, and how far could you see objects clearly?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0080",
+            "t-rex-wiki-0081"
+          ],
+          "top5": [
+            "t-rex-wiki-0080",
+            "t-rex-wiki-0081",
+            "t-rex-wiki-0093",
+            "t-rex-wiki-0094",
+            "t-rex-wiki-0082"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-25",
+          "question": "What was the nickname of the specimen found in Saskatchewan, and how heavy was it?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0011"
+          ],
+          "top5": [
+            "t-rex-wiki-0011",
+            "t-rex-wiki-0035",
+            "t-rex-wiki-0010",
+            "t-rex-wiki-0008",
+            "t-rex-wiki-0033"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-26",
+          "question": "Which horned dinosaur was among your primary prey targets?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0081"
+          ],
+          "top5": [
+            "t-rex-wiki-0001",
+            "t-rex-wiki-0095",
+            "t-rex-wiki-0093",
+            "t-rex-wiki-0090",
+            "t-rex-wiki-0092"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "tr-27",
+          "question": "How long was your largest tooth found so far including its root?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0014"
+          ],
+          "top5": [
+            "t-rex-wiki-0014",
+            "t-rex-wiki-0025",
+            "t-rex-wiki-0011",
+            "t-rex-wiki-0009",
+            "t-rex-wiki-0010"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "tr-28",
+          "question": "Did you hunt primarily during the day or at night?",
+          "type": "why",
+          "supporting": [
+            "t-rex-wiki-0082"
+          ],
+          "top5": [
+            "t-rex-wiki-0092",
+            "t-rex-wiki-0072",
+            "t-rex-wiki-0097",
+            "t-rex-wiki-0088",
+            "t-rex-wiki-0082"
+          ],
+          "first_hit_rank": 5,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.2
+        },
+        {
+          "id": "tr-29",
+          "question": "What was your estimated body temperature, and was your metabolism warm-blooded?",
+          "type": "fact",
+          "supporting": [
+            "t-rex-wiki-0063"
+          ],
+          "top5": [
+            "t-rex-wiki-0061",
+            "t-rex-wiki-0062",
+            "t-rex-wiki-0063",
+            "t-rex-wiki-0044",
+            "t-rex-wiki-0107"
+          ],
+          "first_hit_rank": 3,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.3333333333333333
+        }
+      ]
+    },
+    "van-gogh": {
+      "summary": {
+        "questions": 23,
+        "hit@1": 0.609,
+        "hit@5": 0.696,
+        "hit@8": 0.783,
+        "recall@5": 0.696,
+        "mrr@10": 0.655
+      },
+      "questions": [
+        {
+          "id": "vg-01",
+          "question": "When and where were you born?",
+          "type": "date",
+          "supporting": [
+            "van-gogh-wiki-0007"
+          ],
+          "top5": [
+            "van-gogh-wiki-0007",
+            "van-gogh-wiki-0000",
+            "van-gogh-gut40393-0158",
+            "van-gogh-wiki-0015",
+            "van-gogh-gut40393-0053"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-02",
+          "question": "When did you move to Paris, and whose apartment did you share?",
+          "type": "date",
+          "supporting": [
+            "van-gogh-wiki-0022"
+          ],
+          "top5": [
+            "van-gogh-wiki-0022",
+            "van-gogh-aic-0007",
+            "van-gogh-wiki-0024",
+            "van-gogh-wiki-0010",
+            "van-gogh-wiki-0001"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-03",
+          "question": "What was your brother Theo's job in Paris?",
+          "type": "fact",
+          "supporting": [
+            "van-gogh-aic-0001"
+          ],
+          "top5": [
+            "van-gogh-gut40393-0221",
+            "van-gogh-gut40393-0054",
+            "van-gogh-gut40393-0198",
+            "van-gogh-gut40393-0187",
+            "van-gogh-gut40393-0053"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "vg-04",
+          "question": "When did you arrive in Arles?",
+          "type": "date",
+          "supporting": [
+            "van-gogh-wiki-0058"
+          ],
+          "top5": [
+            "van-gogh-wiki-0033",
+            "van-gogh-wiki-0026",
+            "van-gogh-wiki-0059",
+            "van-gogh-gut40393-0182",
+            "van-gogh-wiki-0032"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "vg-05",
+          "question": "What is considered your first major work?",
+          "type": "fact",
+          "supporting": [
+            "van-gogh-wiki-0018"
+          ],
+          "top5": [
+            "van-gogh-gut40393-0086",
+            "van-gogh-gut40393-0030",
+            "van-gogh-gut40393-0112",
+            "van-gogh-wiki-0050",
+            "van-gogh-gut40393-0010"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "vg-06",
+          "question": "When did Paul Gauguin arrive to stay with you in Arles?",
+          "type": "date",
+          "supporting": [
+            "van-gogh-wiki-0030"
+          ],
+          "top5": [
+            "van-gogh-wiki-0033",
+            "van-gogh-wiki-0030",
+            "van-gogh-wiki-0031",
+            "van-gogh-wiki-0029",
+            "van-gogh-wiki-0027"
+          ],
+          "first_hit_rank": 2,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.5
+        },
+        {
+          "id": "vg-07",
+          "question": "In the portrait Gauguin painted of you, what were you doing?",
+          "type": "quote",
+          "supporting": [
+            "van-gogh-gut40393-0052",
+            "van-gogh-gut40393-0053"
+          ],
+          "top5": [
+            "van-gogh-gut40393-0126",
+            "van-gogh-wiki-0029",
+            "van-gogh-wiki-0030",
+            "van-gogh-gut40393-0241",
+            "van-gogh-gut40393-0116"
+          ],
+          "first_hit_rank": 6,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": true,
+          "recall@5": 0.0,
+          "rr@10": 0.16666666666666666
+        },
+        {
+          "id": "vg-08",
+          "question": "What did the countryside around Arles remind you of?",
+          "type": "quote",
+          "supporting": [
+            "van-gogh-gut40393-0060"
+          ],
+          "top5": [
+            "van-gogh-wiki-0026",
+            "van-gogh-wiki-0059",
+            "van-gogh-wiki-0040",
+            "van-gogh-wiki-0060",
+            "van-gogh-gut40393-0071"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "vg-09",
+          "question": "What did you say a painter should have a feeling for, to make life a joy?",
+          "type": "quote",
+          "supporting": [
+            "van-gogh-gut40393-0050"
+          ],
+          "top5": [
+            "van-gogh-gut40393-0102",
+            "van-gogh-gut40393-0009",
+            "van-gogh-gut40393-0007",
+            "van-gogh-gut40393-0148",
+            "van-gogh-gut40393-0021"
+          ],
+          "first_hit_rank": null,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
+        },
+        {
+          "id": "vg-10",
+          "question": "When did you go into the asylum at Saint-Remy?",
+          "type": "date",
+          "supporting": [
+            "van-gogh-wiki-0035"
+          ],
+          "top5": [
+            "van-gogh-wiki-0035",
+            "van-gogh-met-0019",
+            "van-gogh-wiki-0034",
+            "van-gogh-aic-0004",
+            "van-gogh-gut40393-0221"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-11",
+          "question": "Where was the room you painted in The Bedroom?",
+          "type": "painting",
+          "supporting": [
+            "van-gogh-aic-0000"
+          ],
+          "top5": [
+            "van-gogh-aic-0000",
+            "van-gogh-gut40393-0046",
+            "van-gogh-wiki-0027",
+            "van-gogh-gut40393-0152",
+            "van-gogh-wiki-0028"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-12",
+          "question": "How many versions of The Bedroom did you paint?",
+          "type": "painting",
+          "supporting": [
+            "van-gogh-aic-0000"
+          ],
+          "top5": [
+            "van-gogh-aic-0000",
+            "van-gogh-wiki-0051",
+            "van-gogh-gut40393-0046",
+            "van-gogh-gut40393-0209",
+            "van-gogh-wiki-0029"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-13",
+          "question": "What feeling did you want The Bedroom to give?",
+          "type": "why",
+          "supporting": [
+            "van-gogh-aic-0000"
+          ],
+          "top5": [
+            "van-gogh-aic-0000",
+            "van-gogh-gut40393-0046",
+            "van-gogh-gut40393-0176",
+            "van-gogh-wiki-0028",
+            "van-gogh-gut40393-0094"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-14",
+          "question": "When did you paint Wheat Field with Cypresses?",
+          "type": "painting",
+          "supporting": [
+            "van-gogh-met-0006"
+          ],
+          "top5": [
+            "van-gogh-met-0006",
+            "van-gogh-wiki-0056",
+            "van-gogh-wiki-0060",
+            "van-gogh-met-0023",
+            "van-gogh-wiki-0061"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-15",
+          "question": "When did you paint Irises?",
+          "type": "painting",
+          "supporting": [
+            "van-gogh-met-0003"
+          ],
+          "top5": [
+            "van-gogh-met-0003",
+            "van-gogh-wiki-0054",
+            "van-gogh-gut40393-0064",
+            "van-gogh-gut40393-0021",
+            "van-gogh-gut40393-0001"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-23",
+          "question": "Who was your doctor and friend in Auvers-sur-Oise?",
+          "type": "fact",
+          "supporting": [
+            "van-gogh-wiki-0039"
+          ],
+          "top5": [
+            "van-gogh-wiki-0039",
+            "van-gogh-wiki-0042",
+            "van-gogh-wiki-0040",
+            "van-gogh-gut40393-0215",
+            "van-gogh-wiki-0002"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-24",
+          "question": "At which asylum were you staying when you created The Starry Night?",
+          "type": "painting",
+          "supporting": [
+            "van-gogh-wiki-0035"
+          ],
+          "top5": [
+            "van-gogh-wiki-0035",
+            "van-gogh-wiki-0028",
+            "van-gogh-met-0019",
+            "van-gogh-wiki-0048",
+            "van-gogh-wiki-0031"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-25",
+          "question": "Which two chairs did you paint while preparing for or living with Gauguin in Arles?",
+          "type": "painting",
+          "supporting": [
+            "van-gogh-wiki-0029",
+            "van-gogh-wiki-0030"
+          ],
+          "top5": [
+            "van-gogh-wiki-0029",
+            "van-gogh-wiki-0030",
+            "van-gogh-gut40393-0250",
+            "van-gogh-gut40393-0171",
+            "van-gogh-wiki-0028"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-26",
+          "question": "What was your father's profession, and what church did he serve?",
+          "type": "fact",
+          "supporting": [
+            "van-gogh-wiki-0007"
+          ],
+          "top5": [
+            "van-gogh-wiki-0011",
+            "van-gogh-gut40393-0119",
+            "van-gogh-gut40393-0240",
+            "van-gogh-gut40393-0120",
+            "van-gogh-wiki-0010"
+          ],
+          "first_hit_rank": 7,
+          "hit@1": false,
+          "hit@5": false,
+          "hit@8": true,
+          "recall@5": 0.0,
+          "rr@10": 0.14285714285714285
+        },
+        {
+          "id": "vg-27",
+          "question": "When did you injure your left ear with a razor in Arles?",
+          "type": "date",
+          "supporting": [
+            "van-gogh-wiki-0031"
+          ],
+          "top5": [
+            "van-gogh-wiki-0031",
+            "van-gogh-wiki-0032",
+            "van-gogh-wiki-0033",
+            "van-gogh-wiki-0002",
+            "van-gogh-wiki-0034"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-28",
+          "question": "What three things became your staple diet while living in poverty in Antwerp?",
+          "type": "fact",
+          "supporting": [
+            "van-gogh-wiki-0018",
+            "van-gogh-wiki-0019"
+          ],
+          "top5": [
+            "van-gogh-wiki-0018",
+            "van-gogh-wiki-0019",
+            "van-gogh-gut40393-0049",
+            "van-gogh-gut40393-0249",
+            "van-gogh-wiki-0011"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        },
+        {
+          "id": "vg-29",
+          "question": "What were your reported last words before you died in Auvers?",
+          "type": "quote",
+          "supporting": [
+            "van-gogh-wiki-0041"
+          ],
+          "top5": [
+            "van-gogh-gut40393-0251",
+            "van-gogh-gut40393-0233",
+            "van-gogh-gut40393-0215",
+            "van-gogh-wiki-0041",
+            "van-gogh-gut40393-0136"
+          ],
+          "first_hit_rank": 4,
+          "hit@1": false,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 0.25
+        },
+        {
+          "id": "vg-30",
+          "question": "Did you cut off your entire ear or only part of it?",
+          "type": "fact",
+          "supporting": [
+            "van-gogh-wiki-0002",
+            "van-gogh-wiki-0031"
+          ],
+          "top5": [
+            "van-gogh-wiki-0031",
+            "van-gogh-wiki-0032",
+            "van-gogh-wiki-0053",
+            "van-gogh-wiki-0002",
+            "van-gogh-gut40393-0166"
+          ],
+          "first_hit_rank": 1,
+          "hit@1": true,
+          "hit@5": true,
+          "hit@8": true,
+          "recall@5": 1.0,
+          "rr@10": 1.0
+        }
+      ]
+    }
+  }
+}
