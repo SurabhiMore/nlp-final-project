@@ -1,10 +1,10 @@
 # Test report
 
-- Run: 2026-10-26 14:04 (UTC-04:00)
-- Code tested: commit 9f0bd31 on branch feat/hybrid-search-and-install-fixes, with uncommitted changes
-- Command: python -m pytest -v --save-report
+- Run: 2026-10-26 14:17 (UTC-04:00)
+- Code tested: commit 14fff68 on branch feat/hybrid-search-and-install-fixes, no uncommitted changes
+- Command: python -m pytest -m "slow or not slow" --save-report
 - Python 3.11.14 on Darwin
-- Result: 169 passed, 1 not run in 2.5 s
+- Result: 170 passed in 9.4 s
 - All tests that ran passed.
 
 | Test | File | Result | Time (s) |
@@ -46,7 +46,7 @@
 | test_introduction_without_citation_is_still_answered[Who are you?] | test_answers.py | passed | 0.00 |
 | test_introduction_without_citation_is_still_answered[Are you real?] | test_answers.py | passed | 0.00 |
 | test_roar_request_without_citation_keeps_the_sound | test_answers.py | passed | 0.00 |
-| test_ask_returns_the_same_fields_when_the_model_reply_is_broken | test_answers.py | passed | 0.03 |
+| test_ask_returns_the_same_fields_when_the_model_reply_is_broken | test_answers.py | passed | 0.02 |
 | test_frozen_passages_cover_both_exhibits | test_answers.py | passed | 0.00 |
 | test_evaluation_scores_the_same_reply_before_and_after | test_answers.py | passed | 0.00 |
 | test_counts_the_four_outcomes | test_compare_modes.py | passed | 0.00 |
@@ -77,11 +77,11 @@
 | test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
 | test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
 | test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.18 |
-| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.47 |
+| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.48 |
 | test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
 | test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
 | test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
-| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.18 |
+| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.17 |
 | test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.47 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[t-rex] | test_datasets.py | passed | 0.00 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[van-gogh] | test_datasets.py | passed | 0.00 |
@@ -164,7 +164,7 @@
 | test_ask_empty_question_returns_400 | test_server.py | passed | 0.00 |
 | test_ask_bad_mode_returns_400 | test_server.py | passed | 0.00 |
 | test_both_exhibits_load | test_smoke.py | passed | 0.00 |
-| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.21 |
+| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.17 |
 | test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.47 |
 | test_search_returns_ranked_passages[t-rex] | test_smoke.py | passed | 0.00 |
 | test_search_returns_ranked_passages[van-gogh] | test_smoke.py | passed | 0.00 |
@@ -178,7 +178,4 @@
 | test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.00 |
 | test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
 | test_phone_page_is_served | test_smoke.py | passed | 0.00 |
-
-Not run (left out by -m or -k):
-
-- test_voice_round_trip (test_smoke.py)
+| test_voice_round_trip | test_smoke.py | passed | 6.90 |
