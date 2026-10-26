@@ -29,7 +29,7 @@ Tyrannosaurus rex (a creature, with only expert sources). The same code runs bot
 
 ## Run it locally
 
-Needs Python 3.10 to 3.12 (Kokoro does not install on Python 3.13, and `av` is pinned to `<19` in `requirements.txt`).
+Needs Python 3.10 to 3.12 (Kokoro does not install on Python 3.13; `av` is pinned to `<19` and `preshed` to `<3.0.14` in `requirements.txt`).
 
 ```bash
 python -m venv .venv

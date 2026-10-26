@@ -9,6 +9,7 @@ python-multipart>=0.0.9
 
 # Speech to text (Whisper through faster-whisper) and text to speech (Kokoro)
 av<19
+preshed<3.0.14
 faster-whisper>=1.1.0
 kokoro>=0.7.0
 soundfile>=0.12
