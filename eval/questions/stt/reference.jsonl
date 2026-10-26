@@ -1,0 +1,40 @@
+{"id": "vg-01", "persona": "van-gogh", "text": "When and where were you born?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-02", "persona": "van-gogh", "text": "When did you move to Paris, and whose apartment did you share?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-03", "persona": "van-gogh", "text": "What was your brother Theo's job in Paris?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-04", "persona": "van-gogh", "text": "When did you arrive in Arles?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-06", "persona": "van-gogh", "text": "When did Paul Gauguin arrive to stay with you in Arles?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-07", "persona": "van-gogh", "text": "In the portrait Gauguin painted of you, what were you doing?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-08", "persona": "van-gogh", "text": "What did the countryside around Arles remind you of?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-10", "persona": "van-gogh", "text": "When did you go into the asylum at Saint-Remy?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-11", "persona": "van-gogh", "text": "Where was the room you painted in The Bedroom?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-13", "persona": "van-gogh", "text": "What feeling did you want The Bedroom to give?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-14", "persona": "van-gogh", "text": "When did you paint Wheat Field with Cypresses?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-15", "persona": "van-gogh", "text": "When did you paint Irises?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-20", "persona": "van-gogh", "text": "What was the name of your childhood dog?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-23", "persona": "van-gogh", "text": "Who was your doctor and friend in Auvers-sur-Oise?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-24", "persona": "van-gogh", "text": "At which asylum were you staying when you created The Starry Night?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-25", "persona": "van-gogh", "text": "Which two chairs did you paint while preparing for or living with Gauguin in Arles?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-26", "persona": "van-gogh", "text": "What was your father's profession, and what church did he serve?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-28", "persona": "van-gogh", "text": "What three things became your staple diet while living in poverty in Antwerp?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-29", "persona": "van-gogh", "text": "What were your reported last words before you died in Auvers?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "vg-30", "persona": "van-gogh", "text": "Did you cut off your entire ear or only part of it?", "from": "eval/questions/van-gogh.jsonl"}
+{"id": "tr-01", "persona": "t-rex", "text": "When did you live?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-02", "persona": "t-rex", "text": "Where did you live?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-03", "persona": "t-rex", "text": "What does the rex in your name mean?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-04", "persona": "t-rex", "text": "Who gave you the name Tyrannosaurus rex, and when?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-05", "persona": "t-rex", "text": "When and where was the first partial skeleton of T. rex found?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-06", "persona": "t-rex", "text": "Who discovered the famous skeleton called Sue?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-09", "persona": "t-rex", "text": "How strong was your bite?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-11", "persona": "t-rex", "text": "How fast could you run?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-12", "persona": "t-rex", "text": "Were you a hunter or a scavenger?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-13", "persona": "t-rex", "text": "Did you have scales or feathers?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-16", "persona": "t-rex", "text": "In which rock formation was Sue found?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-23", "persona": "t-rex", "text": "How good was your sense of smell?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-24", "persona": "t-rex", "text": "What kind of vision did you have, and how far could you see objects clearly?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-25", "persona": "t-rex", "text": "What was the nickname of the specimen found in Saskatchewan, and how heavy was it?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-26", "persona": "t-rex", "text": "Which horned dinosaur was among your primary prey targets?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-28", "persona": "t-rex", "text": "Did you hunt primarily during the day or at night?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-32", "persona": "t-rex", "text": "Did you see the Chicxulub asteroid impact that ended the dinosaurs?", "from": "eval/questions/t-rex.jsonl"}
+{"id": "tr-h04", "persona": "t-rex", "text": "Who is your closest relative?", "from": "eval/questions/heldout/t-rex.jsonl"}
+{"id": "tr-h08", "persona": "t-rex", "text": "Did a Triceratops ever fight back against you?", "from": "eval/questions/heldout/t-rex.jsonl"}
+{"id": "tr-h09", "persona": "t-rex", "text": "Did you hunt in packs?", "from": "eval/questions/heldout/t-rex.jsonl"}
