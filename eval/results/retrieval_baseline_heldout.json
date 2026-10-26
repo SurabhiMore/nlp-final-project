@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-10-24T19:26:03+00:00",
+  "run_at": "2026-10-20T15:35:44+00:00",
   "retriever": "BM25 (rank-bm25, light stemming, stopwords removed)",
   "questions_dir": "eval/questions/heldout",
   "exhibits": {
@@ -7,10 +7,10 @@
       "summary": {
         "questions": 10,
         "hit@1": 0.1,
-        "hit@5": 0.5,
-        "hit@8": 0.6,
-        "recall@5": 0.45,
-        "mrr@10": 0.234
+        "hit@5": 0.4,
+        "hit@8": 0.5,
+        "recall@5": 0.4,
+        "mrr@10": 0.209
       },
       "questions": [
         {
@@ -127,11 +127,11 @@
             "t-rex-wiki-0086"
           ],
           "top5": [
-            "t-rex-wiki-0048",
             "t-rex-wiki-0074",
-            "t-rex-wiki-0087",
             "t-rex-wiki-0075",
-            "t-rex-wiki-0049"
+            "t-rex-wiki-0072",
+            "t-rex-wiki-0016",
+            "t-rex-wiki-0091"
           ],
           "first_hit_rank": null,
           "hit@1": false,
@@ -193,16 +193,16 @@
           "top5": [
             "t-rex-wiki-0087",
             "t-rex-wiki-0088",
+            "t-rex-wiki-0076",
             "t-rex-wiki-0089",
-            "t-rex-wiki-0072",
             "t-rex-wiki-0081"
           ],
-          "first_hit_rank": 4,
+          "first_hit_rank": null,
           "hit@1": false,
-          "hit@5": true,
-          "hit@8": true,
-          "recall@5": 0.5,
-          "rr@10": 0.25
+          "hit@5": false,
+          "hit@8": false,
+          "recall@5": 0.0,
+          "rr@10": 0.0
         },
         {
           "id": "tr-h10",

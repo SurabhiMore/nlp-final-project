@@ -247,7 +247,15 @@ def test_embedding_cache_rebuild_and_reload(tmp_path, monkeypatch):
     assert emb3.shape == (2, 384)
 
 
-def test_retrieve_all_modes_return_compatible_structure():
+def test_retrieve_all_modes_return_compatible_structure(monkeypatch):
+    class DummyModel:
+        def encode(self, texts, **kwargs):
+            if isinstance(texts, str):
+                return np.ones(384, dtype=np.float32)
+            return np.ones((len(texts), 384), dtype=np.float32)
+
+    monkeypatch.setattr("pipeline.retrieve._get_embedding_model", lambda: DummyModel())
+
     question = "When were you born?"
     for mode in ("bm25", "dense", "hybrid"):
         results = retrieve("van-gogh", question, k=3, mode=mode)
@@ -258,3 +266,4 @@ def test_retrieve_all_modes_return_compatible_structure():
         for r in results:
             assert {"id", "text", "score", "rank"} <= set(r)
             assert isinstance(r["score"], float)
+

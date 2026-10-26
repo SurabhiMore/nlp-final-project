@@ -45,11 +45,14 @@ Because Hybrid does not beat BM25 on Hit@8 for both exhibits, `SEARCH_MODE` defa
 
 ### Held-out Questions
 
+*(Note: Van Gogh has no held-out question set; the held-out set currently covers T. rex).*
+
 | Exhibit | Mode | Questions | Hit@1 | Hit@5 | Hit@8 | Recall@5 | MRR@10 |
 |---|---|:---:|:---:|:---:|:---:|:---:|:---:|
 | **t-rex (heldout)** | bm25 (default) | 10 | 0.100 | 0.500 | 0.600 | 0.450 | 0.234 |
 | | dense | 10 | **0.400** | **0.800** | **0.900** | **0.750** | **0.531** |
 | | hybrid (RRF k=60) | 10 | 0.200 | 0.700 | 0.800 | 0.650 | 0.352 |
+
 
 ---
 
