@@ -247,7 +247,18 @@ def test_embedding_cache_rebuild_and_reload(tmp_path, monkeypatch):
     assert emb3.shape == (2, 384)
 
 
-def test_retrieve_all_modes_return_compatible_structure(monkeypatch):
+def test_retrieve_all_modes_return_compatible_structure(tmp_path, monkeypatch):
+    chunks_file = tmp_path / "chunks.jsonl"
+    chunks_data = [
+        {"id": "c-01", "text": "Sunflowers in a vase.", "section": "Art"},
+        {"id": "c-02", "text": "A bedroom in Arles.", "section": "Letters"},
+        {"id": "c-03", "text": "Starry night over the Rhone.", "section": "Night"},
+    ]
+    chunks_file.write_text("\n".join(json.dumps(c) for c in chunks_data) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr("pipeline.config.chunks_path", lambda pid: chunks_file)
+    monkeypatch.setattr("pipeline.config.persona_dir", lambda pid: tmp_path)
+
     class DummyModel:
         def encode(self, texts, **kwargs):
             if isinstance(texts, str):
@@ -256,9 +267,12 @@ def test_retrieve_all_modes_return_compatible_structure(monkeypatch):
 
     monkeypatch.setattr("pipeline.retrieve._get_embedding_model", lambda: DummyModel())
 
-    question = "When were you born?"
+    from pipeline.retrieve import _indexes
+    _indexes.pop("dummy_exhibit", None)
+
+    question = "Sunflowers?"
     for mode in ("bm25", "dense", "hybrid"):
-        results = retrieve("van-gogh", question, k=3, mode=mode)
+        results = retrieve("dummy_exhibit", question, k=3, mode=mode)
         assert len(results) == 3
         assert [r["rank"] for r in results] == [1, 2, 3]
         scores = [r["score"] for r in results]
