@@ -14,7 +14,8 @@ are committed. Record only people who agree. Try to get as many different accent
 
 1. Give each person a speaker label: S1, S2, S3 and so on. Never use their name.
 2. Have them read each question once, naturally, as if they were asking the exhibit. Record each question as
-   its own clip in a quiet-ish room, on a phone or a laptop. Any format works (m4a, webm, mp3, wav, ogg).
+   its own clip in a quiet-ish room, on a phone or a laptop. Any common format works: m4a (Voice Memos
+   on a Mac or iPhone), mp3, wav, aiff, caf, webm, ogg.
 3. Name each clip after the question id and put it in the speaker's folder:
 
    ```

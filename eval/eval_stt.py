@@ -13,7 +13,7 @@ The reference set, eval/questions/stt/reference.jsonl, has 40 held-out questions
     data/stt_audio/S2/...
 
 Speaker folders are named S1, S2 and so on, never by name. Any format that
-Whisper can decode works (webm, m4a, mp3, wav, ogg). data/ is not committed, so
+Whisper can decode works (m4a, mp3, wav, aiff, caf, webm, ogg). data/ is not committed, so
 the audio stays out of the repo. An optional data/stt_audio/speakers.json says
 what accent each speaker has, for example {"S1": {"accent": "Indian English"}}.
 See eval/questions/stt/README.md for how to record them.
@@ -61,7 +61,7 @@ from pipeline import stt  # noqa: E402
 REFERENCE = config.EVAL_DIR / "questions" / "stt" / "reference.jsonl"
 AUDIO_DIR = config.ROOT / "data" / "stt_audio"
 RESULTS_DIR = config.EVAL_DIR / "results"
-AUDIO_EXTENSIONS = {".webm", ".m4a", ".mp4", ".mp3", ".wav", ".ogg", ".flac", ".aac"}
+AUDIO_EXTENSIONS = {".webm", ".m4a", ".mp4", ".mp3", ".wav", ".ogg", ".flac", ".aac", ".aiff", ".aif", ".caf"}
 SPEAKER = re.compile(r"^S\d{1,3}$")
 PROMPT_FILLER = set(normalize("A question for about").split())
 THRESHOLDS = [round(-0.05 * n, 2) for n in range(1, 25)]  # -0.05 to -1.2
