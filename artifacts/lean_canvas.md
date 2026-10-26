@@ -1,6 +1,6 @@
 # Lean canvas
 
-Echoes.ai, version 3, September 29, 2026. Pratham keeps this page up to date and we go over it
+Echoes.ai, version 4, October 25, 2026. Pratham keeps this page up to date and we go over it
 as a team every week.
 
 ## Value proposition
@@ -57,8 +57,9 @@ visitors ask.
 
 Visitors find it through the QR code next to each exhibit, which links straight to that
 exhibit (`/?persona=<id>`). For museums, we want to pilot with a campus gallery, which we
-haven't contacted yet. Until then we test with classmates from outside our team on a mock
-gallery walk.
+haven't contacted yet. Until then we test in person, on a laptop, with people from outside the
+team: one in Session 5 and three in Session 7. The product is not on a public https link yet,
+and a QR code needs one.
 
 ## Cost
 
@@ -68,13 +69,15 @@ laptops; we plan to host it for free on Hugging Face Spaces.
 
 One visitor question is roughly 10 seconds of audio to transcribe, one LLM call with about
 2,000 tokens in (eight passages plus the question) and 150 out, and 15 seconds of speech to
-generate. On a free LLM tier that is no money, only rate limits. We are aiming for under one
-cent per question on a paid tier, but that is a guess until we log real token counts.
+generate. On a free LLM tier that is no money, only rate limits, and those limits already
+matter: the 128-call answer evaluation in Session 7 hit Groq's daily limit and needed a second
+key. We are aiming for under one cent per question on a paid tier, but that is a guess until we
+log real token counts.
 
 ## The number we watch
 
-Grounded answer accuracy: out of a held-out set of visitor questions, how many does the guide
-answer correctly with support from a source. Trap questions (after the exhibit's time, not in
+Grounded answer accuracy: out of a held-out set of visitor questions (now 64, 32 per exhibit,
+18 of them traps), how many does the guide answer correctly with support from a source. Trap questions (after the exhibit's time, not in
 the sources, off topic) count as correct only when the guide declines. We write the questions
 before we look at any model answers, and we compare the persona against a plain museum guide
 that gets the same passages.
@@ -91,6 +94,28 @@ We also track search quality (Recall@5), how long a reply takes, and task succes
 
 Model used: openai/gpt-oss-120b on Groq's free tier, with low reasoning effort. Measured on 22 held-out questions per exhibit. A hand check of 20 random answers agreed with the automatic scoring on all 20. Details in `eval/results/`.
 
+## Numbers now (Session 7)
+
+| Measure | Van Gogh | T. rex |
+|---|---|---|
+| Grounded answer accuracy, persona | 0.97 (31 of 32) | 0.88 (28 of 32) |
+| Grounded answer accuracy, plain guide | 0.97 (31 of 32) | 0.88 (28 of 32) |
+| Trap questions declined, both modes | 9 of 9 | 9 of 9 |
+| Search: supporting passage in the top 5 | 0.87 | 0.74 |
+| Search: supporting passage in the 8 the model sees | 0.87 | 0.96 |
+
+Same model as Session 5 (openai/gpt-oss-120b, low reasoning effort, 8 passages per question),
+on 32 held-out questions per exhibit, so not the same question set as the table above. The answer numbers use passages frozen before the Session 7
+search change ([summary](../eval/results/grounding_summary.md)), and #40 reruns them on what is
+on main now. Persona against plain guide, paired test on the Session 5 run: -2.3 points, 95%
+interval -12.1 to +7.0, p = 1.00, so no evidence of a difference.
+
+What three people from outside the team did in Session 7 ([evidence](evidence/session07/)):
+10 of 15 tasks completed, 4 partly and 1 not. Would use it in a museum: 3.5, 3 and 4 out of 5.
+Speech to text misheard 6 of the 12 spoken questions. The answer was on screen a median of 1.2
+seconds after the question; the first spoken word took 6.6 seconds in Session 5 and has not been
+measured again.
+
 ## Ethics and privacy
 
 Data. The Met's open data and the Smithsonian's open access records are CC0, so we can use
@@ -106,27 +131,45 @@ our evidence folder. Some visitors will be children.
 Honesty. The guide says it is an AI. We use a made-up voice, never a clone of a real person's
 voice.
 
-Bias. Speech recognition does worse with accented speech, so we will measure errors by accent.
+Bias. Speech recognition does worse with accented speech. In Session 7 it misheard 6 of the 12
+spoken questions, and in Session 8 we measure its word error rate on at least 40 recorded
+questions, with as many accents as we can find (#41).
 
 When it's wrong. It cites its source, admits when it doesn't know, and only quotes passages
-marked as the exhibit's own words. Wrong answers found in testing feed our error analysis.
+marked as the exhibit's own words. Session 7 showed a gap: an answer can cite a real passage and
+still add a detail that passage does not have. So we are building checks that test answers
+against their sources: one for details such as dates and names (#40) and one for quotes (#42).
+Wrong answers found in testing feed our error analysis.
 
 ## Risks
 
-1. It makes things up and museums stop trusting it. Test: 44 held-out questions including
-   traps, scored in Session 5 for the persona and for a plain guide.
+1. It makes things up and museums stop trusting it. Test: 64 held-out questions including 18
+   traps, scored for the persona and for a plain guide; all 18 traps were declined in both modes
+   in Session 7. Found in Session 7: two answers cited a real passage but added a detail it does
+   not have ("July 1890"), and a participant rated one of them 5 of 5 for believing it. Next: the
+   claim checker (#40) and the quote checker (#42). The quote checker gets 44 of 46 held-out
+   quotes right (0.957) and called no false quote word for word
+   ([results](../eval/results/quotes_results.md)).
 2. Voice is too slow to feel like a conversation. Found in Session 5: on a laptop CPU, the
    large Whisper model took about 14 seconds per question, so we use a smaller one on a CPU.
-   Next: measure the full delay and try a GPU for the demo.
+   Found in Session 7: the answer is on screen about 1.2 seconds after the question, but the
+   first spoken word took 6.6 seconds when last measured. Next: measure the full delay again and
+   try a GPU for the demo.
 3. People feel awkward talking out loud in a quiet gallery. Test: recorded task tests with
-   three people from outside the team, before the October 6 presentation.
+   people from outside the team. Found in Session 7: 12 of 15 questions were asked by voice, and
+   what people complained about was being misheard, not talking out loud (risk 7). Those tests
+   were on a laptop, not in a quiet gallery.
 4. Others are already doing this. Test: focus on measured accuracy, and ask a curator what they
-   would actually need, before October 6.
+   would actually need (not done yet).
 5. The sources are too thin to answer "why" questions. Partly addressed: we added Van Gogh's
    letters and museum descriptions after finding the Met data has no descriptive text.
 6. Exhibits without their own words, like the T. rex, must not state debated science as fact.
    Test: the T. rex questions about speed, feathers and hunting check that the answer says
    scientists disagree.
+7. Speech to text mishears questions, especially names. Found in Session 7: 6 of 12 spoken
+   questions were misheard, all three people brought it up, and one switched to typing. Test:
+   word error rate on recorded questions for several speech settings, and a transcript the
+   visitor can fix before the question is sent (#41).
 
 ## Changes
 
@@ -137,3 +180,6 @@ marked as the exhibit's own words. Wrong answers found in testing feed our error
   with Van Gogh named as the pilot rather than assumed throughout.
 - Version 3, September 29: extended from people to any exhibit, with T. rex as a second test
   exhibit; added the first Session 5 numbers, the latency finding and risk 6.
+- Version 4, October 25: added the Session 7 numbers and user test results, updated risks 1 to 4
+  with what Session 7 showed, added risk 7 (misheard questions), and added the claim and quote
+  checkers to what happens when it's wrong.

@@ -1,0 +1,130 @@
+{
+  "run_at": "2026-10-25T16:06:09+00:00",
+  "exhibit": "van-gogh",
+  "quote_set": "eval/questions/quotes/van-gogh.jsonl",
+  "quotes": 92,
+  "dev_questions": 46,
+  "threshold": 80,
+  "dev_accuracy": 1.0,
+  "thresholds_with_best_dev_accuracy": [
+    79,
+    81
+  ],
+  "lowest_altered_score": 76.2,
+  "highest_not_found_score": 81.2,
+  "test_questions": 46,
+  "test_accuracy": 0.957,
+  "test_confusion": {
+    "verbatim": {
+      "verbatim": 22,
+      "close paraphrase": 0,
+      "not found": 0
+    },
+    "close paraphrase": {
+      "verbatim": 0,
+      "close paraphrase": 8,
+      "not found": 1
+    },
+    "not found": {
+      "verbatim": 0,
+      "close paraphrase": 1,
+      "not found": 14
+    }
+  },
+  "test_accuracy_by_kind": {
+    "real": 1.0,
+    "altered": 0.889,
+    "other_person": 1.0,
+    "popular": 0.857
+  },
+  "test_accuracy_short": 0.714,
+  "test_accuracy_longer": 1.0,
+  "false_quotes_called_verbatim": 0,
+  "wrong": [
+    {
+      "id": "vgq-62",
+      "split": "test",
+      "kind": "altered",
+      "quote": "So our father is dead!",
+      "label": "close paraphrase",
+      "verdict": "not found",
+      "score": 76.2,
+      "passage_id": "van-gogh-gut40393-0120",
+      "match": "Your father might deplore"
+    },
+    {
+      "id": "vgq-92",
+      "split": "test",
+      "kind": "popular",
+      "quote": "I paint my dream.",
+      "label": "not found",
+      "verdict": "close paraphrase",
+      "score": 81.2,
+      "passage_id": "van-gogh-gut40393-0150",
+      "match": "night in my dream"
+    }
+  ],
+  "saved_answers": {
+    "answers": 118,
+    "quotes": 2,
+    "verbatim": 0,
+    "by_source": {
+      "answers_results.json": {
+        "answers": 44,
+        "answers_with_quotes": 0,
+        "quotes": 0,
+        "verbatim": 0
+      },
+      "grounding_replies.jsonl": {
+        "answers": 64,
+        "answers_with_quotes": 2,
+        "quotes": 2,
+        "verbatim": 0
+      },
+      "session05/P1_log.jsonl": {
+        "answers": 3,
+        "answers_with_quotes": 0,
+        "quotes": 0,
+        "verbatim": 0
+      },
+      "session07/P2_log.jsonl": {
+        "answers": 2,
+        "answers_with_quotes": 0,
+        "quotes": 0,
+        "verbatim": 0
+      },
+      "session07/P3_log.jsonl": {
+        "answers": 2,
+        "answers_with_quotes": 0,
+        "quotes": 0,
+        "verbatim": 0
+      },
+      "session07/P4_log.jsonl": {
+        "answers": 3,
+        "answers_with_quotes": 0,
+        "quotes": 0,
+        "verbatim": 0
+      }
+    },
+    "all_quotes": [
+      {
+        "source": "grounding_replies.jsonl",
+        "answer": "vg-29 persona",
+        "quote": "The sadness will last forever.",
+        "verdict": "not found",
+        "score": 77.2,
+        "passage_id": "van-gogh-gut40393-0209",
+        "word_for_word_in_other_passage": "van-gogh-wiki-0041"
+      },
+      {
+        "source": "grounding_replies.jsonl",
+        "answer": "vg-29 neutral",
+        "quote": "The sadness will last forever.",
+        "verdict": "not found",
+        "score": 77.2,
+        "passage_id": "van-gogh-gut40393-0209",
+        "word_for_word_in_other_passage": "van-gogh-wiki-0041"
+      }
+    ]
+  }
+}
