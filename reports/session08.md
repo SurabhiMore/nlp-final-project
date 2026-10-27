@@ -57,4 +57,4 @@ north_star:
 - **Saurabh Gujar (Engineering):** Shipped hybrid search and fixed install steps; kept BM25 as the default on the evidence (evidence: #39, PR #44). TODO
 - **Surabhi More (Data&Eval):** Shipped the claim checker and the north-star rerun (evidence: #40, PR #48). TODO
 - **Kshiti Deshpande (Users&Research):** Shipped speech to text per exhibit and ran the Session 8 user test with P5 and P6 (evidence: #41, PR #47). TODO
-- **Aditi Karanjkar (Operations):** Shipped the Wikidata time-boundary check with 30 new questions and the model run in both modes, organised the Session 08 milestone and board, and wrote this report (evidence: #43, PR #49).
+- **Aditi Karanjkar (Operations):** Shipped the Wikidata time-boundary check with 30 new questions and the model run in both modes, and wrote this report (evidence: #43, PR #49).
