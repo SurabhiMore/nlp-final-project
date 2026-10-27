@@ -1,6 +1,6 @@
 # Time-boundary check
 
-Run at 2026-10-27T03:59:14+00:00. Command: `python -m eval.eval_timecheck --offline`
+Run at 2026-10-27T04:33:22+00:00. Command: `python -m eval.eval_timecheck --offline`
 
 | exhibit / set | questions | flagged right | false flags | missed | precision | recall |
 |---|---|---|---|---|---|---|
@@ -26,3 +26,10 @@ Run at 2026-10-27T03:59:14+00:00. Command: `python -m eval.eval_timecheck --offl
 - `vg-tc-24` Did you see the Wright brothers fly their airplane? — no reason
 - `vg-tc-29` Did you ever watch a movie at the cinema? — no reason
 - `vg-tc-30` Did you listen to the radio while you painted? — no reason
+
+## The model on the new questions
+
+| mode | after-time questions | answered anyway | of those, flagged by the check |
+|---|---|---|---|
+| persona | 16 | 0 | 0 |
+| neutral | 16 | 0 | 0 |

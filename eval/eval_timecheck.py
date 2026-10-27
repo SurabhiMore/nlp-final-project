@@ -65,7 +65,7 @@ def model_summary(answers_path, checked):
     labels = {(r["exhibit"], r["id"]): r["after_time"] for r in checked}
     out = {}
     for a in json.loads(Path(answers_path).read_text(encoding="utf-8"))["answers"]:
-        key = (a["exhibit"], a["id"])
+        key = (a["exhibit"], a["question_id"])
         if not labels.get(key):
             continue
         m = out.setdefault(a["mode"], {"after_time_questions": 0, "answered_anyway": 0,
@@ -73,7 +73,7 @@ def model_summary(answers_path, checked):
         m["after_time_questions"] += 1
         if a.get("status") == "answered":
             m["answered_anyway"] += 1
-            m["ids"].append(a["id"])
+            m["ids"].append(a["question_id"])
             m["answered_anyway_and_flagged"] += bool(flags.get(key))
     return out
 

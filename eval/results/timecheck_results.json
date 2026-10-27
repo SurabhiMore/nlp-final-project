@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-10-27T03:59:14+00:00",
+  "run_at": "2026-10-27T04:33:22+00:00",
   "offline": true,
   "skipped_exhibits": [
     "t-rex"
@@ -1592,5 +1592,19 @@
       "reasons": [],
       "entities": []
     }
-  ]
+  ],
+  "model": {
+    "persona": {
+      "after_time_questions": 16,
+      "answered_anyway": 0,
+      "answered_anyway_and_flagged": 0,
+      "ids": []
+    },
+    "neutral": {
+      "after_time_questions": 16,
+      "answered_anyway": 0,
+      "answered_anyway_and_flagged": 0,
+      "ids": []
+    }
+  }
 }
