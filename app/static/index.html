@@ -28,6 +28,16 @@
       </button>
       <p id="talk-help" class="help">Press and hold, ask your question, then let go.</p>
 
+      <div id="heard" class="heard" role="group" aria-labelledby="heard-label" hidden>
+        <label id="heard-label" for="heard-text" class="heard-label">I heard:</label>
+        <p id="heard-warning" class="heard-warning" hidden>I'm not sure I heard that right. Please check it before you send it.</p>
+        <textarea id="heard-text" rows="2" maxlength="300" autocomplete="off"></textarea>
+        <div class="heard-actions">
+          <button id="heard-send" type="button" class="heard-send">Send</button>
+          <button id="heard-redo" type="button" class="heard-redo">Record again</button>
+        </div>
+      </div>
+
       <form id="text-form" class="text-form">
         <label for="text-question" class="visually-hidden">Or type a question</label>
         <input id="text-question" type="text" placeholder="Or type a question" autocomplete="off" maxlength="300">

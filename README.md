@@ -67,6 +67,7 @@ python -m eval.eval_answers            # grounded answer accuracy, persona vs pl
 python -m eval.compare_modes           # is the gap between persona and plain guide real or chance?
 python -m eval.eval_grounding          # reply check before and after, on frozen passages (see the script)
 python -m eval.eval_quotes             # are quotes really in Van Gogh's letters? (pipeline/quotes.py)
+python -m eval.eval_stt                # speech to text word error rate and speed (needs recordings, see below)
 python scripts/measure_latency.py      # how long each step takes
 ```
 
@@ -88,19 +89,14 @@ python -m eval.compare_retrieval \
 The baseline files were produced by the same commands with `--out retrieval_baseline*.json`
 on the code before the change.
 
-Search supports three modes via `SEARCH_MODE` (`bm25`, `dense`, or `hybrid`; defaults to `bm25`):
+Speech to text is scored on recordings of 40 held-out questions read aloud by teammates and
+friends. The recordings stay in `data/stt_audio/` and are never committed; only the reference
+text (`eval/questions/stt/reference.jsonl`) and the results are. See
+`eval/questions/stt/README.md` for how to record them, then:
 
 ```bash
-# Evaluate each search mode
-python -m eval.eval_retrieval --mode bm25 --out retrieval_bm25.json
-python -m eval.eval_retrieval --mode dense --out retrieval_dense.json
-python -m eval.eval_retrieval --mode hybrid --out retrieval_hybrid.json
-
-# Compare BM25 vs Hybrid
-python -m eval.compare_retrieval \
-  --set "Main questions" eval/results/retrieval_bm25.json eval/results/retrieval_hybrid.json \
-  --set "Held-out questions" eval/results/retrieval_bm25_heldout.json eval/results/retrieval_hybrid_heldout.json \
-  --out eval/results/hybrid_search_comparison.md
+python -m eval.eval_stt --check        # which clips are still missing
+python -m eval.eval_stt                # -> eval/results/stt_results.md and .json
 ```
 
 Run the tests with `python -m pytest` (see `tests/README.md`).
@@ -114,7 +110,8 @@ Run the tests with `python -m pytest` (see `tests/README.md`).
    the Met, or the Smithsonian).
 2. Run `python scripts/build_corpus.py --persona <id>`.
 3. Add test questions in `eval/questions/<id>.jsonl` and run `python -m eval.datasets --check`.
-4. The exhibit now appears on the phone page. Link a QR code to `/?persona=<id>`.
+4. The exhibit now appears on the phone page. Link a QR code to `/?persona=<id>`. Speech to
+   text gets a vocabulary prompt built from its persona.json and passages automatically.
 
 ## Repo layout
 
