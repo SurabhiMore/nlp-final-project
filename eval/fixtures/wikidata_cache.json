@@ -1,0 +1,294 @@
+{
+ "search:amsterdam": [
+  "Q727",
+  "Q9899",
+  "Q37471983"
+ ],
+ "search:antwerp": [
+  "Q12892",
+  "Q1116",
+  "Q31467408"
+ ],
+ "search:arles": [
+  "Q48292",
+  "Q7897",
+  "Q75135296"
+ ],
+ "search:dance": [
+  "Q11639",
+  "Q16869401",
+  "Q851213"
+ ],
+ "search:don mclean": [
+  "Q57339",
+  "Q5293113",
+  "Q23616020"
+ ],
+ "search:einstein": [
+  "Q16834800",
+  "Q937",
+  "Q901448"
+ ],
+ "search:gauguin": [
+  "Q37693",
+  "Q47240376",
+  "Q573233"
+ ],
+ "search:guernica": [
+  "Q189848",
+  "Q94396831",
+  "Q5842628"
+ ],
+ "search:hague": [
+  "Q36600",
+  "Q37477410",
+  "Q22730"
+ ],
+ "search:irises": [
+  "Q156901",
+  "Q155941",
+  "Q2282256"
+ ],
+ "search:japanese": [
+  "Q5287",
+  "Q161652",
+  "Q177837"
+ ],
+ "search:kirk douglas": [
+  "Q104027",
+  "Q5036706",
+  "Q58494463"
+ ],
+ "search:kodak": [
+  "Q486269",
+  "Q63987787",
+  "Q12491931"
+ ],
+ "search:leonardo da vinci": [
+  "Q762",
+  "Q2530641",
+  "Q64616767"
+ ],
+ "search:les demoiselles d'avignon": [
+  "Q910199",
+  "Q133011857",
+  "Q140451584"
+ ],
+ "search:loving vincent": [
+  "Q23013713",
+  "Q140734604",
+  "Q105725073"
+ ],
+ "search:lust for life": [
+  "Q29051953",
+  "Q1423854",
+  "Q322598"
+ ],
+ "search:matisse": [
+  "Q5589",
+  "Q61694947",
+  "Q98598240"
+ ],
+ "search:mona lisa": [
+  "Q12418",
+  "Q6395568",
+  "Q55441628"
+ ],
+ "search:monet": [
+  "Q296",
+  "Q24698278",
+  "Q2959838"
+ ],
+ "search:new york": [
+  "Q1384",
+  "Q60",
+  "Q1507987"
+ ],
+ "search:paris": [
+  "Q90",
+  "Q483020",
+  "Q830149"
+ ],
+ "search:paul gauguin": [
+  "Q37693",
+  "Q3719946",
+  "Q28943193"
+ ],
+ "search:picasso": [
+  "Q21431120",
+  "Q5593",
+  "Q131541684"
+ ],
+ "search:red vineyard": [],
+ "search:saint-remy": [
+  "Q221507",
+  "Q217639",
+  "Q1624645"
+ ],
+ "search:sower": [
+  "Q37565809",
+  "Q22085061",
+  "Q7571875"
+ ],
+ "search:starry night": [
+  "Q18890926",
+  "Q45585",
+  "Q29819754"
+ ],
+ "search:the eiffel tower": [
+  "Q243",
+  "Q3821251",
+  "Q19018512"
+ ],
+ "search:the museum of modern art": [
+  "Q188740",
+  "Q11609688",
+  "Q11617518"
+ ],
+ "search:the musée d'orsay": [],
+ "search:the van gogh museum": [],
+ "search:theo": [
+  "Q7062902",
+  "Q1165126",
+  "Q19914934"
+ ],
+ "search:theo van gogh": [
+  "Q205456",
+  "Q317188",
+  "Q226466"
+ ],
+ "search:titanic": [
+  "Q25173",
+  "Q6147471",
+  "Q44578"
+ ],
+ "search:vincent (starry, starry night": [],
+ "search:vincent (starry, starry night)": [],
+ "search:wheat field": [
+  "Q24022751",
+  "Q26221151",
+  "Q77865965"
+ ],
+ "search:world war i": [
+  "Q361",
+  "Q362",
+  "Q3823675"
+ ],
+ "search:wright": [
+  "Q2594455",
+  "Q214062",
+  "Q2973915"
+ ],
+ "search:yellow house": [
+  "Q11285914",
+  "Q135055850",
+  "Q8051744"
+ ],
+ "year:Q104027": 1916,
+ "year:Q105725073": 2019,
+ "year:Q1116": null,
+ "year:Q11285914": null,
+ "year:Q11609688": 1974,
+ "year:Q11617518": 1988,
+ "year:Q11639": null,
+ "year:Q1165126": null,
+ "year:Q12418": 1503,
+ "year:Q12491931": null,
+ "year:Q12892": null,
+ "year:Q131541684": null,
+ "year:Q133011857": null,
+ "year:Q135055850": null,
+ "year:Q1384": 1788,
+ "year:Q140451584": 1999,
+ "year:Q140734604": null,
+ "year:Q1423854": 1956,
+ "year:Q1507987": 1968,
+ "year:Q155941": -60000000,
+ "year:Q156901": null,
+ "year:Q161652": null,
+ "year:Q1624645": null,
+ "year:Q16834800": null,
+ "year:Q16869401": null,
+ "year:Q177837": 2001,
+ "year:Q188740": 1929,
+ "year:Q18890926": 1922,
+ "year:Q189848": 1366,
+ "year:Q19018512": 1911,
+ "year:Q19914934": null,
+ "year:Q205456": 1952,
+ "year:Q214062": 1734,
+ "year:Q21431120": null,
+ "year:Q217639": null,
+ "year:Q22085061": null,
+ "year:Q221507": null,
+ "year:Q226466": null,
+ "year:Q22730": null,
+ "year:Q2282256": 1889,
+ "year:Q23013713": 2017,
+ "year:Q23616020": 1772,
+ "year:Q24022751": 1889,
+ "year:Q243": 1887,
+ "year:Q24698278": null,
+ "year:Q25173": 1909,
+ "year:Q2530641": null,
+ "year:Q2594455": null,
+ "year:Q26221151": 1888,
+ "year:Q28943193": 1992,
+ "year:Q29051953": 2017,
+ "year:Q2959838": 1732,
+ "year:Q296": 1840,
+ "year:Q2973915": 2009,
+ "year:Q29819754": null,
+ "year:Q31467408": null,
+ "year:Q317188": 1857,
+ "year:Q322598": 1879,
+ "year:Q361": 1914,
+ "year:Q362": 1939,
+ "year:Q36600": 1201,
+ "year:Q3719946": 1911,
+ "year:Q37471983": null,
+ "year:Q37477410": null,
+ "year:Q37565809": null,
+ "year:Q37693": 1848,
+ "year:Q3821251": 1889,
+ "year:Q3823675": 2005,
+ "year:Q44578": 1997,
+ "year:Q45585": 1889,
+ "year:Q47240376": null,
+ "year:Q48292": null,
+ "year:Q483020": 1970,
+ "year:Q486269": 1880,
+ "year:Q5036706": 1972,
+ "year:Q5287": null,
+ "year:Q5293113": 1972,
+ "year:Q55441628": 1970,
+ "year:Q5589": 1869,
+ "year:Q5593": 1881,
+ "year:Q573233": null,
+ "year:Q57339": 1945,
+ "year:Q5842628": null,
+ "year:Q58494463": null,
+ "year:Q60": 1624,
+ "year:Q6147471": 1988,
+ "year:Q61694947": null,
+ "year:Q6395568": 1922,
+ "year:Q63987787": 1888,
+ "year:Q64616767": 2017,
+ "year:Q7062902": null,
+ "year:Q727": 1300,
+ "year:Q75135296": null,
+ "year:Q7571875": null,
+ "year:Q762": 1452,
+ "year:Q77865965": 1860,
+ "year:Q7897": null,
+ "year:Q8051744": 2006,
+ "year:Q830149": 1845,
+ "year:Q851213": 1977,
+ "year:Q90": -300,
+ "year:Q901448": null,
+ "year:Q910199": 1907,
+ "year:Q937": 1879,
+ "year:Q94396831": 1982,
+ "year:Q98598240": null,
+ "year:Q9899": 1812
+}

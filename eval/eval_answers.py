@@ -114,14 +114,14 @@ def save_progress(row):
         handle.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
-def run(persona_ids, modes, limit=None, sleep=0.0, done=None):
+def run(persona_ids, modes, limit=None, sleep=0.0, done=None, questions_dir=None):
     done = done or {}
     rows = []
     failures_in_a_row = 0
     for persona_id in persona_ids:
         chunks = datasets.load_chunks(persona_id)
         chunks_by_id = {c["id"]: c for c in chunks}
-        questions = datasets.load_questions(persona_id)[:limit]
+        questions = datasets.load_questions(persona_id, questions_dir)[:limit]
         for q in questions:
             retrieved = retrieve(persona_id, q["question"], k=TOP_K)
             support = datasets.supporting_chunk_ids(q, chunks)
@@ -227,6 +227,8 @@ def main():
     parser.add_argument("--handcheck", type=int, default=20, help="rows to sample for hand labelling")
     parser.add_argument("--score-handcheck", metavar="CSV", help="score a labelled handcheck file and exit")
     parser.add_argument("--resume", action="store_true", help="keep answers saved by a stopped run")
+    parser.add_argument("--questions-dir", help="folder of question files (default: eval/questions)")
+    parser.add_argument("--out", default="answers_results.json", help="results file name in eval/results/")
     args = parser.parse_args()
 
     if args.score_handcheck:
@@ -237,7 +239,7 @@ def main():
     if settings["provider"] != "offline" and not (settings["base_url"] and settings["model"]):
         sys.exit("No language model configured. Set LLM_BASE_URL and LLM_MODEL in .env (see .env.example).")
 
-    persona_ids = [args.persona] if args.persona else [p.stem for p in datasets.question_files()]
+    persona_ids = [args.persona] if args.persona else [p.stem for p in datasets.question_files(args.questions_dir)]
     modes = [m.strip() for m in args.modes.split(",") if m.strip()]
     print(f"Model: {engine.model_label()}   passages per question: {TOP_K}", flush=True)
     if args.resume:
@@ -246,7 +248,7 @@ def main():
     else:
         done = {}
         PROGRESS_PATH.unlink(missing_ok=True)
-    rows = run(persona_ids, modes, args.limit, args.sleep, done)
+    rows = run(persona_ids, modes, args.limit, args.sleep, done, args.questions_dir)
 
     summary = {}
     for persona_id in persona_ids:
@@ -274,7 +276,7 @@ def main():
         "model": engine.model_label(), "passages_per_question": TOP_K,
         "summary": summary, "answers": rows,
     }
-    results_path = RESULTS_DIR / "answers_results.json"
+    results_path = RESULTS_DIR / args.out
     results_path.write_text(json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8")
     handcheck_path = RESULTS_DIR / "handcheck.csv"
     if has_labels(handcheck_path):

@@ -6,6 +6,7 @@
     "time_period": {
         "start": 1853,
         "end": 1890,
+        "end_year": 1890,
         "label": "1853 to 1890",
         "boundary": "Vincent van Gogh died in July 1890. He cannot know anything that happened after that, including how famous his paintings later became or what people say about him today."
     },

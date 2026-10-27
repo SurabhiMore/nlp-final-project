@@ -1,0 +1,1610 @@
+{
+  "run_at": "2026-10-27T04:33:22+00:00",
+  "offline": true,
+  "skipped_exhibits": [
+    "t-rex"
+  ],
+  "cache": {
+    "hits": 205,
+    "misses": 0
+  },
+  "summary": {
+    "all": {
+      "n": 62,
+      "tp": 9,
+      "fp": 2,
+      "fn": 11,
+      "tn": 40,
+      "precision": 0.8181818181818182,
+      "recall": 0.45
+    },
+    "van-gogh/existing": {
+      "n": 32,
+      "tp": 2,
+      "fp": 0,
+      "fn": 2,
+      "tn": 28,
+      "precision": 1.0,
+      "recall": 0.5
+    },
+    "van-gogh/new": {
+      "n": 30,
+      "tp": 7,
+      "fp": 2,
+      "fn": 9,
+      "tn": 12,
+      "precision": 0.7777777777777778,
+      "recall": 0.4375
+    }
+  },
+  "questions": [
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-01",
+      "set": "existing",
+      "question": "When and where were you born?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-02",
+      "set": "existing",
+      "question": "When did you move to Paris, and whose apartment did you share?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Paris",
+          "candidates": [
+            {
+              "qid": "Q90",
+              "year": -300
+            },
+            {
+              "qid": "Q483020",
+              "year": 1970
+            },
+            {
+              "qid": "Q830149",
+              "year": 1845
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-03",
+      "set": "existing",
+      "question": "What was your brother Theo's job in Paris?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Theo",
+          "candidates": [
+            {
+              "qid": "Q7062902",
+              "year": null
+            },
+            {
+              "qid": "Q1165126",
+              "year": null
+            },
+            {
+              "qid": "Q19914934",
+              "year": null
+            }
+          ]
+        },
+        {
+          "text": "Paris",
+          "candidates": [
+            {
+              "qid": "Q90",
+              "year": -300
+            },
+            {
+              "qid": "Q483020",
+              "year": 1970
+            },
+            {
+              "qid": "Q830149",
+              "year": 1845
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-04",
+      "set": "existing",
+      "question": "When did you arrive in Arles?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Arles",
+          "candidates": [
+            {
+              "qid": "Q48292",
+              "year": null
+            },
+            {
+              "qid": "Q7897",
+              "year": null
+            },
+            {
+              "qid": "Q75135296",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-05",
+      "set": "existing",
+      "question": "What is considered your first major work?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-06",
+      "set": "existing",
+      "question": "When did Paul Gauguin arrive to stay with you in Arles?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Paul Gauguin",
+          "candidates": [
+            {
+              "qid": "Q37693",
+              "year": 1848
+            },
+            {
+              "qid": "Q3719946",
+              "year": 1911
+            },
+            {
+              "qid": "Q28943193",
+              "year": 1992
+            }
+          ]
+        },
+        {
+          "text": "Arles",
+          "candidates": [
+            {
+              "qid": "Q48292",
+              "year": null
+            },
+            {
+              "qid": "Q7897",
+              "year": null
+            },
+            {
+              "qid": "Q75135296",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-07",
+      "set": "existing",
+      "question": "In the portrait Gauguin painted of you, what were you doing?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Gauguin",
+          "candidates": [
+            {
+              "qid": "Q37693",
+              "year": 1848
+            },
+            {
+              "qid": "Q47240376",
+              "year": null
+            },
+            {
+              "qid": "Q573233",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-08",
+      "set": "existing",
+      "question": "What did the countryside around Arles remind you of?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Arles",
+          "candidates": [
+            {
+              "qid": "Q48292",
+              "year": null
+            },
+            {
+              "qid": "Q7897",
+              "year": null
+            },
+            {
+              "qid": "Q75135296",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-09",
+      "set": "existing",
+      "question": "What did you say a painter should have a feeling for, to make life a joy?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-10",
+      "set": "existing",
+      "question": "When did you go into the asylum at Saint-Remy?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Saint-Remy",
+          "candidates": [
+            {
+              "qid": "Q221507",
+              "year": null
+            },
+            {
+              "qid": "Q217639",
+              "year": null
+            },
+            {
+              "qid": "Q1624645",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-11",
+      "set": "existing",
+      "question": "Where was the room you painted in The Bedroom?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-12",
+      "set": "existing",
+      "question": "How many versions of The Bedroom did you paint?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-13",
+      "set": "existing",
+      "question": "What feeling did you want The Bedroom to give?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-14",
+      "set": "existing",
+      "question": "When did you paint Wheat Field with Cypresses?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Wheat Field",
+          "candidates": [
+            {
+              "qid": "Q24022751",
+              "year": 1889
+            },
+            {
+              "qid": "Q26221151",
+              "year": 1888
+            },
+            {
+              "qid": "Q77865965",
+              "year": 1860
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-15",
+      "set": "existing",
+      "question": "When did you paint Irises?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Irises",
+          "candidates": [
+            {
+              "qid": "Q156901",
+              "year": null
+            },
+            {
+              "qid": "Q155941",
+              "year": -60000000
+            },
+            {
+              "qid": "Q2282256",
+              "year": 1889
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-16",
+      "set": "existing",
+      "question": "What did you think of Picasso's painting Guernica?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Picasso",
+          "candidates": [
+            {
+              "qid": "Q21431120",
+              "year": null
+            },
+            {
+              "qid": "Q5593",
+              "year": 1881
+            },
+            {
+              "qid": "Q131541684",
+              "year": null
+            }
+          ]
+        },
+        {
+          "text": "Guernica",
+          "candidates": [
+            {
+              "qid": "Q189848",
+              "year": 1366
+            },
+            {
+              "qid": "Q94396831",
+              "year": 1982
+            },
+            {
+              "qid": "Q5842628",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-17",
+      "set": "existing",
+      "question": "Did you enjoy the 1956 film Lust for Life about your life?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "the question names the year 1956, after 1890"
+      ],
+      "entities": [
+        {
+          "text": "Lust for Life",
+          "candidates": [
+            {
+              "qid": "Q29051953",
+              "year": 2017
+            },
+            {
+              "qid": "Q1423854",
+              "year": 1956
+            },
+            {
+              "qid": "Q322598",
+              "year": 1879
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-18",
+      "set": "existing",
+      "question": "How does it feel to be one of the most famous painters in history today?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-19",
+      "set": "existing",
+      "question": "How much money did you get for The Red Vineyard?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Red Vineyard",
+          "candidates": []
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-20",
+      "set": "existing",
+      "question": "What was the name of your childhood dog?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-21",
+      "set": "existing",
+      "question": "What is 17 times 23?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-22",
+      "set": "existing",
+      "question": "Can you recommend a good phone to buy?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-23",
+      "set": "existing",
+      "question": "Who was your doctor and friend in Auvers-sur-Oise?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-24",
+      "set": "existing",
+      "question": "At which asylum were you staying when you created The Starry Night?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Starry Night",
+          "candidates": [
+            {
+              "qid": "Q18890926",
+              "year": 1922
+            },
+            {
+              "qid": "Q45585",
+              "year": 1889
+            },
+            {
+              "qid": "Q29819754",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-25",
+      "set": "existing",
+      "question": "Which two chairs did you paint while preparing for or living with Gauguin in Arles?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Gauguin",
+          "candidates": [
+            {
+              "qid": "Q37693",
+              "year": 1848
+            },
+            {
+              "qid": "Q47240376",
+              "year": null
+            },
+            {
+              "qid": "Q573233",
+              "year": null
+            }
+          ]
+        },
+        {
+          "text": "Arles",
+          "candidates": [
+            {
+              "qid": "Q48292",
+              "year": null
+            },
+            {
+              "qid": "Q7897",
+              "year": null
+            },
+            {
+              "qid": "Q75135296",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-26",
+      "set": "existing",
+      "question": "What was your father's profession, and what church did he serve?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-27",
+      "set": "existing",
+      "question": "When did you injure your left ear with a razor in Arles?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Arles",
+          "candidates": [
+            {
+              "qid": "Q48292",
+              "year": null
+            },
+            {
+              "qid": "Q7897",
+              "year": null
+            },
+            {
+              "qid": "Q75135296",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-28",
+      "set": "existing",
+      "question": "What three things became your staple diet while living in poverty in Antwerp?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Antwerp",
+          "candidates": [
+            {
+              "qid": "Q12892",
+              "year": null
+            },
+            {
+              "qid": "Q1116",
+              "year": null
+            },
+            {
+              "qid": "Q31467408",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-29",
+      "set": "existing",
+      "question": "What were your reported last words before you died in Auvers?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-30",
+      "set": "existing",
+      "question": "Did you cut off your entire ear or only part of it?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-31",
+      "set": "existing",
+      "question": "What do you think of Don McLean's 1971 song 'Vincent (Starry, Starry Night)'?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "the question names the year 1971, after 1890"
+      ],
+      "entities": [
+        {
+          "text": "Don McLean",
+          "candidates": [
+            {
+              "qid": "Q57339",
+              "year": 1945
+            },
+            {
+              "qid": "Q5293113",
+              "year": 1972
+            },
+            {
+              "qid": "Q23616020",
+              "year": 1772
+            }
+          ]
+        },
+        {
+          "text": "Vincent (Starry, Starry Night",
+          "candidates": []
+        },
+        {
+          "text": "Vincent (Starry, Starry Night)",
+          "candidates": []
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-32",
+      "set": "existing",
+      "question": "What did you write to Theo about Leonardo da Vinci's Mona Lisa?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Theo",
+          "candidates": [
+            {
+              "qid": "Q7062902",
+              "year": null
+            },
+            {
+              "qid": "Q1165126",
+              "year": null
+            },
+            {
+              "qid": "Q19914934",
+              "year": null
+            }
+          ]
+        },
+        {
+          "text": "Leonardo da Vinci",
+          "candidates": [
+            {
+              "qid": "Q762",
+              "year": 1452
+            },
+            {
+              "qid": "Q2530641",
+              "year": null
+            },
+            {
+              "qid": "Q64616767",
+              "year": 2017
+            }
+          ]
+        },
+        {
+          "text": "Mona Lisa",
+          "candidates": [
+            {
+              "qid": "Q12418",
+              "year": 1503
+            },
+            {
+              "qid": "Q6395568",
+              "year": 1922
+            },
+            {
+              "qid": "Q55441628",
+              "year": 1970
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-01",
+      "set": "new",
+      "question": "Where was the house you painted in The Yellow House?",
+      "after_time": false,
+      "flag": true,
+      "reasons": [
+        "'Yellow House': every Wikidata match dates after 1890 (earliest 2006)"
+      ],
+      "entities": [
+        {
+          "text": "Yellow House",
+          "candidates": [
+            {
+              "qid": "Q11285914",
+              "year": null
+            },
+            {
+              "qid": "Q135055850",
+              "year": null
+            },
+            {
+              "qid": "Q8051744",
+              "year": 2006
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-02",
+      "set": "new",
+      "question": "Why did you want Gauguin to come to Arles?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Gauguin",
+          "candidates": [
+            {
+              "qid": "Q37693",
+              "year": 1848
+            },
+            {
+              "qid": "Q47240376",
+              "year": null
+            },
+            {
+              "qid": "Q573233",
+              "year": null
+            }
+          ]
+        },
+        {
+          "text": "Arles",
+          "candidates": [
+            {
+              "qid": "Q48292",
+              "year": null
+            },
+            {
+              "qid": "Q7897",
+              "year": null
+            },
+            {
+              "qid": "Q75135296",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-03",
+      "set": "new",
+      "question": "How many versions of Sunflowers did you paint before Gauguin arrived?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Gauguin",
+          "candidates": [
+            {
+              "qid": "Q37693",
+              "year": 1848
+            },
+            {
+              "qid": "Q47240376",
+              "year": null
+            },
+            {
+              "qid": "Q573233",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-04",
+      "set": "new",
+      "question": "Where did you buy Japanese woodcuts?",
+      "after_time": false,
+      "flag": true,
+      "reasons": [
+        "'Japanese': every Wikidata match dates after 1890 (earliest 2001)"
+      ],
+      "entities": [
+        {
+          "text": "Japanese",
+          "candidates": [
+            {
+              "qid": "Q5287",
+              "year": null
+            },
+            {
+              "qid": "Q161652",
+              "year": null
+            },
+            {
+              "qid": "Q177837",
+              "year": 2001
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-05",
+      "set": "new",
+      "question": "What was your first major work?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-06",
+      "set": "new",
+      "question": "Which cousin did you visit in The Hague?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Hague",
+          "candidates": [
+            {
+              "qid": "Q36600",
+              "year": 1201
+            },
+            {
+              "qid": "Q37477410",
+              "year": null
+            },
+            {
+              "qid": "Q22730",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-07",
+      "set": "new",
+      "question": "Where did you work as a missionary in 1879?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-08",
+      "set": "new",
+      "question": "Whose painting The Sower did you make your own version of?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Sower",
+          "candidates": [
+            {
+              "qid": "Q37565809",
+              "year": null
+            },
+            {
+              "qid": "Q22085061",
+              "year": null
+            },
+            {
+              "qid": "Q7571875",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-09",
+      "set": "new",
+      "question": "Did you paint The Starry Night?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Starry Night",
+          "candidates": [
+            {
+              "qid": "Q18890926",
+              "year": 1922
+            },
+            {
+              "qid": "Q45585",
+              "year": 1889
+            },
+            {
+              "qid": "Q29819754",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-10",
+      "set": "new",
+      "question": "Who did you meet when you moved to Paris in 1886?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Paris",
+          "candidates": [
+            {
+              "qid": "Q90",
+              "year": -300
+            },
+            {
+              "qid": "Q483020",
+              "year": 1970
+            },
+            {
+              "qid": "Q830149",
+              "year": 1845
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-11",
+      "set": "new",
+      "question": "Which doctor looked after you in Auvers-sur-Oise?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-12",
+      "set": "new",
+      "question": "Did you ever visit the Eiffel Tower?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "the Eiffel Tower",
+          "candidates": [
+            {
+              "qid": "Q243",
+              "year": 1887
+            },
+            {
+              "qid": "Q3821251",
+              "year": 1889
+            },
+            {
+              "qid": "Q19018512",
+              "year": 1911
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-13",
+      "set": "new",
+      "question": "Did you ever use a telephone?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-14",
+      "set": "new",
+      "question": "Did you ever own a Kodak camera?",
+      "after_time": false,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Kodak",
+          "candidates": [
+            {
+              "qid": "Q486269",
+              "year": 1880
+            },
+            {
+              "qid": "Q63987787",
+              "year": 1888
+            },
+            {
+              "qid": "Q12491931",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-15",
+      "set": "new",
+      "question": "Did you ever ride the Paris Métro?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Paris",
+          "candidates": [
+            {
+              "qid": "Q90",
+              "year": -300
+            },
+            {
+              "qid": "Q483020",
+              "year": 1970
+            },
+            {
+              "qid": "Q830149",
+              "year": 1845
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-16",
+      "set": "new",
+      "question": "Have you seen Theo van Gogh's film Submission?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Theo van Gogh",
+          "candidates": [
+            {
+              "qid": "Q205456",
+              "year": 1952
+            },
+            {
+              "qid": "Q317188",
+              "year": 1857
+            },
+            {
+              "qid": "Q226466",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-17",
+      "set": "new",
+      "question": "Did you see Monet's Water Lilies series?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Monet",
+          "candidates": [
+            {
+              "qid": "Q296",
+              "year": 1840
+            },
+            {
+              "qid": "Q24698278",
+              "year": null
+            },
+            {
+              "qid": "Q2959838",
+              "year": 1732
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-18",
+      "set": "new",
+      "question": "What do you think of the Van Gogh Museum in Amsterdam?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "the Van Gogh Museum",
+          "candidates": []
+        },
+        {
+          "text": "Amsterdam",
+          "candidates": [
+            {
+              "qid": "Q727",
+              "year": 1300
+            },
+            {
+              "qid": "Q9899",
+              "year": 1812
+            },
+            {
+              "qid": "Q37471983",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-19",
+      "set": "new",
+      "question": "Are you happy your paintings hang in the Musée d'Orsay?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "the Musée d'Orsay",
+          "candidates": []
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-20",
+      "set": "new",
+      "question": "Were you worried about World War I?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "'World War I': every Wikidata match dates after 1890 (earliest 1914)"
+      ],
+      "entities": [
+        {
+          "text": "World War I",
+          "candidates": [
+            {
+              "qid": "Q361",
+              "year": 1914
+            },
+            {
+              "qid": "Q362",
+              "year": 1939
+            },
+            {
+              "qid": "Q3823675",
+              "year": 2005
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-21",
+      "set": "new",
+      "question": "What did you think of Picasso's Les Demoiselles d'Avignon?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "'Les Demoiselles d'Avignon': every Wikidata match dates after 1890 (earliest 1907)"
+      ],
+      "entities": [
+        {
+          "text": "Picasso",
+          "candidates": [
+            {
+              "qid": "Q21431120",
+              "year": null
+            },
+            {
+              "qid": "Q5593",
+              "year": 1881
+            },
+            {
+              "qid": "Q131541684",
+              "year": null
+            }
+          ]
+        },
+        {
+          "text": "Les Demoiselles d'Avignon",
+          "candidates": [
+            {
+              "qid": "Q910199",
+              "year": 1907
+            },
+            {
+              "qid": "Q133011857",
+              "year": null
+            },
+            {
+              "qid": "Q140451584",
+              "year": 1999
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-22",
+      "set": "new",
+      "question": "Did you hear about the sinking of the Titanic?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "'Titanic': every Wikidata match dates after 1890 (earliest 1909)"
+      ],
+      "entities": [
+        {
+          "text": "Titanic",
+          "candidates": [
+            {
+              "qid": "Q25173",
+              "year": 1909
+            },
+            {
+              "qid": "Q6147471",
+              "year": 1988
+            },
+            {
+              "qid": "Q44578",
+              "year": 1997
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-23",
+      "set": "new",
+      "question": "What do you think of Einstein's theory of relativity?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Einstein",
+          "candidates": [
+            {
+              "qid": "Q16834800",
+              "year": null
+            },
+            {
+              "qid": "Q937",
+              "year": 1879
+            },
+            {
+              "qid": "Q901448",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-24",
+      "set": "new",
+      "question": "Did you see the Wright brothers fly their airplane?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": [
+        {
+          "text": "Wright",
+          "candidates": [
+            {
+              "qid": "Q2594455",
+              "year": null
+            },
+            {
+              "qid": "Q214062",
+              "year": 1734
+            },
+            {
+              "qid": "Q2973915",
+              "year": 2009
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-25",
+      "set": "new",
+      "question": "Did you like the film Loving Vincent?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "'Loving Vincent': every Wikidata match dates after 1890 (earliest 2017)"
+      ],
+      "entities": [
+        {
+          "text": "Loving Vincent",
+          "candidates": [
+            {
+              "qid": "Q23013713",
+              "year": 2017
+            },
+            {
+              "qid": "Q140734604",
+              "year": null
+            },
+            {
+              "qid": "Q105725073",
+              "year": 2019
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-26",
+      "set": "new",
+      "question": "Did you like Kirk Douglas playing you?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "'Kirk Douglas': every Wikidata match dates after 1890 (earliest 1916)"
+      ],
+      "entities": [
+        {
+          "text": "Kirk Douglas",
+          "candidates": [
+            {
+              "qid": "Q104027",
+              "year": 1916
+            },
+            {
+              "qid": "Q5036706",
+              "year": 1972
+            },
+            {
+              "qid": "Q58494463",
+              "year": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-27",
+      "set": "new",
+      "question": "Do you like Matisse's painting The Dance?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "'Dance': every Wikidata match dates after 1890 (earliest 1977)"
+      ],
+      "entities": [
+        {
+          "text": "Matisse",
+          "candidates": [
+            {
+              "qid": "Q5589",
+              "year": 1869
+            },
+            {
+              "qid": "Q61694947",
+              "year": null
+            },
+            {
+              "qid": "Q98598240",
+              "year": null
+            }
+          ]
+        },
+        {
+          "text": "Dance",
+          "candidates": [
+            {
+              "qid": "Q11639",
+              "year": null
+            },
+            {
+              "qid": "Q16869401",
+              "year": null
+            },
+            {
+              "qid": "Q851213",
+              "year": 1977
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-28",
+      "set": "new",
+      "question": "How do you feel about your work being in the Museum of Modern Art in New York?",
+      "after_time": true,
+      "flag": true,
+      "reasons": [
+        "'the Museum of Modern Art': every Wikidata match dates after 1890 (earliest 1929)"
+      ],
+      "entities": [
+        {
+          "text": "the Museum of Modern Art",
+          "candidates": [
+            {
+              "qid": "Q188740",
+              "year": 1929
+            },
+            {
+              "qid": "Q11609688",
+              "year": 1974
+            },
+            {
+              "qid": "Q11617518",
+              "year": 1988
+            }
+          ]
+        },
+        {
+          "text": "New York",
+          "candidates": [
+            {
+              "qid": "Q1384",
+              "year": 1788
+            },
+            {
+              "qid": "Q60",
+              "year": 1624
+            },
+            {
+              "qid": "Q1507987",
+              "year": 1968
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-29",
+      "set": "new",
+      "question": "Did you ever watch a movie at the cinema?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-30",
+      "set": "new",
+      "question": "Did you listen to the radio while you painted?",
+      "after_time": true,
+      "flag": false,
+      "reasons": [],
+      "entities": []
+    }
+  ],
+  "model": {
+    "persona": {
+      "after_time_questions": 16,
+      "answered_anyway": 0,
+      "answered_anyway_and_flagged": 0,
+      "ids": []
+    },
+    "neutral": {
+      "after_time_questions": 16,
+      "answered_anyway": 0,
+      "answered_anyway_and_flagged": 0,
+      "ids": []
+    }
+  }
+}
