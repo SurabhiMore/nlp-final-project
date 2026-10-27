@@ -29,14 +29,14 @@ from pipeline.retrieve import retrieve  # noqa: E402
 RESULTS_DIR = config.EVAL_DIR / "results"
 
 
-def evaluate(persona_id, depth=10, questions_dir=None):
+def evaluate(persona_id, depth=10, questions_dir=None, mode=None):
     chunks = datasets.load_chunks(persona_id)
     rows = []
     for q in datasets.load_questions(persona_id, questions_dir):
         if not q["answerable"]:
             continue
         support = datasets.supporting_chunk_ids(q, chunks)
-        ranked = [c["id"] for c in retrieve(persona_id, q["question"], k=depth)]
+        ranked = [c["id"] for c in retrieve(persona_id, q["question"], k=depth, mode=mode)]
         first = next((i + 1 for i, cid in enumerate(ranked) if cid in support), None)
         top5 = set(ranked[:5])
         rows.append({
@@ -65,22 +65,29 @@ def evaluate(persona_id, depth=10, questions_dir=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate BM25 search on the held-out questions.")
+    parser = argparse.ArgumentParser(description="Evaluate search (BM25, dense, or hybrid) on the questions.")
     parser.add_argument("--persona", help="only this exhibit")
+    parser.add_argument("--mode", choices=["bm25", "dense", "hybrid"],
+                        help="search mode (default: from environment or bm25)")
     parser.add_argument("--out", default="retrieval_results.json",
                         help="file name to write under eval/results/")
     parser.add_argument("--questions-dir", help="folder of question files (default: eval/questions)")
     args = parser.parse_args()
 
+    from pipeline.retrieve import get_search_mode
+    mode = args.mode or get_search_mode()
+
     ids = [args.persona] if args.persona else [p.stem for p in datasets.question_files(args.questions_dir)]
     output = {"run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-              "retriever": "BM25 (rank-bm25, light stemming, stopwords removed)",
+              "search_mode": mode,
+              "retriever": f"Search mode: {mode}",
               "questions_dir": str(Path(args.questions_dir or datasets.QUESTIONS_DIR).resolve().relative_to(config.ROOT)),
               "exhibits": {}}
 
+    print(f"Search mode: {mode}")
     print(f"{'exhibit':10} {'questions':>9} {'Hit@1':>7} {'Hit@5':>7} {'Hit@8':>7} {'Recall@5':>9} {'MRR@10':>7}")
     for persona_id in ids:
-        summary, rows = evaluate(persona_id, questions_dir=args.questions_dir)
+        summary, rows = evaluate(persona_id, questions_dir=args.questions_dir, mode=mode)
         output["exhibits"][persona_id] = {"summary": summary, "questions": rows}
         print(f"{persona_id:10} {summary['questions']:>9} {summary['hit@1']:>7.2f} {summary['hit@5']:>7.2f} "
               f"{summary['hit@8']:>7.2f} {summary['recall@5']:>9.2f} {summary['mrr@10']:>7.2f}")
