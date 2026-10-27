@@ -22,6 +22,7 @@ import argparse
 import json
 import re
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -76,19 +77,34 @@ class WikidataCache:
 
 # ---------------------------------------------------------------- Wikidata
 
-def _search_online(text):
-    r = requests.get(API_URL, headers=HEADERS, timeout=20, params={
-        "action": "wbsearchentities", "search": text, "language": "en",
-        "type": "item", "limit": TOP_K, "format": "json"})
+PAUSE = 1.0  # seconds between requests, so Wikidata does not rate-limit us
+
+
+def _get(params, retries=6):
+    """GET the Wikidata API. On 429 (too many requests) or a server error, wait
+    (Retry-After, or 2, 4, 8... seconds) and try again."""
+    for attempt in range(retries):
+        r = requests.get(API_URL, headers=HEADERS, timeout=20, params=params)
+        if r.status_code == 429 or r.status_code >= 500:
+            wait = r.headers.get("Retry-After")
+            time.sleep(min(float(wait) if wait and wait.isdigit() else 2 ** (attempt + 1), 60))
+            continue
+        r.raise_for_status()
+        time.sleep(PAUSE)
+        return r.json()
     r.raise_for_status()
-    return [hit["id"] for hit in r.json().get("search", [])]
+    raise RuntimeError(f"Wikidata kept refusing after {retries} tries: {r.status_code}")
+
+
+def _search_online(text):
+    data = _get({"action": "wbsearchentities", "search": text, "language": "en",
+                 "type": "item", "limit": TOP_K, "format": "json"})
+    return [hit["id"] for hit in data.get("search", [])]
 
 
 def _year_online(qid):
-    r = requests.get(API_URL, headers=HEADERS, timeout=20, params={
-        "action": "wbgetentities", "ids": qid, "props": "claims", "format": "json"})
-    r.raise_for_status()
-    claims = r.json()["entities"][qid].get("claims", {})
+    data = _get({"action": "wbgetentities", "ids": qid, "props": "claims", "format": "json"})
+    claims = data["entities"][qid].get("claims", {})
     years = []
     for prop in DATE_PROPERTIES:
         for claim in claims.get(prop, []):
