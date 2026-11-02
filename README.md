@@ -67,6 +67,7 @@ python -m eval.eval_answers            # grounded answer accuracy, persona vs pl
 python -m eval.compare_modes           # is the gap between persona and plain guide real or chance?
 python -m eval.eval_grounding          # reply check before and after, on frozen passages (see the script)
 python -m eval.eval_quotes             # are quotes really in Van Gogh's letters? (pipeline/quotes.py)
+python -m eval.eval_robustness         # can visitors trick the persona into breaking its rules? (real model)
 python -m eval.eval_stt                # speech to text word error rate and speed (needs recordings, see below)
 python scripts/measure_latency.py      # how long each step takes
 ```
