@@ -44,6 +44,34 @@ from pipeline import config
 
 STATUSES = ("answered", "not_in_sources", "outside_time", "declined")
 DECLINED_STATUSES = {"not_in_sources", "outside_time", "declined"}
+SUPPORTED_LANGUAGES = {"en", "hi", "mr", "kn", "es"}
+NON_ENGLISH_LANGUAGES = {"hi", "mr", "kn", "es"}
+LANGUAGE_NAMES = {
+    "hi": "Hindi",
+    "mr": "Marathi",
+    "kn": "Kannada",
+    "es": "Spanish",
+    "en": "English",
+}
+
+
+def detect_language(text):
+    """Detect language of text. Returns an ISO 639-1 code: en, hi, mr, kn, or es.
+
+    Never raises; falls back to 'en' for short or ambiguous input.
+    """
+    if not text or not isinstance(text, str):
+        return "en"
+    clean = text.strip()
+    if len(clean) < 4:
+        return "en"
+    try:
+        from langdetect import detect, DetectorFactory
+        DetectorFactory.seed = 0
+        lang = detect(clean)
+        return lang if lang in SUPPORTED_LANGUAGES else "en"
+    except Exception:
+        return "en"
 
 def _output_rules(sound_names=()):
     exception = "introducing yourself or making a sound" if sound_names else "introducing yourself"
@@ -172,7 +200,10 @@ def _passages_block(chunks):
 def build_messages(persona, question, chunks, mode="persona"):
     if mode not in ("persona", "neutral"):
         raise ValueError("mode must be 'persona' or 'neutral'")
+    lang = detect_language(question)
     system = _persona_prompt(persona) if mode == "persona" else _neutral_prompt(persona)
+    if lang in NON_ENGLISH_LANGUAGES:
+        system += f"\n\nReply in {LANGUAGE_NAMES[lang]} while keeping citation IDs in English."
     user = f"Passages:\n\n{_passages_block(chunks)}\n\nVisitor's question: {question}\n\nReply with JSON only."
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
@@ -341,7 +372,7 @@ def _offline_answer(chunks):
 
 
 def answer(persona_id, question, chunks, mode="persona"):
-    """Answer one question. Returns answer, status, citations, sound, model and llm_ms."""
+    """Answer one question. Returns answer, status, citations, sound, model, detected_language and llm_ms."""
     persona = config.load_persona(persona_id)
     s = settings()
     start = time.perf_counter()
@@ -354,6 +385,7 @@ def answer(persona_id, question, chunks, mode="persona"):
     result = check_reply(result, persona, question, mode)
     result["model"] = model_label()
     result["mode"] = mode
+    result["detected_language"] = detect_language(question)
     result["llm_ms"] = round((time.perf_counter() - start) * 1000)
     if result["status"] == "answered" and not result["citations"] and not result.get("sound"):
         result["warning"] = "answered without citing a passage"

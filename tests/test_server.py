@@ -120,3 +120,21 @@ def test_ask_bad_mode_returns_400(client):
         client.post("/ask", data={"persona": EXHIBIT, "text": "hi", "mode": "loud"}).status_code
         == 400
     )
+
+
+def test_ask_detected_language_in_response_and_log(client, tmp_path, monkeypatch):
+    """Response and qa_log.jsonl must contain detected_language."""
+    import json
+    from app import server
+
+    log_file = tmp_path / "qa_log.jsonl"
+    monkeypatch.setattr(server, "LOG_PATH", log_file)
+    response = client.post("/ask", data={"persona": EXHIBIT, "text": "¿Cuándo y dónde naciste?"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body.get("detected_language") == "es"
+
+    assert log_file.exists()
+    with open(log_file, encoding="utf-8") as f:
+        log_entry = json.loads(f.readline())
+    assert log_entry.get("detected_language") == "es"
