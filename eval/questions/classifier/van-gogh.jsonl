@@ -1,0 +1,26 @@
+{"id": "clf-vg-01", "question": "What is 45 plus 12?", "expected": "off_topic", "category": "maths"}
+{"id": "clf-vg-02", "question": "Can you solve 3x + 5 = 20 for me?", "expected": "off_topic", "category": "maths"}
+{"id": "clf-vg-03", "question": "Can you do my history homework for me?", "expected": "off_topic", "category": "homework"}
+{"id": "clf-vg-04", "question": "Which laptop should I buy for college?", "expected": "off_topic", "category": "shopping"}
+{"id": "clf-vg-05", "question": "Is it going to rain today?", "expected": "off_topic", "category": "weather"}
+{"id": "clf-vg-06", "question": "What is the capital of Japan?", "expected": "off_topic", "category": "quiz"}
+{"id": "clf-vg-07", "question": "Who is the president of the United States right now?", "expected": "off_topic", "category": "quiz"}
+{"id": "clf-vg-08", "question": "Tell me a joke about cats.", "expected": "off_topic", "category": "other"}
+{"id": "clf-vg-09", "question": "Write a Python function that reverses a string.", "expected": "off_topic", "category": "other"}
+{"id": "clf-vg-10", "question": "What's a good recipe for chocolate cake?", "expected": "off_topic", "category": "other"}
+{"id": "clf-vg-11", "question": "How did the mistral and the weather in Arles change the way you worked?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-12", "question": "How many times did you paint sunflowers?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-13", "question": "Did you buy your own paints or did Theo send them?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-14", "question": "Did you ever live in the capital of France?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-15", "question": "Did you have homework when you went to school in Zundert?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-16", "question": "Would you recommend Arles to other painters?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-17", "question": "Is it true you made 2100 artworks?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-18", "question": "I saw The Starry Night in New York in 2019. What inspired it?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-19", "question": "What happened to you in 1890?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-20", "question": "What is the best colour to paint a night sky?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-vg-21", "question": "Did you watch the 1969 moon landing?", "expected": "out_of_time", "category": "after_year"}
+{"id": "clf-vg-22", "question": "What did you think of the Van Gogh Museum when it opened in 1973?", "expected": "out_of_time", "category": "after_year"}
+{"id": "clf-vg-23", "question": "Have you seen the 2017 film Loving Vincent?", "expected": "out_of_time", "category": "after_year"}
+{"id": "clf-vg-24", "question": "How did you feel when your portrait of Dr. Gachet sold at auction in 1990?", "expected": "out_of_time", "category": "after_year"}
+{"id": "clf-vg-25", "question": "Did you fight in the war that started in 1914?", "expected": "out_of_time", "category": "after_year"}
+{"id": "clf-vg-26", "question": "Do you like the 1962 soup cans by Andy Warhol?", "expected": "out_of_time", "category": "after_year"}
