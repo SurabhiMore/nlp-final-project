@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Curator stats</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    main { max-width: 760px; margin: 0 auto; padding: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid #8884; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Curator stats</h1>
+  <p id="summary">Loading…</p>
+  <h2>Per exhibit</h2>
+  <table id="exhibits"></table>
+  <h2>Most-asked questions</h2>
+  <table id="top"></table>
+  <h2>Corpus gaps (not in sources)</h2>
+  <table id="gaps"></table>
+  <h2>Latency</h2>
+  <table id="latency"></table>
+</main>
+<script>
+function fill(id, headers, rows) {
+  const t = document.getElementById(id);
+  t.replaceChildren();
+  const head = t.insertRow();
+  headers.forEach(h => { const th = document.createElement("th"); th.textContent = h; head.appendChild(th); });
+  if (!rows.length) {
+    const td = t.insertRow().insertCell();
+    td.colSpan = headers.length; td.textContent = "No data yet.";
+    return;
+  }
+  rows.forEach(r => { const tr = t.insertRow(); r.forEach(v => { tr.insertCell().textContent = v; }); });
+}
+fetch("/stats")
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(d => {
+    document.getElementById("summary").textContent = d.total_questions + " questions logged";
+    fill("exhibits", ["Exhibit", "Answered", "Declined", "Not in sources"],
+      Object.entries(d.per_exhibit).map(([k, v]) => [k, v.answered, v.declined, v.not_in_sources]));
+    fill("top", ["Question", "Count"], d.top_questions.map(q => [q.question, q.count]));
+    fill("gaps", ["Question", "Count"], d.top_not_in_sources.map(q => [q.question, q.count]));
+    fill("latency", ["Metric", "ms"], [["p50", d.latency_ms.p50], ["p95", d.latency_ms.p95]]);
+  })
+  .catch(e => { document.getElementById("summary").textContent = "Could not load stats: " + e.message; });
+</script>
+</body>
+</html>

@@ -255,3 +255,48 @@ def test_ask_searches_with_translated_query_not_raw_non_english(client, monkeypa
         f"retrieve() received the raw non-English query instead of the translation: "
         f"{received_queries[0]!r}"
     )
+
+
+# issue-53: /stats tests
+import json as _json
+
+from fastapi.testclient import TestClient as _TC
+
+import app.server as _srv
+
+_stats_client = _TC(_srv.app)
+_STATS_KEYS = {"total_questions", "per_exhibit", "top_questions", "top_not_in_sources", "latency_ms"}
+
+
+def test_stats_with_data(tmp_path, monkeypatch):
+    log = tmp_path / "qa_log.jsonl"
+    rows = [
+        {"question": "Why the sunflowers?", "persona": "vangogh", "status": "answered", "timings": {"total_ms": 900}},
+        {"question": "why the sunflowers", "persona": "vangogh", "status": "answered", "timings": {"total_ms": 1100}},
+        {"question": "What is your phone number?", "persona": "trex", "status": "not_in_sources", "timings": {"total_ms": 500}},
+    ]
+    log.write_text("\n".join(_json.dumps(r) for r in rows))
+    monkeypatch.setattr(_srv, "LOG_PATH", log)
+    r = _stats_client.get("/stats")
+    assert r.status_code == 200
+    body = r.json()
+    assert _STATS_KEYS <= body.keys()
+    assert body["total_questions"] == 3
+    assert body["top_questions"][0]["count"] == 2
+    assert body["latency_ms"]["p50"] == 900
+
+
+def test_stats_empty_log(tmp_path, monkeypatch):
+    log = tmp_path / "qa_log.jsonl"
+    log.write_text("")
+    monkeypatch.setattr(_srv, "LOG_PATH", log)
+    r = _stats_client.get("/stats")
+    assert r.status_code == 200
+    assert r.json()["total_questions"] == 0
+
+
+def test_stats_missing_log(tmp_path, monkeypatch):
+    monkeypatch.setattr(_srv, "LOG_PATH", tmp_path / "nope.jsonl")
+    r = _stats_client.get("/stats")
+    assert r.status_code == 200
+    assert r.json()["latency_ms"] == {"p50": 0, "p95": 0}
