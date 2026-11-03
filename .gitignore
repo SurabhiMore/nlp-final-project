@@ -33,3 +33,6 @@ personas/*/embeddings.npy
 Thumbs.db
 .vscode/
 .idea/
+
+# Session-specific QR codes generated for active tunnels
+artifacts/qr-*.png
