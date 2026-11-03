@@ -19,7 +19,8 @@ Evaluation of language detection (`detect_language`), query translation for retr
 |---|---|---|---|
 | **Language Detection Accuracy** | ≥ 90% | **100% (9 / 9)** | Exact match across `es`, `hi`, and `mr` |
 | **Passage Retrieval (with `translate_for_search`)** | ≥ 80% | **100% (9 / 9)** | All 9 non-English queries translated to English keywords; retrieved 8 passages each |
-| **Citation Preservation** | 100% | **100% (5 / 5 answered)** | English chunk IDs preserved in all answered responses |
+| **Citation Preservation** | 100% | **100% (6 / 6 answered)** | English chunk IDs preserved in all 6 answered responses |
+| **Grounded Answer Accuracy** | ≥ 80% | **67% (6 / 9)** | 6 of 9 answered correctly with citations. Theo's job (`vg-multi-02`, `05`, `08`) declined in all languages |
 | **Spanish answers in Spanish** | 100% | **100% (3 / 3)** | 2 answered, 1 decline; all in Spanish |
 | **Hindi answers in Hindi** | 100% | **100% (3 / 3)** | 2 answered, 1 decline; all in Devanagari |
 | **Marathi answers in Marathi** | 100% | **100% (3 / 3)** | 2 answered, 1 decline; all in Devanagari |
@@ -42,7 +43,9 @@ All 9 questions sent to the live `/ask` endpoint (translate → retrieve → ans
 | `vg-multi-08` | `mr` | `mr` | 8 | not_in_sources | — | Devanagari | माझा भाव थिओ पॅरिसमध्ये कला व्यापारी म्हणून काम करीत होता, पण माझ्या स… |
 | `vg-multi-09` | `mr` | `mr` | 8 | answered | `van-gogh-aic-0000` | Devanagari | मी 'द बेडरूम'चे तीन आवृत्त्या काढल्या आहेत. |
 
-Full JSON replies: [`eval/results/multilingual_replies.json`](https://github.com/SurabhiMore/nlp-final-project/blob/feat/lang/eval/results/multilingual_replies.json)
+Full JSON replies: [`eval/results/multilingual_replies.json`](https://github.com/SurabhiMore/nlp-final-project/blob/f50616a/eval/results/multilingual_replies.json)
+
+> **Note on `vg-multi-08`:** In Marathi, the model actually states Theo's occupation before hedging ("माझा भाव थिओ पॅरिसमध्ये कला व्यापारी म्हणून काम करीत होता, पण माझ्या स्रोतांमध्ये त्याचे काम स्पष्टपणे नमूद नाही." — *My brother Theo was working as an art dealer in Paris, but in my sources his work is not clearly mentioned.*), setting `status: "not_in_sources"`.
 
 ---
 
@@ -64,12 +67,27 @@ Full JSON replies: [`eval/results/multilingual_replies.json`](https://github.com
 - With `llama3` (8B via Ollama): Hindi and Marathi answers came back in English (0/6) due to language bleed when grounding on English passages.
 - With `gpt-oss-120b` (via Groq): Hindi 3/3 ✅ and Marathi 3/3 ✅ answered in full Devanagari. The model follows the system prompt instruction reliably.
 
-### 4. Speech & Audio Limitation (Known Limit — Out of Scope for #50)
+### 4. Theo Question Analysis (`vg-multi-02`, `vg-multi-05`, `vg-multi-08`)
+- The target passage for Theo's occupation is `van-gogh-aic-0007` ("...where his beloved brother Theo was a dealer").
+- In all 3 languages, `van-gogh-aic-0007` was successfully retrieved in the top 8 passages.
+- However, `gpt-oss-120b` returned `not_in_sources` in Spanish, Hindi, and Marathi.
+- **English comparison test:** Asking the identical question in English ("*What was your brother Theo's job in Paris?*") with the same passages yielded the exact same outcome:
+  ```json
+  {
+    "status": "not_in_sources",
+    "check": null,
+    "answer": "My sources do not say what my brother Theo's occupation was in Paris.",
+    "citations": []
+  }
+  ```
+- Because `check` is `null` in both English and non-English runs, the decline is not triggered by `check_reply` or a translation artifact. Rather, the model's reasoning deems a passing mention in an artwork provenance note ("was a dealer") insufficient evidence to definitively state Theo's occupation, so it declines conservatively.
+
+### 5. Speech & Audio Limitation (Known Limit — Out of Scope for #50)
 - Speech-to-text (`pipeline/stt.py`) is English-optimised (Whisper); non-English audio is transcribed in English.
 - Text-to-speech (`pipeline/tts.py`, Kokoro-82M) supports English voices only; the answer is spoken in the English voice regardless of the detected language.
 - Full voice multilingual support is a future milestone (roadmap Sessions 10–12).
 
-### 5. Short Spanish Questions (Known Limit)
+### 6. Short Spanish Questions (Known Limit)
 - `langdetect` requires sufficient text to distinguish languages. Very short Spanish questions (fewer than ~5 words), such as `"¿Qué pintaste?"`, may be classified as `en` rather than `es`. In those cases the answer is returned in English. Longer questions are detected reliably.
 
 ---
