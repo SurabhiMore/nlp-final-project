@@ -129,13 +129,25 @@
   // ------------------------------------------------------------ audio playback
 
   function unlockAudio() {
-    // Phones only allow sound after a tap, so we create and resume the audio
-    // context during the first press of the button.
+    // Phones only allow sound after a user gesture, so we create and resume
+    // the audio context during a tap, and play a tiny silent buffer so iOS
+    // Safari marks the audio session active.
     if (!audioContext) {
       const Context = window.AudioContext || window.webkitAudioContext;
       if (Context) audioContext = new Context();
     }
-    if (audioContext && audioContext.state === "suspended") audioContext.resume();
+    if (audioContext) {
+      if (audioContext.state === "suspended") {
+        audioContext.resume().catch(function () {});
+      }
+      try {
+        const dummy = audioContext.createBuffer(1, 1, 22050);
+        const source = audioContext.createBufferSource();
+        source.buffer = dummy;
+        source.connect(audioContext.destination);
+        source.start(0);
+      } catch (e) {}
+    }
   }
 
   function stopSpeaking() {
@@ -154,6 +166,7 @@
     const response = await fetch("/speak", { method: "POST", body: body });
     if (!response.ok) throw new Error("speech failed");
     const data = await response.arrayBuffer();
+    if (!audioContext) unlockAudio();
     return audioContext.decodeAudioData(data);
   }
 
@@ -161,12 +174,17 @@
     if (!soundCache.has(url)) {
       const response = await fetch(url);
       if (!response.ok) throw new Error("sound failed");
+      if (!audioContext) unlockAudio();
       soundCache.set(url, await audioContext.decodeAudioData(await response.arrayBuffer()));
     }
     return soundCache.get(url);
   }
 
-  function playBuffer(buffer, id) {
+  async function playBuffer(buffer, id) {
+    if (id !== playbackId) return;
+    if (audioContext && audioContext.state === "suspended") {
+      try { await audioContext.resume(); } catch (e) {}
+    }
     return new Promise(function (resolve) {
       if (id !== playbackId) { resolve(); return; }
       const source = audioContext.createBufferSource();
@@ -179,6 +197,10 @@
   }
 
   async function speakSentences(sentences, onFirstAudio, soundUrl) {
+    unlockAudio();
+    if (audioContext && audioContext.state === "suspended") {
+      try { await audioContext.resume(); } catch (e) {}
+    }
     if (!audioContext || (!sentences.length && !soundUrl)) return;
     stopSpeaking();
     const id = playbackId;
