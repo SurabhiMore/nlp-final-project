@@ -1,9 +1,14 @@
-# Multilingual Language Detection & Response Evaluation
+# Multilingual Evaluation — End-to-End via `/ask` (closes #50)
 
-Evaluation of language detection (`detect_language`), query translation for retrieval (`translate_for_search`), and multilingual answer generation across `app/server.py` and `pipeline/persona.py` (closes #50).
+Evaluation of language detection (`detect_language`), query translation for retrieval
+(`translate_for_search`), and multilingual answer generation across `app/server.py` and
+`pipeline/persona.py`.
 
-- **Evaluation Dataset:** `eval/questions/multilingual/van-gogh.jsonl` (9 questions across Spanish `es`, Hindi `hi`, and Marathi `mr`).
-- **Pipeline:** Live `/ask` endpoint running with `openai/gpt-oss-120b` via Groq.
+- **Evaluation Dataset:** `eval/questions/multilingual/van-gogh.jsonl` (9 questions across Spanish `es`, Hindi `hi`, and Marathi `mr`)
+- **Script:** `eval/run_multilingual.py` — sends each question to the live `/ask` endpoint (not the pipeline directly), so the numbers reflect exactly what a visitor experiences
+- **TOP_K:** 8 (matches `app/server.py` default)
+- **Model:** `openai/gpt-oss-120b` via Groq
+- **Prompt directive used:** `"Reply entirely in <Language>. Do not reply in English; translate the facts from the passages into <Language> while keeping citation IDs in English."`
 - **Evaluated:** 2026-11-03
 
 ---
@@ -13,7 +18,7 @@ Evaluation of language detection (`detect_language`), query translation for retr
 | Metric | Target | Actual | Notes |
 |---|---|---|---|
 | **Language Detection Accuracy** | ≥ 90% | **100% (9 / 9)** | Exact match across `es`, `hi`, and `mr` |
-| **Passage Retrieval (with `translate_for_search`)** | ≥ 80% | **89% (8 / 9)** | 1 miss: `vg-multi-08` Marathi translation fell back to original; model still replied in Marathi |
+| **Passage Retrieval (with `translate_for_search`)** | ≥ 80% | **89% (8 / 9)** | 1 miss: `vg-multi-08` translation fallback edge case; model still replied in Marathi |
 | **Citation Preservation** | 100% | **100% (8 / 8 answered)** | English chunk IDs preserved in all answered responses |
 | **Spanish answers in Spanish** | 100% | **100% (3 / 3)** | Natural Spanish responses, Latin-extended script confirmed |
 | **Hindi answers in Hindi** | 100% | **100% (3 / 3)** | Full Devanagari responses on `gpt-oss-120b` |
@@ -23,7 +28,7 @@ Evaluation of language detection (`detect_language`), query translation for retr
 
 ## Live End-to-End Evaluation Results (`gpt-oss-120b` via Groq)
 
-All 9 questions evaluated live through the pipeline (translate → retrieve → answer):
+All 9 questions sent to the live `/ask` endpoint (translate → retrieve → answer):
 
 | ID | Expected | Detected | Passages | Status | Citations | Script | Answer Snippet |
 |---|---|---|---|---|---|---|---|
@@ -37,6 +42,8 @@ All 9 questions evaluated live through the pipeline (translate → retrieve → 
 | `vg-multi-08` | `mr` | `mr` | 0 | not_in_sources | — | Devanagari | माफ करा, माझ्या स्रोतांमध्ये थिओच्या पॅरिसमधील कामाबद्दल माहिती नाही. |
 | `vg-multi-09` | `mr` | `mr` | 5 | answered | `van-gogh-aic-0000` | Devanagari | मी 'द बेडरूम' या चित्राच्या तीन आवृत्त्या काढल्या आहेत. |
 
+Full JSON replies: [`eval/results/multilingual_replies.json`](multilingual_replies.json)
+
 > **Note on `vg-multi-08`:** The Marathi query ("पॅरिसमध्ये तुमच्या भावाचे थिओचे काय काम होते?") was not translated by `translate_for_search()` in this run (translation fallback), so BM25 returned 0 passages. The model correctly replied `not_in_sources` — and did so in Marathi, confirming the language steering works even without retrieved passages.
 
 ---
@@ -46,20 +53,25 @@ All 9 questions evaluated live through the pipeline (translate → retrieve → 
 ### 1. Retrieval: Resolved with `translate_for_search()`
 - In `retrieve.py`, `tokenize()` uses `re.findall(r"[a-z0-9]+", ...)` which drops all Devanagari/non-ASCII characters, returning 0 passages for Hindi and Marathi queries.
 - `translate_for_search()` in `pipeline/persona.py` (called in `app/server.py` before BM25) translates the visitor's query to English keywords before retrieval, while the original non-English question is passed to `answer()` for response generation.
+- `translate_for_search()` now uses `_call_llm()` internally, inheriting the full retry loop (5 attempts, exponential backoff) and 429 rate-limit handling. The translated query is written to `qa_log.jsonl` as `search_query` so failures are visible.
 - Retrieval improved from 11% → 89% (8/9). The one remaining miss (`vg-multi-08`) was a translation fallback edge case.
 
 ### 2. Reply Check Localization: Resolved
 - `check_reply()` previously matched declines with an English-only `_SAYS_NO` regex. Hindi/Marathi declines using `नहीं`, `नाही` were incorrectly overwritten.
-- Updated `_SAYS_NO` with Indic and Spanish negation patterns. `_fixed_line` now returns localized decline text per language.
+- Updated `_SAYS_NO` with Indic and Spanish negation patterns. Bare `ना` was removed to avoid false matches on mid-word occurrences (e.g. `नाम`, `बनाना`). `_fixed_line()` returns localized decline text per language.
+- `_ABOUT_YOU` extended with Hindi (`आप कौन हैं`, `तुम कौन हो`), Marathi (`तुम्ही कोण आहात`), and Spanish (`quién eres`, `eres real`) patterns, so identity questions in those languages are not incorrectly returned as `not_in_sources`.
 
 ### 3. Language Bleed: Resolved with `gpt-oss-120b`
 - With `llama3` (8B via Ollama): Hindi and Marathi answers came back in English (0/6) due to language bleed when grounding on English passages.
-- With `gpt-oss-120b` (via Groq): Hindi 3/3 ✅ and Marathi 3/3 ✅ answered in full Devanagari. The model follows the system prompt instruction `"Reply in Hindi/Marathi while keeping citation IDs in English."` reliably.
+- With `gpt-oss-120b` (via Groq): Hindi 3/3 ✅ and Marathi 3/3 ✅ answered in full Devanagari. The model follows the system prompt instruction reliably.
 
-### 4. Speech & Audio Limitation (Out of Scope for #50)
-- Speech-to-text (`pipeline/stt.py`) is English-optimised (Whisper).
-- Text-to-speech (`pipeline/tts.py`, Kokoro-82M) supports English voices only.
+### 4. Speech & Audio Limitation (Known Limit — Out of Scope for #50)
+- Speech-to-text (`pipeline/stt.py`) is English-optimised (Whisper); non-English audio will be transcribed in English.
+- Text-to-speech (`pipeline/tts.py`, Kokoro-82M) supports English voices only; the answer is spoken in the English voice regardless of the detected language.
 - Full voice multilingual support is a future milestone (roadmap Sessions 10–12).
+
+### 5. Short Spanish Questions (Known Limit)
+- `langdetect` requires sufficient text to distinguish languages. Very short Spanish questions (fewer than ~5 words), such as `"¿Qué pintaste?"`, may be classified as `en` rather than `es`. In those cases the answer is returned in English. Longer questions are detected reliably.
 
 ---
 
