@@ -315,16 +315,24 @@ def parse_reply(text, allowed_ids, allowed_sounds=()):
 _SAYS_NO = re.compile(
     r"\b(?:not|no|never|cannot|nothing|only|beyond)\b|n't\b"
     r"|\b(?:nunca|nada|tampoco|ningun|ninguna|ninguno)\b"
-    r"|(?:नहीं|ना|कुछ नहीं)"
+    r"|(?:नहीं|कुछ नहीं)"
     r"|(?:नाही|नाहीत|काही नाही|नव्हते)",
     re.I
 )
 # Greetings and "who are you" questions are answered from persona.json, not from passages,
 # so they may be answered without a citation (rule 6 and 7 of the prompt).
+# Patterns cover English, Hindi ("आप कौन हैं", "क्या आप असली"), Marathi ("तुम्ही कोण आहात",
+# "तुम्ही खरे"), and Spanish ("quién eres", "eres real", "eres una ia").
 _ABOUT_YOU = re.compile(
     r"^\W*(?:hi|hello|hey|good (?:morning|afternoon|evening)|greetings)\b"
-    r"|\bwho (?:are|r) (?:you|u)\b|\bwhat are you\b|\bintroduce yourself\b|\bare you (?:real|an? ai|a robot)\b",
-    re.I)
+    r"|\bwho (?:are|r) (?:you|u)\b|\bwhat are you\b|\bintroduce yourself\b|\bare you (?:real|an? ai|a robot)\b"
+    # Hindi
+    r"|आप कौन हैं|तुम कौन हो|क्या आप (?:असली|एआई|रोबोट)"
+    # Marathi
+    r"|तुम्ही कोण आहात|तुम्ही (?:खरे|एआय|रोबोट)"
+    # Spanish
+    r"|quién eres|qui[eé]n es usted|eres (?:real|una? ia|un robot)",
+    re.I | re.UNICODE)
 
 _FIXED_LINES = {
     "en": {
@@ -430,8 +438,10 @@ def check_reply(result, persona, question, mode="persona"):
 def translate_for_search(question):
     """Translate non-English question to English keywords for BM25 search.
 
-    Leaves English questions untouched. If offline or translation fails, returns
-    the original question safely.
+    Uses _call_llm so it gets the same retry logic, 429 handling, and
+    reasoning_effort stripping as the main answer path. Leaves English
+    questions untouched. If offline or translation fails, returns the
+    original question safely.
     """
     lang = detect_language(question)
     if lang not in NON_ENGLISH_LANGUAGES:
@@ -439,26 +449,17 @@ def translate_for_search(question):
     s = settings()
     if s["provider"] == "offline" or not s["base_url"] or not s["model"]:
         return question
+    # Use a short timeout so a slow translation never blocks the full answer.
+    s_fast = dict(s, timeout=min(s["timeout"], 10))
     messages = [
         {"role": "system", "content": "You are a translator. Translate this visitor question into plain English keywords for search. Return ONLY the English translation, no other text."},
-        {"role": "user", "content": question}
+        {"role": "user", "content": question},
     ]
-    headers = {"Content-Type": "application/json"}
-    if s["api_key"]:
-        headers["Authorization"] = f"Bearer {s['api_key']}"
-    body = {
-        "model": s["model"],
-        "messages": messages,
-        "temperature": 0.0,
-    }
-    url = f"{s['base_url']}/chat/completions"
     try:
-        response = requests.post(url, json=body, headers=headers, timeout=min(s["timeout"], 10))
-        if response.status_code == 200:
-            content = response.json()["choices"][0]["message"].get("content", "").strip()
-            content = content.strip('"\n`* ')
-            if content:
-                return content
+        content = _call_llm(messages, s_fast)
+        content = content.strip().strip('"\n`* ')
+        if content:
+            return content
     except Exception:
         pass
     return question

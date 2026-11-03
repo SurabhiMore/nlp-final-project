@@ -218,3 +218,36 @@ def test_enable_classifier_0_restores_the_old_behaviour(client, tmp_path, pipeli
     assert pipeline_calls == ["search", "model"]
     entry = json.loads((tmp_path / "qa_log.jsonl").read_text(encoding="utf-8").splitlines()[-1])
     assert entry["model"] != "classifier"
+
+
+# ------------------------------------------------------------------ multilingual search (issue #50)
+
+
+def test_ask_searches_with_translated_query_not_raw_non_english(client, monkeypatch):
+    """BM25 only matches ASCII; /ask must pass the English translation to retrieve(),
+    not the original non-English question.  We intercept the retrieve() call and
+    record the query it receives, then verify it is ASCII (i.e. translated)."""
+    from app import server
+
+    received_queries = []
+
+    real_retrieve = server.retrieval.retrieve
+
+    def spy_retrieve(persona_id, query, **kwargs):
+        received_queries.append(query)
+        return real_retrieve(persona_id, query, **kwargs)
+
+    # Stub translate_for_search to return a known English translation so the test
+    # is deterministic without a live LLM.
+    monkeypatch.setattr(server.persona_engine, "translate_for_search",
+                        lambda q: "when and where were you born")
+    monkeypatch.setattr(server.retrieval, "retrieve", spy_retrieve)
+
+    response = client.post("/ask", data={"persona": EXHIBIT,
+                                         "text": "आपका जन्म कब और कहाँ हुआ था?"})
+    assert response.status_code == 200
+    assert received_queries, "retrieve() was never called"
+    assert received_queries[0] == "when and where were you born", (
+        f"retrieve() received the raw non-English query instead of the translation: "
+        f"{received_queries[0]!r}"
+    )

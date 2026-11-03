@@ -322,3 +322,37 @@ def test_translate_for_search_returns_english_or_fallback(monkeypatch):
     assert engine.translate_for_search("When were you born?") == "When were you born?"
     monkeypatch.setenv("LLM_PROVIDER", "offline")
     assert engine.translate_for_search("¿Cuándo naciste?") == "¿Cuándo naciste?"
+
+
+# ---------------------------------------------------------------- _SAYS_NO regression: bare ना must not match mid-word
+
+def test_says_no_does_not_match_na_inside_words():
+    """ना on its own was a false trigger; it must not fire inside words like नाम or बनाना."""
+    # नाम (name) and बनाना (to make) both contain 'ना' but must NOT be treated as a decline.
+    import re
+    # They should NOT match the pattern
+    assert not engine._SAYS_NO.search("नाम क्या है")
+    assert not engine._SAYS_NO.search("बनाना चाहता हूँ")
+    # But a real Hindi decline should still match
+    assert engine._SAYS_NO.search("मुझे नहीं पता")
+
+
+# ---------------------------------------------------------------- _ABOUT_YOU covers multilingual greetings/identity
+
+@pytest.mark.parametrize("question", [
+    # Hindi
+    "आप कौन हैं?",
+    "तुम कौन हो?",
+    "क्या आप असली हैं?",
+    # Marathi
+    "तुम्ही कोण आहात?",
+    "तुम्ही खरे आहात का?",
+    # Spanish
+    "¿Quién eres?",
+    "¿eres real?",
+])
+def test_about_you_matches_multilingual_identity_questions(question):
+    """Identity questions in Hindi, Marathi, and Spanish must not become not_in_sources."""
+    assert engine._ABOUT_YOU.search(question), (
+        f"_ABOUT_YOU did not match {question!r} — it will incorrectly return not_in_sources"
+    )

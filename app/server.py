@@ -212,6 +212,7 @@ async def ask(
 
     # Clearly off-topic questions skip the search and the language model (pipeline/classifier.py).
     chunks = []
+    search_query = question
     result = classifier.short_circuit(question, exhibit, mode) if classifier else None
     if result is None:
         start = time.perf_counter()
@@ -277,6 +278,7 @@ async def ask(
         "input": source,
         "question": question,
         "detected_language": detected_lang,
+        "search_query": search_query,
         "heard": heard,
         "edited": bool(heard) and heard != question,
         "retrieved": [{"id": c["id"], "score": round(float(c.get("score", 0)), 3)} for c in chunks],
