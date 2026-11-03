@@ -25,6 +25,9 @@ Outputs, in eval/results/:
   answers_results.json   every answer, its score, and the summary
   handcheck.csv          a random sample to label by hand
 
+Questions the classifier blocks (pipeline/classifier.py) skip search and the model, as they do
+in /ask. Set ENABLE_CLASSIFIER=0 to measure the pipeline without it.
+
 Every answer is also saved to answers_progress.jsonl as soon as it arrives. If a
 free tier's daily limit stops the run, the same command with --resume skips the
 answers already saved (same model and settings only) and finishes the rest, for
@@ -45,7 +48,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from eval import datasets  # noqa: E402
-from pipeline import config, persona as engine  # noqa: E402
+from pipeline import classifier, config, persona as engine  # noqa: E402
 from pipeline.retrieve import retrieve  # noqa: E402
 
 RESULTS_DIR = config.EVAL_DIR / "results"
@@ -77,7 +80,7 @@ def summarize(rows):
     def share(items, key):
         return round(sum(1 for r in items if r[key]) / len(items), 3) if items else None
 
-    times = [r["llm_ms"] for r in rows if r["status"] != "error"]
+    times = [r["llm_ms"] for r in rows if r["status"] != "error" and r.get("model") != classifier.MODEL_LABEL]
     return {
         "questions": n,
         "grounded_accuracy": share(rows, "grounded"),
@@ -122,15 +125,19 @@ def run(persona_ids, modes, limit=None, sleep=0.0, done=None, questions_dir=None
         chunks = datasets.load_chunks(persona_id)
         chunks_by_id = {c["id"]: c for c in chunks}
         questions = datasets.load_questions(persona_id, questions_dir)[:limit]
+        persona = config.load_persona(persona_id)
         for q in questions:
-            retrieved = retrieve(persona_id, q["question"], k=TOP_K)
+            # The same check /ask makes first, so the north star measures what the product does.
+            blocked = classifier.short_circuit(q["question"], persona)
+            retrieved = [] if blocked else retrieve(persona_id, q["question"], k=TOP_K)
             support = datasets.supporting_chunk_ids(q, chunks)
             for mode in modes:
                 if (persona_id, mode, q["id"]) in done:
                     rows.append(done[(persona_id, mode, q["id"])])
                     continue
                 try:
-                    result = engine.answer(persona_id, q["question"], retrieved, mode=mode)
+                    result = (classifier.short_circuit(q["question"], persona, mode)
+                              or engine.answer(persona_id, q["question"], retrieved, mode=mode))
                 except Exception as error:  # one failed call should not end a long run
                     result = {"answer": "", "status": "error", "citations": [], "model": engine.model_label(),
                               "llm_ms": 0, "warning": f"{type(error).__name__}: {error}"[:300]}

@@ -43,6 +43,7 @@ One file per area, so pull requests don't edit the same file:
 | `test_compare_modes.py` | Persona vs plain guide statistics |
 | `test_quotes.py` | Quote checker and its evaluation |
 | `test_robustness.py` | Adversarial prompt set and its pass checks |
+| `test_classifier.py` | Question classifier and its evaluation |
 | `test_stt.py` | Speech to text prompts and confidence flag, `/transcribe`, and its evaluation |
 | `test_server.py` | Server endpoints beyond the smoke tests |
 

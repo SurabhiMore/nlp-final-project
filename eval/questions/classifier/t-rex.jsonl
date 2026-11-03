@@ -1,0 +1,20 @@
+{"id": "clf-tr-01", "question": "How much is 9 times 7?", "expected": "off_topic", "category": "maths"}
+{"id": "clf-tr-02", "question": "What's the square root of 144?", "expected": "off_topic", "category": "maths"}
+{"id": "clf-tr-03", "question": "Help me with my essay on climate change, it's due tomorrow.", "expected": "off_topic", "category": "homework"}
+{"id": "clf-tr-04", "question": "What's the best phone under 500 dollars?", "expected": "off_topic", "category": "shopping"}
+{"id": "clf-tr-05", "question": "What's the weather like today?", "expected": "off_topic", "category": "weather"}
+{"id": "clf-tr-06", "question": "What is the tallest mountain in the world?", "expected": "off_topic", "category": "quiz"}
+{"id": "clf-tr-07", "question": "How many continents are there?", "expected": "off_topic", "category": "quiz"}
+{"id": "clf-tr-08", "question": "Who won the World Cup in 2022?", "expected": "off_topic", "category": "other"}
+{"id": "clf-tr-09", "question": "What's the stock price of Apple?", "expected": "off_topic", "category": "other"}
+{"id": "clf-tr-10", "question": "Can you book me a table for two tonight?", "expected": "off_topic", "category": "other"}
+{"id": "clf-tr-11", "question": "Who paid for Sue at the auction in 1997?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-12", "question": "Did you watch the film Jurassic Park in 1993?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-13", "question": "How many times stronger was your bite than a lion's?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-14", "question": "What was the weather like when you were alive?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-15", "question": "Could you really weigh 8000 kilos?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-16", "question": "What is the tallest dinosaur you ever saw?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-17", "question": "How many teeth did you have?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-18", "question": "What's the best way to tell a male T. rex from a female?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-19", "question": "Can you roar like in the movies?", "expected": "in_domain", "category": "tricky"}
+{"id": "clf-tr-20", "question": "Is it going to be dangerous to meet you?", "expected": "in_domain", "category": "tricky"}
