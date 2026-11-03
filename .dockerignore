@@ -35,7 +35,7 @@ personas/*/sources/
 # logs to its own /app/logs/ at runtime.
 logs/
 
-# Secrets. These are provided as Spaces secrets at runtime, never baked in.
+# Secrets. These are provided as environment variables at runtime, never baked into the image.
 .env
 
 # Development and OS clutter

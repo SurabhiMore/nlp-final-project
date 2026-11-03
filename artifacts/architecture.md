@@ -374,7 +374,7 @@ all had blocking issues for this project:
 | HF Spaces (Docker) | Docker SDK requires a paid plan — not available on free tier |
 | Render.com (free) | 512 MB RAM limit — Whisper + Kokoro together exceed this at startup |
 | Google Cloud Run | Requires a credit card even for the free tier; storage costs for the image |
-| Fly.io | Discontinued free tier for new users; requires credit card and charges monthly platform fees |
+| Fly.io | No free tier for new users, pay as you go after a short trial |
 
 Given that this is a course project with a fixed demo date and no budget, **we are
 keeping the deployment local and using a Cloudflare Tunnel for HTTPS during user tests**.

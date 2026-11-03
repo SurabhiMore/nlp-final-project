@@ -49,14 +49,15 @@ def make_qr(url: str, out_path: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
-        "--space-url",
+        "--url", "--space-url",
+        dest="url",
         required=True,
-        help="The public Hugging Face Space URL, e.g. https://your-org-your-space.hf.space",
+        help="The public base URL (e.g. from Cloudflare Tunnel: https://random-words.trycloudflare.com)",
     )
     args = parser.parse_args()
 
     # Strip trailing slashes so we can always append the path cleanly.
-    base = args.space_url.rstrip("/")
+    base = args.url.rstrip("/")
 
     exhibits = [
         ("van-gogh", f"{base}/?persona=van-gogh"),
@@ -67,9 +68,7 @@ def main() -> None:
         out_path = ARTIFACTS_DIR / f"qr-{persona_id}.png"
         make_qr(url, out_path)
 
-    print("\nDone. Commit both files:")
-    print("  git add artifacts/qr-van-gogh.png artifacts/qr-t-rex.png")
-    print("  git commit -m 'Add QR codes for live Space exhibit URLs (#51)'")
+    print("\nDone. QR codes are written to artifacts/ ready for testers to scan.")
 
 
 if __name__ == "__main__":

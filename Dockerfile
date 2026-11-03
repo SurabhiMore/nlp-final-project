@@ -35,8 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # ----- working directory ------------------------------------------------------
-# /app is the convention for Hugging Face Spaces. The Space's file system is
-# writable here, which matters for the logs/ directory and any cached model weights.
+# Standard /app working directory inside the container.
 WORKDIR /app
 
 # ----- Python dependencies ----------------------------------------------------
@@ -46,7 +45,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # The --extra-index-url pulls the CPU-only PyTorch wheel (~800 MB) instead of
-# the GPU build (~2.5 GB). On the free Spaces CPU tier we have no GPU anyway,
+# the GPU build (~2.5 GB). In this CPU container we have no GPU anyway,
 # so the GPU build would just be wasted space.
 RUN pip install --no-cache-dir \
     --extra-index-url https://download.pytorch.org/whl/cpu \
@@ -66,11 +65,10 @@ COPY . .
 # PRELOAD_MODELS=1 tells the server to load Whisper and Kokoro at startup
 # rather than on the first request. The first request is slow either way while
 # models initialise — doing it at startup means the loading happens during the
-# Spaces health-check window, not in front of a waiting visitor.
+# container startup window, not in front of a waiting visitor.
 ENV PRELOAD_MODELS=1
 
-# HF Spaces expects the app to listen on port 7860. The Space's proxy
-# handles the HTTPS termination and forwards plain HTTP to us here.
+# Expose port 7860 for the application server.
 EXPOSE 7860
 
 # Start the server. --host 0.0.0.0 is required inside Docker — the default
