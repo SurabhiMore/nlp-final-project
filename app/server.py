@@ -348,3 +348,17 @@ def _stt_model_name():
     from pipeline import stt
 
     return stt.model_name()
+
+# issue-53: curator stats endpoint
+from pathlib import Path as _Path
+from app.stats import compute_stats
+
+
+@app.get("/stats")
+def stats():
+    return compute_stats(LOG_PATH)
+
+
+@app.get("/stats.html", include_in_schema=False)
+def stats_page():
+    return FileResponse(_Path(STATIC_DIR) / "stats.html")
