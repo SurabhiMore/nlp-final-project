@@ -288,3 +288,34 @@ def test_answer_includes_detected_language(model_says):
     result = engine.answer("van-gogh", "¿Cuándo llegaste a la ciudad de Arles?", passages)
     assert result["detected_language"] == "es"
     assert result["status"] == "answered"
+
+
+def test_check_reply_preserves_multilingual_declines():
+    persona = config.load_persona("van-gogh")
+    reply_hi = {"answer": "मेरे स्रोतों में इस बारे में कोई जानकारी नहीं है।", "status": "not_in_sources", "citations": []}
+    checked_hi = engine.check_reply(reply_hi, persona, "आपका जन्म कब हुआ था?")
+    assert checked_hi["check"] is None
+    assert checked_hi["answer"] == reply_hi["answer"]
+
+    reply_es = {"answer": "Mis fuentes no dicen nada al respecto.", "status": "not_in_sources", "citations": []}
+    checked_es = engine.check_reply(reply_es, persona, "¿Cuándo naciste?")
+    assert checked_es["check"] is None
+    assert checked_es["answer"] == reply_es["answer"]
+
+
+def test_check_reply_uses_localized_fixed_line():
+    persona = config.load_persona("van-gogh")
+    broken_reply = {"answer": "", "status": "answered", "citations": [], "parse_error": True}
+    checked_hi = engine.check_reply(broken_reply, persona, "आपका जन्म कब हुआ था?")
+    assert checked_hi["status"] == "not_in_sources"
+    assert "मेरे स्रोतों में" in checked_hi["answer"]
+
+    checked_es = engine.check_reply(broken_reply, persona, "¿Cuándo naciste?")
+    assert checked_es["status"] == "not_in_sources"
+    assert "Mis fuentes no dicen nada" in checked_es["answer"]
+
+
+def test_translate_for_search_returns_english_or_fallback(monkeypatch):
+    assert engine.translate_for_search("When were you born?") == "When were you born?"
+    monkeypatch.setenv("LLM_PROVIDER", "offline")
+    assert engine.translate_for_search("¿Cuándo naciste?") == "¿Cuándo naciste?"

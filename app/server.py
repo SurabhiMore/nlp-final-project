@@ -207,7 +207,8 @@ async def ask(
         raise HTTPException(status_code=400, detail="We could not hear a question. Please try again.")
 
     start = time.perf_counter()
-    chunks = retrieval.retrieve(persona, question, k=TOP_K)
+    search_query = persona_engine.translate_for_search(question) if persona_engine else question
+    chunks = retrieval.retrieve(persona, search_query, k=TOP_K)
     timings["retrieval_ms"] = _ms(start)
 
     start = time.perf_counter()
