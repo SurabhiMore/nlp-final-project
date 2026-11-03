@@ -358,13 +358,50 @@ For the Van Gogh pilot, available Kokoro preset voices will be audited in Sessio
 
 ### 4.6 Server and Hosting
 
-**Target Platform:** [Hugging Face Spaces](https://huggingface.co/spaces) (Free Docker container runtime)  
-**API Engine:** FastAPI (Python 3.10+)  
-**Availability Profile:** On-demand during scheduled evaluation and testing windows.
+**API Engine:** FastAPI (Python 3.10+)
+**Containerisation:** Docker (see `Dockerfile` at the repo root)
+**Deployment status:** Local only — see decision note below.
 
-Hugging Face Spaces provides native HTTPS termination at zero cost, fulfilling the security requirement for client microphone access. The base CPU tier allocates 2 vCPU cores and 16 GB system memory, sufficient to support in-memory BM25, Whisper large-v3-turbo, and Kokoro-82M.
+#### Deployment decision
 
-FastAPI is chosen for its native asynchronous event loop and direct support for `StreamingResponse`, enabling audio chunks to stream to the browser over persistent HTTP connections without complex WebSocket handshake maintenance.
+The original architecture specified Hugging Face Spaces as the hosting target. During
+Session 10 implementation we discovered that the **Docker SDK on HF Spaces is a paid
+feature** and is no longer available on the free tier. The alternatives we evaluated
+all had blocking issues for this project:
+
+| Platform | Issue |
+|---|---|
+| HF Spaces (Docker) | Docker SDK requires a paid plan — not available on free tier |
+| Render.com (free) | 512 MB RAM limit — Whisper + Kokoro together exceed this at startup |
+| Google Cloud Run | Requires a credit card even for the free tier; storage costs for the image |
+| Fly.io | Free tier is fine but requires local Docker build tooling and CLI setup that adds friction for the whole team |
+
+Given that this is a course project with a fixed demo date and no budget, **we are
+keeping the deployment local and using a Cloudflare Tunnel for HTTPS during user tests**.
+This decision is documented here so the rationale is clear in the final report.
+
+The `Dockerfile` at the repo root is complete and tested. Any team member can build and
+run a fully containerised version locally. If the project were to continue beyond the
+course, Fly.io or a paid HF Space would be the recommended next step.
+
+#### Running locally with HTTPS (for phone-based user tests)
+
+The browser microphone API requires HTTPS. To test on a real phone without deploying:
+
+1. Start the server normally: `uvicorn app.server:app --reload`
+2. Install the Cloudflare tunnel client: `brew install cloudflared`
+3. Open a public HTTPS tunnel: `cloudflared tunnel --url http://localhost:8000`
+4. Cloudflare prints a URL like `https://random-words.trycloudflare.com` — this is your
+   HTTPS endpoint. Open it on a phone and the microphone permission prompt will appear.
+5. Share the URL with testers via QR code. Use `scripts/generate_qr.py` to generate the
+   PNG once you know the tunnel URL.
+
+The tunnel is temporary (closes when you stop the process) but is completely free and
+requires no account. It is sufficient for all user test sessions.
+
+FastAPI is chosen for its native asynchronous event loop and direct support for
+`StreamingResponse`, enabling audio chunks to stream to the browser over persistent HTTP
+connections without complex WebSocket handshake maintenance.
 
 **Application Server Endpoints:**
 
@@ -373,18 +410,6 @@ FastAPI is chosen for its native asynchronous event loop and direct support for 
 | `/ask` | `POST` | `multipart/form-data`: `audio` (blob), `persona` (string) | `audio/wav` chunked stream | Main conversational pipeline entrypoint |
 | `/health` | `GET` | None | JSON: status, memory load, active persona | Service health check and keep-warm ping |
 | `/` | `GET` | Optional query: `?persona=<id>` | `text/html` | Serves client web application |
-
-**Hosting Infrastructure Comparison:**
-
-| Hosting Platform | Native HTTPS | Free Tier Specs | Inactivity Behavior | Suitability |
-|---|---|---|---|---|
-| Hugging Face Spaces (Selected) | Yes (Default) | 2 vCPU, 16 GB RAM | Sleeps after 48h idle | Optimal for academic ML demo |
-| Render Free Web Service | Yes | 0.5 vCPU, 512 MB RAM | Sleeps after 15m idle | Memory insufficient for model inference |
-| Railway App | Yes | $5 credit allowance | Continuous execution | Good alternative; requires budget tracking |
-| Google Cloud Run | Yes | Pay-per-request | Container scales to zero | High cold-start penalty loading model weights |
-| AWS Lambda | Yes | Pay-per-request | Severe container limitations | Incompatible with large in-memory model weights |
-
-*Concurrency Notice:* The free Hugging Face container processes requests serially. Parallel visitor requests will queue. For larger exhibition deployments, upgrading to a dedicated GPU instance ($3.15/hr for Nvidia A10G) and implementing request batching will be required.
 
 ---
 
