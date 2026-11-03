@@ -1,10 +1,10 @@
 # Test report
 
-- Run: 2026-11-02 22:26 (UTC-05:00)
-- Code tested: commit 11791d1 on branch feat/hf-spaces-deployment, with uncommitted changes
-- Command: python -m pytest --save-report
+- Run: 2026-11-02 22:41 (UTC-05:00)
+- Code tested: commit 93fa527 on branch feat/hf-spaces-deployment, no uncommitted changes
+- Command: python -m pytest -m "slow or not slow" --save-report
 - Python 3.11.14 on Darwin
-- Result: 277 passed, 2 not run in 2.8 s
+- Result: 279 passed in 10.7 s
 - All tests that ran passed.
 
 | Test | File | Result | Time (s) |
@@ -96,7 +96,7 @@
 | test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
 | test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
 | test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.17 |
-| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.47 |
+| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.45 |
 | test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
 | test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
 | test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
@@ -150,7 +150,7 @@
 | test_quote_set_problems_are_reported[bad-split] | test_quotes.py | passed | 0.00 |
 | test_repeated_quote_ids_are_reported | test_quotes.py | passed | 0.00 |
 | test_threshold_is_the_middle_of_the_tied_ones | test_quotes.py | passed | 0.00 |
-| test_checker_uses_the_threshold_chosen_on_the_dev_half | test_quotes.py | passed | 0.11 |
+| test_checker_uses_the_threshold_chosen_on_the_dev_half | test_quotes.py | passed | 0.14 |
 | test_reply_text_reads_json_replies_and_falls_back_to_the_raw_text | test_quotes.py | passed | 0.00 |
 | test_saved_answers_include_the_user_test_logs | test_quotes.py | passed | 0.00 |
 | test_results_are_written_as_json_and_markdown | test_quotes.py | passed | 0.05 |
@@ -234,6 +234,7 @@
 | test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.00 |
 | test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
 | test_phone_page_is_served | test_smoke.py | passed | 0.00 |
+| test_voice_round_trip | test_smoke.py | passed | 6.63 |
 | test_proper_nouns_skip_the_first_word_of_a_sentence | test_stt.py | passed | 0.00 |
 | test_proper_nouns_keep_multi_word_names_together | test_stt.py | passed | 0.00 |
 | test_proper_nouns_drop_words_mostly_written_in_lower_case | test_stt.py | passed | 0.00 |
@@ -272,8 +273,9 @@
 | test_summarize_counts_flags_against_mistakes | test_stt.py | passed | 0.00 |
 | test_suggest_picks_the_lowest_error_within_the_time_budget | test_stt.py | passed | 0.00 |
 | test_suggest_threshold_separates_misheard_from_right_clips | test_stt.py | passed | 0.00 |
-| test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.01 |
+| test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.05 |
 | test_run_without_recordings_says_where_to_put_them | test_stt.py | passed | 0.00 |
+| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 1.09 |
 | test_parse_year | test_timecheck.py | passed | 0.00 |
 | test_explicit_year_after_end_is_flagged | test_timecheck.py | passed | 0.00 |
 | test_year_inside_time_not_flagged | test_timecheck.py | passed | 0.00 |
@@ -286,8 +288,3 @@
 | test_cache_miss_online_fetches_and_saves | test_timecheck.py | passed | 0.00 |
 | test_persona_without_end_year_is_skipped | test_timecheck.py | passed | 0.00 |
 | test_own_name_is_ignored | test_timecheck.py | passed | 0.00 |
-
-Not run (left out by -m or -k):
-
-- test_voice_round_trip (test_smoke.py)
-- test_whisper_with_the_exhibit_prompt_is_no_worse_than_without (test_stt.py)
