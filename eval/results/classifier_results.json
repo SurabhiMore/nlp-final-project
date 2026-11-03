@@ -1,0 +1,355 @@
+{
+  "run_at": "2026-11-02T16:08:37+00:00",
+  "must_pass": {
+    "Answerable questions in eval/questions/": {
+      "questions": 46,
+      "blocked": 0
+    },
+    "Questions in eval/questions/heldout/": {
+      "questions": 10,
+      "blocked": 0
+    },
+    "Inside-time questions in eval/questions/timecheck/": {
+      "questions": 14,
+      "blocked": 0
+    },
+    "User test questions the model did not decline as off topic": {
+      "questions": 28,
+      "blocked": 0
+    }
+  },
+  "false_blocks": [],
+  "catch": {
+    "Off-topic traps in eval/questions/": {
+      "questions": 4,
+      "caught": 4
+    },
+    "After-time traps in eval/questions/": {
+      "questions": 8,
+      "caught": 2
+    },
+    "After-time questions in eval/questions/timecheck/": {
+      "questions": 16,
+      "caught": 0
+    }
+  },
+  "misses": [
+    {
+      "exhibit": "t-rex",
+      "id": "tr-17",
+      "question": "Did you ever see a human?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time traps in eval/questions/"
+    },
+    {
+      "exhibit": "t-rex",
+      "id": "tr-18",
+      "question": "What do you think of the Jurassic Park movies?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time traps in eval/questions/"
+    },
+    {
+      "exhibit": "t-rex",
+      "id": "tr-19",
+      "question": "Have you ever ridden in a car?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time traps in eval/questions/"
+    },
+    {
+      "exhibit": "t-rex",
+      "id": "tr-32",
+      "question": "Did you see the Chicxulub asteroid impact that ended the dinosaurs?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time traps in eval/questions/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-16",
+      "question": "What did you think of Picasso's painting Guernica?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time traps in eval/questions/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-18",
+      "question": "How does it feel to be one of the most famous painters in history today?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time traps in eval/questions/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-15",
+      "question": "Did you ever ride the Paris Métro?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-16",
+      "question": "Have you seen Theo van Gogh's film Submission?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-17",
+      "question": "Did you see Monet's Water Lilies series?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-18",
+      "question": "What do you think of the Van Gogh Museum in Amsterdam?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-19",
+      "question": "Are you happy your paintings hang in the Musée d'Orsay?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-20",
+      "question": "Were you worried about World War I?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-21",
+      "question": "What did you think of Picasso's Les Demoiselles d'Avignon?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-22",
+      "question": "Did you hear about the sinking of the Titanic?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-23",
+      "question": "What do you think of Einstein's theory of relativity?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-24",
+      "question": "Did you see the Wright brothers fly their airplane?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-25",
+      "question": "Did you like the film Loving Vincent?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-26",
+      "question": "Did you like Kirk Douglas playing you?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-27",
+      "question": "Do you like Matisse's painting The Dance?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-28",
+      "question": "How do you feel about your work being in the Museum of Modern Art in New York?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-29",
+      "question": "Did you ever watch a movie at the cinema?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    },
+    {
+      "exhibit": "van-gogh",
+      "id": "vg-tc-30",
+      "question": "Did you listen to the radio while you painted?",
+      "label": "in_domain",
+      "reason": "no rule matched",
+      "set": "After-time questions in eval/questions/timecheck/"
+    }
+  ],
+  "not_in_sources_traps": 6,
+  "not_in_sources_traps_blocked": [],
+  "held_out": {
+    "questions": 46,
+    "right": 38,
+    "accuracy": 0.826,
+    "confusion": {
+      "in_domain": {
+        "in_domain": 20,
+        "off_topic": 0,
+        "out_of_time": 0
+      },
+      "off_topic": {
+        "in_domain": 8,
+        "off_topic": 12,
+        "out_of_time": 0
+      },
+      "out_of_time": {
+        "in_domain": 0,
+        "off_topic": 0,
+        "out_of_time": 6
+      }
+    },
+    "by_category": {
+      "off_topic: maths": {
+        "questions": 4,
+        "right": 4
+      },
+      "off_topic: homework": {
+        "questions": 2,
+        "right": 2
+      },
+      "off_topic: shopping": {
+        "questions": 2,
+        "right": 2
+      },
+      "off_topic: weather": {
+        "questions": 2,
+        "right": 2
+      },
+      "off_topic: quiz": {
+        "questions": 4,
+        "right": 2
+      },
+      "off_topic: other": {
+        "questions": 6,
+        "right": 0
+      },
+      "in_domain: tricky": {
+        "questions": 20,
+        "right": 20
+      },
+      "out_of_time: after_year": {
+        "questions": 6,
+        "right": 6
+      }
+    },
+    "wrong": [
+      {
+        "exhibit": "t-rex",
+        "id": "clf-tr-06",
+        "question": "What is the tallest mountain in the world?",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "quiz"
+      },
+      {
+        "exhibit": "t-rex",
+        "id": "clf-tr-07",
+        "question": "How many continents are there?",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "quiz"
+      },
+      {
+        "exhibit": "t-rex",
+        "id": "clf-tr-08",
+        "question": "Who won the World Cup in 2022?",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "other"
+      },
+      {
+        "exhibit": "t-rex",
+        "id": "clf-tr-09",
+        "question": "What's the stock price of Apple?",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "other"
+      },
+      {
+        "exhibit": "t-rex",
+        "id": "clf-tr-10",
+        "question": "Can you book me a table for two tonight?",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "other"
+      },
+      {
+        "exhibit": "van-gogh",
+        "id": "clf-vg-08",
+        "question": "Tell me a joke about cats.",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "other"
+      },
+      {
+        "exhibit": "van-gogh",
+        "id": "clf-vg-09",
+        "question": "Write a Python function that reverses a string.",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "other"
+      },
+      {
+        "exhibit": "van-gogh",
+        "id": "clf-vg-10",
+        "question": "What's a good recipe for chocolate cake?",
+        "label": "in_domain",
+        "reason": "no rule matched",
+        "expected": "off_topic",
+        "category": "other"
+      }
+    ]
+  },
+  "user_test_logs": {
+    "questions": 30,
+    "llm_calls_saved": 2,
+    "llm_ms_saved": 8187,
+    "questions_saved": [
+      "What is the capital of France?",
+      "12 times 8"
+    ]
+  }
+}

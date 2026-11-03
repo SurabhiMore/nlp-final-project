@@ -44,6 +44,10 @@ try:
 except ImportError:
     persona_engine = None
 try:
+    from pipeline import classifier
+except ImportError:
+    classifier = None
+try:
     from pipeline import tts
 except ImportError:
     tts = None
@@ -206,18 +210,22 @@ async def ask(
     if not question:
         raise HTTPException(status_code=400, detail="We could not hear a question. Please try again.")
 
-    start = time.perf_counter()
-    chunks = retrieval.retrieve(persona, question, k=TOP_K)
-    timings["retrieval_ms"] = _ms(start)
+    # Clearly off-topic questions skip the search and the language model (pipeline/classifier.py).
+    chunks = []
+    result = classifier.short_circuit(question, exhibit, mode) if classifier else None
+    if result is None:
+        start = time.perf_counter()
+        chunks = retrieval.retrieve(persona, question, k=TOP_K)
+        timings["retrieval_ms"] = _ms(start)
 
-    start = time.perf_counter()
-    try:
-        result = persona_engine.answer(persona, question, chunks, mode=mode)
-    except RuntimeError as error:
-        raise HTTPException(status_code=503, detail=str(error))
-    except Exception as error:
-        raise HTTPException(status_code=502, detail=f"The language model did not respond: {error}")
-    timings["llm_ms"] = _ms(start)
+        start = time.perf_counter()
+        try:
+            result = persona_engine.answer(persona, question, chunks, mode=mode)
+        except RuntimeError as error:
+            raise HTTPException(status_code=503, detail=str(error))
+        except Exception as error:
+            raise HTTPException(status_code=502, detail=f"The language model did not respond: {error}")
+        timings["llm_ms"] = _ms(start)
 
     by_id = {c["id"]: c for c in chunks}
     citations = [
