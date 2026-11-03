@@ -127,7 +127,7 @@ def test_ask_bad_mode_returns_400(client):
 
 
 def test_ask_detected_language_in_response_and_log(client, tmp_path, monkeypatch):
-    """Response and qa_log.jsonl must contain detected_language."""
+    """Response and qa_log.jsonl must contain detected_language, search_query, and passages."""
     import json
     from app import server
 
@@ -137,11 +137,15 @@ def test_ask_detected_language_in_response_and_log(client, tmp_path, monkeypatch
     assert response.status_code == 200
     body = response.json()
     assert body.get("detected_language") == "es"
+    assert "search_query" in body
+    assert "passages" in body
+    assert isinstance(body["passages"], int)
 
     assert log_file.exists()
     with open(log_file, encoding="utf-8") as f:
         log_entry = json.loads(f.readline())
     assert log_entry.get("detected_language") == "es"
+    assert "search_query" in log_entry
 
 
 # ------------------------------------------------------------------ question classifier (issue #52)

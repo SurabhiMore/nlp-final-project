@@ -297,6 +297,8 @@ async def ask(
         "mode": mode,
         "question": question,
         "detected_language": detected_lang,
+        "search_query": search_query,
+        "passages": len(chunks),
         "status": result["status"],
         "answer": result["answer"],
         "sentences": sentences,

@@ -212,7 +212,7 @@ def test_ask_returns_the_same_fields_when_the_model_reply_is_broken(client, mode
     assert response.status_code == 200
     body = response.json()
     assert set(body) == {"request_id", "persona", "mode", "question", "status", "answer", "sentences",
-                         "citations", "sound", "audio", "timings", "detected_language"}
+                         "citations", "sound", "audio", "timings", "detected_language", "search_query", "passages"}
     assert body["status"] == "not_in_sources"
     assert body["citations"] == []
 
@@ -341,14 +341,18 @@ def test_says_no_does_not_match_na_inside_words():
 
 @pytest.mark.parametrize("question", [
     # Hindi
+    "नमस्ते",
     "आप कौन हैं?",
+    "आप कौन हो?",
     "तुम कौन हो?",
     "क्या आप असली हैं?",
     # Marathi
     "तुम्ही कोण आहात?",
     "तुम्ही खरे आहात का?",
     # Spanish
+    "Hola",
     "¿Quién eres?",
+    "quien eres",
     "¿eres real?",
 ])
 def test_about_you_matches_multilingual_identity_questions(question):
@@ -356,3 +360,21 @@ def test_about_you_matches_multilingual_identity_questions(question):
     assert engine._ABOUT_YOU.search(question), (
         f"_ABOUT_YOU did not match {question!r} — it will incorrectly return not_in_sources"
     )
+
+
+def test_translate_for_search_cleans_json_responses(monkeypatch):
+    """When the LLM runs in JSON mode and returns {"translation": "..."}, translate_for_search
+    must extract the clean string rather than passing raw JSON to the BM25 tokenizer."""
+    monkeypatch.setenv("LLM_PROVIDER", "openai_compatible")
+    monkeypatch.setenv("LLM_BASE_URL", "http://model.invalid/v1")
+    monkeypatch.setenv("LLM_MODEL", "mock-model")
+
+    monkeypatch.setattr(engine, "_call_llm", lambda msgs, s: '{"translation": "when and where were you born"}')
+    assert engine.translate_for_search("¿Cuándo y dónde naciste?") == "when and where were you born"
+
+    monkeypatch.setattr(engine, "_call_llm", lambda msgs, s: '{"keywords": "three versions of the bedroom"}')
+    assert engine.translate_for_search("आपने द बेडरूम पेंटिंग के कितने संस्करण बनाए थे?") == "three versions of the bedroom"
+
+    # Raw string (non-JSON) fallback
+    monkeypatch.setattr(engine, "_call_llm", lambda msgs, s: "when and where were you born")
+    assert engine.translate_for_search("¿Cuándo y dónde naciste?") == "when and where were you born"

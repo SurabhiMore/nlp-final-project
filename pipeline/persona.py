@@ -321,17 +321,19 @@ _SAYS_NO = re.compile(
 )
 # Greetings and "who are you" questions are answered from persona.json, not from passages,
 # so they may be answered without a citation (rule 6 and 7 of the prompt).
-# Patterns cover English, Hindi ("आप कौन हैं", "क्या आप असली"), Marathi ("तुम्ही कोण आहात",
-# "तुम्ही खरे"), and Spanish ("quién eres", "eres real", "eres una ia").
+# Patterns cover English, Spanish ("hola", "quién eres", "eres real"), Hindi ("नमस्ते",
+# "आप कौन हैं/हो", "क्या आप असली"), and Marathi ("तुम्ही कोण आहात", "तुम्ही खरे").
 _ABOUT_YOU = re.compile(
     r"^\W*(?:hi|hello|hey|good (?:morning|afternoon|evening)|greetings)\b"
     r"|\bwho (?:are|r) (?:you|u)\b|\bwhat are you\b|\bintroduce yourself\b|\bare you (?:real|an? ai|a robot)\b"
-    # Hindi
-    r"|आप कौन हैं|तुम कौन हो|क्या आप (?:असली|एआई|रोबोट)"
-    # Marathi
-    r"|तुम्ही कोण आहात|तुम्ही (?:खरे|एआय|रोबोट)"
-    # Spanish
-    r"|quién eres|qui[eé]n es usted|eres (?:real|una? ia|un robot)",
+    # Spanish greetings & identity
+    r"|\b(?:hola|buenos d[ií]as|buenas tardes|buenas noches)\b"
+    r"|qui[eé]n (?:eres|es usted)|eres (?:real|una? ia|un robot)"
+    # Hindi greetings & identity
+    r"|नमस्ते|नमस्कार|प्रणाम"
+    r"|आप कौन (?:हैं|हो)|तुम कौन हो|क्या आप (?:असली|एआई|रोबोट)"
+    # Marathi identity
+    r"|तुम्ही कोण आहात|तुम्ही (?:खरे|एआय|रोबोट)",
     re.I | re.UNICODE)
 
 _FIXED_LINES = {
@@ -452,12 +454,29 @@ def translate_for_search(question):
     # Use a short timeout so a slow translation never blocks the full answer.
     s_fast = dict(s, timeout=min(s["timeout"], 10))
     messages = [
-        {"role": "system", "content": "You are a translator. Translate this visitor question into plain English keywords for search. Return ONLY the English translation, no other text."},
+        {"role": "system", "content": 'You are a translator. Translate this visitor question into plain English keywords for search. Reply with a JSON object: {"translation": "english search keywords"}'},
         {"role": "user", "content": question},
     ]
     try:
         content = _call_llm(messages, s_fast)
-        content = content.strip().strip('"\n`* ')
+        if not content:
+            return question
+        content = content.strip()
+        # Parse JSON if the model replied with a JSON object (due to response_format: json_object)
+        if "{" in content and "}" in content:
+            try:
+                json_str = content[content.find("{"):content.rfind("}") + 1]
+                data = json.loads(json_str)
+                if isinstance(data, dict):
+                    for key in ("translation", "keywords", "query", "english", "search", "text"):
+                        if isinstance(data.get(key), str) and data[key].strip():
+                            return data[key].strip()
+                    for val in data.values():
+                        if isinstance(val, str) and val.strip():
+                            return val.strip()
+            except Exception:
+                pass
+        content = content.strip('"\n`* ')
         if content:
             return content
     except Exception:

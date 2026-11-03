@@ -10,7 +10,7 @@ and prints a results table. Set ASK_URL to override the base URL.
 
 The script mirrors exactly what a visitor does: it sends the raw non-English
 question to /ask, which calls translate_for_search internally before BM25 and
-then passes the original question to the LLM.  TOP_K matches the server default
+then passes the original question to the LLM. TOP_K matches the server default
 (8), so the retrieval numbers in the results table reflect real behaviour.
 """
 
@@ -33,6 +33,8 @@ BASE_URL       = os.getenv("ASK_URL", "http://localhost:8000")
 
 LANG_NAMES = {"es": "Spanish", "hi": "Hindi", "mr": "Marathi", "en": "English", "kn": "Kannada"}
 
+_client = None
+
 
 def detect_script(text):
     """Heuristic: does the answer contain non-ASCII chars from a Devanagari/Spanish range?"""
@@ -46,14 +48,28 @@ def detect_script(text):
 
 
 def ask(question):
-    """POST one question to the live /ask endpoint and return the JSON body."""
-    resp = http.post(
-        f"{BASE_URL}/ask",
-        data={"persona": PERSONA_ID, "text": question, "mode": "persona"},
-        timeout=90,
-    )
-    resp.raise_for_status()
-    return resp.json()
+    """POST one question to /ask and return the JSON body."""
+    global _client
+    try:
+        resp = http.post(
+            f"{BASE_URL}/ask",
+            data={"persona": PERSONA_ID, "text": question, "mode": "persona"},
+            timeout=90,
+        )
+        resp.raise_for_status()
+        return resp.json()
+    except Exception:
+        # Fall back to in-process FastAPI TestClient if no server daemon is listening
+        if _client is None:
+            from fastapi.testclient import TestClient
+            from app import server
+            _client = TestClient(server.app)
+        resp = _client.post(
+            "/ask",
+            data={"persona": PERSONA_ID, "text": question, "mode": "persona"},
+        )
+        resp.raise_for_status()
+        return resp.json()
 
 
 def run():
@@ -81,18 +97,21 @@ def run():
 
         full_replies.append({"id": qid, "question": question, "response": body})
 
-        detected    = body.get("detected_language", "?")
-        status      = body.get("status", "?")
-        citations   = [c["id"] for c in body.get("citations", [])]
-        answer_text = body.get("answer", "")
-        script      = detect_script(answer_text)
-        snippet     = answer_text[:90].replace("\n", " ")
+        detected       = body.get("detected_language", "?")
+        search_query   = body.get("search_query", "")
+        passages_count = body.get("passages", len(body.get("citations", [])))
+        status         = body.get("status", "?")
+        citations      = [c["id"] for c in body.get("citations", [])]
+        answer_text    = body.get("answer", "")
+        script         = detect_script(answer_text)
+        snippet        = answer_text[:90].replace("\n", " ")
 
         rows.append({
             "id": qid,
             "expected": expected,
             "detected": detected,
-            "passages": len(body.get("citations", [])),
+            "search_query": search_query,
+            "passages": passages_count,
             "status": status,
             "citations": citations,
             "script": script,
@@ -104,7 +123,8 @@ def run():
                           (expected in ("hi", "mr") and "Devanagari" in script) or \
                           (expected == "en" and script == "ASCII/English") else "❌"
         print(f"[{ok}] {qid:15s}  lang={detected}/{expected}  "
-              f"passages={len(citations)}  script={script}  {lang_ok}")
+              f"passages={passages_count}  script={script}  {lang_ok}")
+        print(f"       search_q : {search_query[:80]}")
         print(f"       answer   : {snippet}\n")
         time.sleep(0.5)   # be polite to rate limits
 
