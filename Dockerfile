@@ -1,16 +1,16 @@
 # Dockerfile for Echoes.ai — Interactive AI Museum Guide
 #
-# This runs on Hugging Face Spaces, which gives us a free HTTPS URL with a real
-# TLS certificate. That matters because browsers only allow the microphone on
-# localhost or on https:// — without it, the hold-to-ask button silently fails
-# on any phone that isn't on the same machine as the server.
+# Containerised runtime for local development, user testing, and deployment to
+# any Docker-compatible container platform.
 #
-# Build locally to test before pushing:
-#   docker build -t echoes .
-#   docker run -p 7860:7860 --env-file .env echoes
+# Build locally:
+#   docker build -t echoes-ai .
+#
+# Run container (with volume mounts to preserve logs and model cache):
+#   docker run --rm -v "$PWD/logs:/app/logs" -v echoes-cache:/root/.cache -p 7860:7860 --env-file .env echoes-ai
 #   open http://localhost:7860
 #
-# On Hugging Face Spaces, set these three secrets in Space Settings → Variables and secrets:
+# Required environment variables in .env:
 #   LLM_API_KEY    your API key (Groq, OpenAI-compatible, etc.)
 #   LLM_BASE_URL   e.g. https://api.groq.com/openai/v1
 #   LLM_MODEL      e.g. openai/gpt-oss-120b

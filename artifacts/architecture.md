@@ -105,7 +105,7 @@ The platform serves multiple educational and cultural institutions through ident
 
 ### 3.1 High-Level Overview
 
-The system operates across two physical tiers: the visitor client (mobile web browser) and the backend application server hosted on Hugging Face Spaces. The client manages hardware audio capture and streaming playback, while the server coordinates the speech-to-text, retrieval, persona synthesis, text-to-speech, and logging components.
+The system operates across two physical tiers: the visitor client (mobile web browser) and the backend application server running locally or containerized with Docker. The client manages hardware audio capture and streaming playback, while the server coordinates the speech-to-text, retrieval, persona synthesis, text-to-speech, and logging components.
 
 ![System Architecture](images/system_architecture.png)
 
@@ -374,7 +374,7 @@ all had blocking issues for this project:
 | HF Spaces (Docker) | Docker SDK requires a paid plan — not available on free tier |
 | Render.com (free) | 512 MB RAM limit — Whisper + Kokoro together exceed this at startup |
 | Google Cloud Run | Requires a credit card even for the free tier; storage costs for the image |
-| Fly.io | Free tier is fine but requires local Docker build tooling and CLI setup that adds friction for the whole team |
+| Fly.io | Discontinued free tier for new users; requires credit card and charges monthly platform fees |
 
 Given that this is a course project with a fixed demo date and no budget, **we are
 keeping the deployment local and using a Cloudflare Tunnel for HTTPS during user tests**.
@@ -382,7 +382,7 @@ This decision is documented here so the rationale is clear in the final report.
 
 The `Dockerfile` at the repo root is complete and tested. Any team member can build and
 run a fully containerised version locally. If the project were to continue beyond the
-course, Fly.io or a paid HF Space would be the recommended next step.
+course, a paid container host (such as Fly.io or a paid HF Space) would be the recommended next step.
 
 #### Running locally with HTTPS (for phone-based user tests)
 
@@ -651,7 +651,7 @@ The following architectural questions require empirical testing and team resolut
 | Text-to-Speech | Kokoro-82M | `hexgrad/Kokoro-82M` | Apache 2.0 | [Hugging Face](https://huggingface.co/hexgrad/Kokoro-82M) |
 | Web Application Server | FastAPI | `>= 0.111.0` | MIT | [FastAPI](https://fastapi.tiangolo.com/) |
 | ASGI Web Server | Uvicorn | `>= 0.30.0` | BSD-3-Clause | [Uvicorn](https://www.uvicorn.org/) |
-| Cloud Hosting | Hugging Face Spaces | Docker SDK | Free Tier | [Hugging Face Docs](https://huggingface.co/docs/hub/spaces) |
+| Container / Local Runtime | Docker & FastAPI | Docker Engine / Uvicorn | Apache 2.0 / MIT | [Docker Docs](https://docs.docker.com/) |
 | Audio Separation | Demucs | `>= 4.0.0` | MIT | [GitHub](https://github.com/facebookresearch/demucs) |
 | Text Chunking | LangChain Text Splitters | `>= 0.2.0` | MIT | [LangChain](https://python.langchain.com/) |
 

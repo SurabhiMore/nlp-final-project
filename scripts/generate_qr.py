@@ -1,19 +1,15 @@
-"""Generate QR code images for each exhibit's Hugging Face Spaces URL.
+"""Generate QR code images for each exhibit's live URL (e.g. from Cloudflare Tunnel).
 
-Run this once the Space is live and you know the URL:
+Run this once the server and tunnel are live and you know the URL:
 
-    python scripts/generate_qr.py --space-url https://your-org-your-space.hf.space
+    python scripts/generate_qr.py --space-url https://random-words.trycloudflare.com
 
 Two PNG files are written to artifacts/:
     artifacts/qr-van-gogh.png
     artifacts/qr-t-rex.png
 
-Print them and put them next to the exhibits for hands-free user tests.
-Visitors scan the code, the phone opens the correct exhibit page straight away.
-
-Requires the `qrcode` package with its Pillow backend:
-    pip install "qrcode[pil]"
-This is a one-off dev tool so it is not in requirements.txt.
+Print or scan them to open the exhibit page straight away.
+Requires `qrcode[pil]` (included in requirements.txt).
 """
 
 import argparse

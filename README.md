@@ -1,13 +1,3 @@
----
-title: Echoes.ai — Interactive AI Museum Guide
-emoji: 🎙️
-colorFrom: indigo
-colorTo: purple
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # Company Name - Echoes.ai
 
 ## Project Name - Interactive AI Museum
@@ -68,8 +58,8 @@ The container encapsulates all system dependencies (`ffmpeg`, `libsndfile1`, CPU
 # Build the image (~3.5 GB)
 docker build -t echoes-ai .
 
-# Run the container (reads API keys from .env)
-docker run --rm -p 7860:7860 --env-file .env echoes-ai
+# Run the container with volume mounts (preserves user test logs and caches models across runs)
+docker run --rm -v "$PWD/logs:/app/logs" -v echoes-cache:/root/.cache -p 7860:7860 --env-file .env echoes-ai
 ```
 
 Open http://localhost:7860 in your browser, or verify with:
@@ -79,7 +69,7 @@ curl http://localhost:7860/health
 
 ### Testing on a Real Phone (Microphone & Voice)
 
-Browsers (especially iOS Safari and Android Chrome) **block microphone access on plain HTTP**. To test on a real phone, create a free, secure HTTPS tunnel to your machine using Cloudflare:
+Browsers (specifically Safari on iOS and Chrome on Android) **block microphone access on plain HTTP origins**. To test on physical phones without deploying to external cloud hosting, open a secure HTTPS tunnel to your machine using Cloudflare Tunnel:
 
 1. **Install Cloudflare Tunnel (`cloudflared`):**
    - **macOS:** `brew install cloudflared`
@@ -96,56 +86,15 @@ Browsers (especially iOS Safari and Android Chrome) **block microphone access on
    ```
 
 3. **Open the HTTPS URL on your phone:**
-   Cloudflare outputs a link like `https://random-words.trycloudflare.com`. Open that URL on your phone browser. Microphone permissions will prompt normally.
-   *(Note for iPhone users: Ensure your phone's physical Silent/Ringer switch is OFF so Safari plays Web Audio out loud).*
+   Cloudflare outputs a public link like `https://random-words.trycloudflare.com`. Open that URL on your phone's browser (tested on both iOS and Android). The microphone permission prompt will appear.
+   *(Note for iPhone users: Ensure your physical Silent switch is OFF so Safari plays Web Audio. On Android, check that media volume is turned up).*
 
 4. **Generate QR codes for testing exhibits:**
+   Run the QR generator whenever you start a tunnel session:
    ```bash
    python scripts/generate_qr.py --space-url https://random-words.trycloudflare.com
    ```
-   This generates `artifacts/qr-t-rex.png` and `artifacts/qr-van-gogh.png` ready for printing or scanning.
-
-## Deploy to Hugging Face Spaces
-
-> **Note on HF Spaces:** Hugging Face Spaces Docker SDK is now a paid feature. As documented in [`artifacts/architecture.md`](artifacts/architecture.md) §4.6, our primary setup for hands-free user testing uses the local container / server paired with Cloudflare Tunnel. If you have a paid HF Spaces account, you can deploy using the `Dockerfile` at the repo root:
-
-**One-time setup:**
-
-1. Go to https://huggingface.co/spaces and create a new Space. When it asks for the SDK,
-   choose **Docker**.
-2. Add the Space as a second remote in your local clone:
-   ```
-   git remote add space https://huggingface.co/spaces/<your-org>/<your-space-name>
-   ```
-3. Under **Space Settings → Variables and secrets**, add these three secrets (not plain
-   variables — secrets are hidden in logs and never visible after you save them):
-
-   | Secret name   | What to put in it |
-   |---------------|-------------------|
-   | `LLM_API_KEY`   | Your API key (Groq, OpenAI, etc.) |
-   | `LLM_BASE_URL`  | e.g. `https://api.groq.com/openai/v1` |
-   | `LLM_MODEL`     | e.g. `openai/gpt-oss-120b` |
-
-**Deploying:**
-
-```bash
-git push space main
-```
-
-The Space will build the Docker image and start the server automatically. The first build
-takes 5–10 minutes because it downloads PyTorch and the Whisper model. Subsequent pushes
-are faster because Docker caches the dependency layer.
-
-**Checking it worked:**
-
-Once the Space shows "Running", open `https://<your-space-url>/health` in a browser. You
-should see both exhibits listed and `"status": "ok"`. Then open the root URL on your phone
-— the microphone permission prompt should appear because the connection is HTTPS.
-
-**QR codes for user tests:**
-
-The QR codes in `artifacts/` point at the live Space URL. Print one and stick it next to
-an exhibit for a hands-free user test. Scan the code, ask a question, get an answer.
+   This generates `artifacts/qr-t-rex.png` and `artifacts/qr-van-gogh.png` pointing to that active tunnel URL, ready for testers to scan.
 
 To rebuild the passages from the sources, run `python scripts/build_corpus.py --all`. This
 downloads the latest version of each source, so if Wikipedia has changed, the passages and
