@@ -44,6 +44,10 @@ try:
 except ImportError:
     persona_engine = None
 try:
+    from pipeline import classifier
+except ImportError:
+    classifier = None
+try:
     from pipeline import tts
 except ImportError:
     tts = None
@@ -206,19 +210,23 @@ async def ask(
     if not question:
         raise HTTPException(status_code=400, detail="We could not hear a question. Please try again.")
 
-    start = time.perf_counter()
-    search_query = persona_engine.translate_for_search(question) if persona_engine else question
-    chunks = retrieval.retrieve(persona, search_query, k=TOP_K)
-    timings["retrieval_ms"] = _ms(start)
+    # Clearly off-topic questions skip the search and the language model (pipeline/classifier.py).
+    chunks = []
+    result = classifier.short_circuit(question, exhibit, mode) if classifier else None
+    if result is None:
+        start = time.perf_counter()
+        search_query = persona_engine.translate_for_search(question) if persona_engine else question
+        chunks = retrieval.retrieve(persona, search_query, k=TOP_K)
+        timings["retrieval_ms"] = _ms(start)
 
-    start = time.perf_counter()
-    try:
-        result = persona_engine.answer(persona, question, chunks, mode=mode)
-    except RuntimeError as error:
-        raise HTTPException(status_code=503, detail=str(error))
-    except Exception as error:
-        raise HTTPException(status_code=502, detail=f"The language model did not respond: {error}")
-    timings["llm_ms"] = _ms(start)
+        start = time.perf_counter()
+        try:
+            result = persona_engine.answer(persona, question, chunks, mode=mode)
+        except RuntimeError as error:
+            raise HTTPException(status_code=503, detail=str(error))
+        except Exception as error:
+            raise HTTPException(status_code=502, detail=f"The language model did not respond: {error}")
+        timings["llm_ms"] = _ms(start)
 
     by_id = {c["id"]: c for c in chunks}
     citations = [
@@ -259,6 +267,7 @@ async def ask(
 
     timings["total_ms"] = _ms(total_start)
 
+    detected_lang = result.get("detected_language") or (persona_engine.detect_language(question) if persona_engine else "en")
     _write_log({
         "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "request_id": request_id,
@@ -267,7 +276,7 @@ async def ask(
         "mode": mode,
         "input": source,
         "question": question,
-        "detected_language": result.get("detected_language", "en"),
+        "detected_language": detected_lang,
         "heard": heard,
         "edited": bool(heard) and heard != question,
         "retrieved": [{"id": c["id"], "score": round(float(c.get("score", 0)), 3)} for c in chunks],
@@ -285,7 +294,7 @@ async def ask(
         "persona": persona,
         "mode": mode,
         "question": question,
-        "detected_language": result.get("detected_language", "en"),
+        "detected_language": detected_lang,
         "status": result["status"],
         "answer": result["answer"],
         "sentences": sentences,

@@ -33,3 +33,6 @@ rapidfuzz>=3.0
 # Time-boundary check (pipeline/timecheck.py). After installing, run:
 #   python -m spacy download en_core_web_sm
 spacy>=3.7
+
+# QR code generation for user tests (scripts/generate_qr.py)
+qrcode[pil]>=8.0

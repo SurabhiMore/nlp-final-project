@@ -31,27 +31,70 @@ Tyrannosaurus rex (a creature, with only expert sources). The same code runs bot
 
 Needs Python 3.10 to 3.12 (Kokoro does not install on Python 3.13; `av` is pinned to `<19` and `preshed` to `<3.0.14` in `requirements.txt`).
 
+### Option A: Run natively on your machine (Fastest)
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env               # then fill in the language model settings
+python -m spacy download en_core_web_sm
+cp .env.example .env               # fill in your LLM API key and settings
 ```
 
-The first run downloads the speech models (a few hundred MB) and Kokoro may download a
-small English language model. After that everything runs offline except the language model.
-
-Each exhibit's passages are already in the repo (`personas/<id>/chunks.jsonl`), so you can
-check the test questions and start the server straight away:
+Check the test questions and start the server:
 
 ```bash
 python -m eval.datasets --check
 uvicorn app.server:app --reload
 ```
 
-Open http://localhost:8000 on the same computer. Browsers only allow the microphone on
-`localhost` or on an https site, so to test on a phone, open an https tunnel to your laptop
-(for example `cloudflared tunnel --url http://localhost:8000`) and use the link it prints.
+Open http://localhost:8000 in your browser.
+
+### Option B: Run with Docker
+
+The container encapsulates all system dependencies (`ffmpeg`, `libsndfile1`, CPU PyTorch, spaCy):
+
+```bash
+# Build the image (~3.5 GB)
+docker build -t echoes-ai .
+
+# Run the container with volume mounts (preserves user test logs and caches models across runs)
+docker run --rm -v "$PWD/logs:/app/logs" -v echoes-cache:/root/.cache -p 7860:7860 --env-file .env echoes-ai
+```
+
+Open http://localhost:7860 in your browser, or verify with:
+```bash
+curl http://localhost:7860/health
+```
+
+### Testing on a Real Phone (Microphone & Voice)
+
+Browsers (specifically Safari on iOS and Chrome on Android) **block microphone access on plain HTTP origins**. To test on physical phones without deploying to external cloud hosting, open a secure HTTPS tunnel to your machine using Cloudflare Tunnel:
+
+1. **Install Cloudflare Tunnel (`cloudflared`):**
+   - **macOS:** `brew install cloudflared`
+   - **Linux:** `sudo apt-get install cloudflared` (or download from Cloudflare releases)
+   - **Windows:** `winget install --id Cloudflare.cloudflared`
+
+2. **Start the tunnel in a separate terminal:**
+   ```bash
+   # If running natively on port 8000:
+   cloudflared tunnel --url http://localhost:8000
+
+   # Or if running Docker on port 7860:
+   cloudflared tunnel --url http://localhost:7860
+   ```
+
+3. **Open the HTTPS URL on your phone:**
+   Cloudflare outputs a public link like `https://random-words.trycloudflare.com`. Open that URL on your phone's browser (tested on both iOS and Android). The microphone permission prompt will appear.
+   *(Note for iPhone users: Ensure your physical Silent switch is OFF so Safari plays Web Audio. On Android, check that media volume is turned up).*
+
+4. **Generate QR codes for testing exhibits:**
+   Run the QR generator whenever you start a tunnel session:
+   ```bash
+   python scripts/generate_qr.py --space-url https://random-words.trycloudflare.com
+   ```
+   This generates `artifacts/qr-t-rex.png` and `artifacts/qr-van-gogh.png` pointing to that active tunnel URL, ready for testers to scan.
 
 To rebuild the passages from the sources, run `python scripts/build_corpus.py --all`. This
 downloads the latest version of each source, so if Wikipedia has changed, the passages and
@@ -67,6 +110,8 @@ python -m eval.eval_answers            # grounded answer accuracy, persona vs pl
 python -m eval.compare_modes           # is the gap between persona and plain guide real or chance?
 python -m eval.eval_grounding          # reply check before and after, on frozen passages (see the script)
 python -m eval.eval_quotes             # are quotes really in Van Gogh's letters? (pipeline/quotes.py)
+python -m eval.eval_robustness         # can visitors trick the persona into breaking its rules? (real model)
+python -m eval.eval_classifier         # does the question classifier block only what it should?
 python -m eval.eval_stt                # speech to text word error rate and speed (needs recordings, see below)
 python scripts/measure_latency.py      # how long each step takes
 ```

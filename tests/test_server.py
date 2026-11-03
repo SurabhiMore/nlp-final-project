@@ -10,6 +10,10 @@ Rules (see tests/README.md):
 - Use the `client` fixture for all server tests.
 """
 
+import json
+
+import pytest
+
 EXHIBIT = "van-gogh"
 QUESTION = "When were you born?"
 
@@ -138,3 +142,79 @@ def test_ask_detected_language_in_response_and_log(client, tmp_path, monkeypatch
     with open(log_file, encoding="utf-8") as f:
         log_entry = json.loads(f.readline())
     assert log_entry.get("detected_language") == "es"
+
+
+# ------------------------------------------------------------------ question classifier (issue #52)
+
+
+@pytest.fixture
+def pipeline_calls(monkeypatch):
+    """Record calls to search and the language model, and let them run as usual."""
+    from app import server
+
+    calls = []
+    retrieve, answer = server.retrieval.retrieve, server.persona_engine.answer
+
+    def spy_retrieve(*args, **kwargs):
+        calls.append("search")
+        return retrieve(*args, **kwargs)
+
+    def spy_answer(*args, **kwargs):
+        calls.append("model")
+        return answer(*args, **kwargs)
+
+    monkeypatch.setattr(server.retrieval, "retrieve", spy_retrieve)
+    monkeypatch.setattr(server.persona_engine, "answer", spy_answer)
+    return calls
+
+
+def test_ask_skips_search_and_the_model_on_an_off_topic_question(client, pipeline_calls):
+    response = client.post("/ask", data={"persona": EXHIBIT, "text": "What is 17 times 23?"})
+    assert response.status_code == 200
+    body = response.json()
+    assert pipeline_calls == []
+    assert body["status"] == "declined"
+    assert body["citations"] == []
+
+
+def test_ask_gives_a_blocked_question_the_normal_response(client, pipeline_calls):
+    normal = client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION}).json()
+    blocked = client.post("/ask", data={"persona": EXHIBIT, "text": "What is 17 times 23?"}).json()
+    assert set(blocked) == set(normal)
+    assert blocked["sentences"], "the page speaks the sentences, so a decline needs them too"
+    assert blocked["sound"] is None
+
+
+def test_ask_gives_a_later_year_the_outside_time_line(client, pipeline_calls):
+    body = client.post("/ask", data={"persona": EXHIBIT, "text": "Did you see the 1956 film?"}).json()
+    assert pipeline_calls == []
+    assert body["status"] == "outside_time"
+    assert body["answer"] == "That came after my time, so I cannot know it."
+
+
+def test_ask_uses_the_plain_guide_line_in_neutral_mode(client, pipeline_calls):
+    data = {"persona": EXHIBIT, "text": "Did you see the 1956 film?", "mode": "neutral"}
+    body = client.post("/ask", data=data).json()
+    assert body["answer"] == "That came after Vincent van Gogh's time, so Vincent van Gogh could not have known it."
+
+
+def test_a_blocked_question_is_logged_as_the_classifier(client, tmp_path, pipeline_calls):
+    client.post("/ask", data={"persona": EXHIBIT, "text": "What is 17 times 23?"})
+    entry = json.loads((tmp_path / "qa_log.jsonl").read_text(encoding="utf-8").splitlines()[-1])
+    assert entry["model"] == "classifier"
+    assert entry["status"] == "declined"
+    assert entry["retrieved"] == []
+    assert "llm_ms" not in entry["timings"] and "total_ms" in entry["timings"]
+
+
+def test_ask_still_runs_the_pipeline_on_a_real_question(client, pipeline_calls):
+    client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION})
+    assert pipeline_calls == ["search", "model"]
+
+
+def test_enable_classifier_0_restores_the_old_behaviour(client, tmp_path, pipeline_calls, monkeypatch):
+    monkeypatch.setenv("ENABLE_CLASSIFIER", "0")
+    client.post("/ask", data={"persona": EXHIBIT, "text": "What is 17 times 23?"})
+    assert pipeline_calls == ["search", "model"]
+    entry = json.loads((tmp_path / "qa_log.jsonl").read_text(encoding="utf-8").splitlines()[-1])
+    assert entry["model"] != "classifier"
