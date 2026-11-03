@@ -1,0 +1,287 @@
+[
+  {
+    "id": "vg-multi-01",
+    "question": "¿Cuándo y dónde naciste?",
+    "response": {
+      "request_id": "c51c51288d46",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "¿Cuándo y dónde naciste?",
+      "detected_language": "es",
+      "search_query": "when and where born",
+      "passages": 8,
+      "status": "answered",
+      "answer": "Nací el 30 de marzo de 1853 en Groot‑Zundert, en la provincia de Brabante del Norte, Países Bajos.",
+      "sentences": [
+        "Nací el 30 de marzo de 1853 en Groot‑Zundert,",
+        "en la provincia de Brabante del Norte, Países Bajos."
+      ],
+      "citations": [
+        {
+          "id": "van-gogh-wiki-0007",
+          "source": "Wikipedia: Vincent van Gogh",
+          "url": "https://en.wikipedia.org/w/index.php?title=Vincent_van_Gogh&oldid=1377111568",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Vincent Willem van Gogh was born on 30 March 1853 in Groot-Zundert, in the predominantly Catholic province of North Brabant in the Netherlands. He was the oldest surviving child of Theodorus van Gogh (1822–1885), a minis"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 607,
+        "llm_ms": 795,
+        "total_ms": 1402
+      }
+    }
+  },
+  {
+    "id": "vg-multi-02",
+    "question": "¿Cuál era el trabajo de tu hermano Theo en París?",
+    "response": {
+      "request_id": "f83784832781",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "¿Cuál era el trabajo de tu hermano Theo en París?",
+      "detected_language": "es",
+      "search_query": "Theo brother job Paris",
+      "passages": 8,
+      "status": "not_in_sources",
+      "answer": "Mis fuentes no dicen nada al respecto.",
+      "sentences": [
+        "Mis fuentes no dicen nada al respecto."
+      ],
+      "citations": [],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 708,
+        "llm_ms": 550,
+        "total_ms": 1258
+      }
+    }
+  },
+  {
+    "id": "vg-multi-03",
+    "question": "¿Cuántas versiones de El dormitorio pintaste?",
+    "response": {
+      "request_id": "87ba9169267a",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "¿Cuántas versiones de El dormitorio pintaste?",
+      "detected_language": "es",
+      "search_query": "how many versions of The Bedroom painted",
+      "passages": 8,
+      "status": "answered",
+      "answer": "Pinté tres versiones de El dormitorio.",
+      "sentences": [
+        "Pinté tres versiones de El dormitorio."
+      ],
+      "citations": [
+        {
+          "id": "van-gogh-aic-0000",
+          "source": "Art Institute of Chicago",
+          "url": "https://www.artic.edu/artworks/28560",
+          "licence": "CC BY 4.0 (Art Institute of Chicago descriptions)",
+          "snippet": "The Bedroom (1889). Oil on canvas. Perhaps the most famous depiction of a bedroom in Western art history, this vibrant painting documents Vincent van Gogh’s sleeping quarters in his beloved “Yellow House” in Arles, Franc"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 568,
+        "llm_ms": 8302,
+        "total_ms": 8870
+      }
+    }
+  },
+  {
+    "id": "vg-multi-04",
+    "question": "आपका जन्म कब और कहाँ हुआ था?",
+    "response": {
+      "request_id": "c17e43f60655",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "आपका जन्म कब और कहाँ हुआ था?",
+      "detected_language": "hi",
+      "search_query": "birth date and birthplace",
+      "passages": 8,
+      "status": "answered",
+      "answer": "मैं 30 मार्च 1853 को नॉर्थ ब्राबैंट के ग्रूट‑ज़ुंडर्ट में जन्मा था।",
+      "sentences": [
+        "मैं 30 मार्च 1853 को नॉर्थ ब्राबैंट के ग्रूट‑ज़ुंडर्ट में जन्मा था।"
+      ],
+      "citations": [
+        {
+          "id": "van-gogh-wiki-0007",
+          "source": "Wikipedia: Vincent van Gogh",
+          "url": "https://en.wikipedia.org/w/index.php?title=Vincent_van_Gogh&oldid=1377111568",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Vincent Willem van Gogh was born on 30 March 1853 in Groot-Zundert, in the predominantly Catholic province of North Brabant in the Netherlands. He was the oldest surviving child of Theodorus van Gogh (1822–1885), a minis"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 610,
+        "llm_ms": 17822,
+        "total_ms": 18432
+      }
+    }
+  },
+  {
+    "id": "vg-multi-05",
+    "question": "पेरिस में आपके भाई थियो का क्या काम था?",
+    "response": {
+      "request_id": "423d4133985b",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "पेरिस में आपके भाई थियो का क्या काम था?",
+      "detected_language": "hi",
+      "search_query": "Theo brother job Paris",
+      "passages": 8,
+      "status": "not_in_sources",
+      "answer": "मेरे स्रोतों में इसके बारे में कुछ नहीं कहा गया है।",
+      "sentences": [
+        "मेरे स्रोतों में इसके बारे में कुछ नहीं कहा गया है।"
+      ],
+      "citations": [],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 509,
+        "llm_ms": 18027,
+        "total_ms": 18536
+      }
+    }
+  },
+  {
+    "id": "vg-multi-06",
+    "question": "आपने द बेडरूम पेंटिंग के कितने संस्करण बनाए थे?",
+    "response": {
+      "request_id": "32023a17a8cf",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "आपने द बेडरूम पेंटिंग के कितने संस्करण बनाए थे?",
+      "detected_language": "hi",
+      "search_query": "how many versions of the bedroom painting were made",
+      "passages": 8,
+      "status": "answered",
+      "answer": "मैंने बेडरूम की पेंटिंग के तीन संस्करण बनाए थे।",
+      "sentences": [
+        "मैंने बेडरूम की पेंटिंग के तीन संस्करण बनाए थे।"
+      ],
+      "citations": [
+        {
+          "id": "van-gogh-aic-0000",
+          "source": "Art Institute of Chicago",
+          "url": "https://www.artic.edu/artworks/28560",
+          "licence": "CC BY 4.0 (Art Institute of Chicago descriptions)",
+          "snippet": "The Bedroom (1889). Oil on canvas. Perhaps the most famous depiction of a bedroom in Western art history, this vibrant painting documents Vincent van Gogh’s sleeping quarters in his beloved “Yellow House” in Arles, Franc"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 810,
+        "llm_ms": 21511,
+        "total_ms": 22321
+      }
+    }
+  },
+  {
+    "id": "vg-multi-07",
+    "question": "तुमचा जन्म कधी आणि कुठे झाला होता?",
+    "response": {
+      "request_id": "684bc33f5de7",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "तुमचा जन्म कधी आणि कुठे झाला होता?",
+      "detected_language": "mr",
+      "search_query": "birth date and place",
+      "passages": 8,
+      "status": "answered",
+      "answer": "मी ३० मार्च १८५३ रोजी ग्रूट‑झुंडर्ट, नॉर्थ ब्राबँट, नेदरलँड्स येथे जन्मलो.",
+      "sentences": [
+        "मी ३० मार्च १८५३ रोजी ग्रूट‑झुंडर्ट,",
+        "नॉर्थ ब्राबँट, नेदरलँड्स येथे जन्मलो."
+      ],
+      "citations": [
+        {
+          "id": "van-gogh-wiki-0007",
+          "source": "Wikipedia: Vincent van Gogh",
+          "url": "https://en.wikipedia.org/w/index.php?title=Vincent_van_Gogh&oldid=1377111568",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Vincent Willem van Gogh was born on 30 March 1853 in Groot-Zundert, in the predominantly Catholic province of North Brabant in the Netherlands. He was the oldest surviving child of Theodorus van Gogh (1822–1885), a minis"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 591,
+        "llm_ms": 18247,
+        "total_ms": 18838
+      }
+    }
+  },
+  {
+    "id": "vg-multi-08",
+    "question": "पॅरिसमध्ये तुमच्या भावाचे थिओचे काय काम होते?",
+    "response": {
+      "request_id": "6be70e72a443",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "पॅरिसमध्ये तुमच्या भावाचे थिओचे काय काम होते?",
+      "detected_language": "mr",
+      "search_query": "Theo job Paris",
+      "passages": 8,
+      "status": "not_in_sources",
+      "answer": "माझा भाव थिओ पॅरिसमध्ये कला व्यापारी म्हणून काम करीत होता, पण माझ्या स्रोतांमध्ये त्याचे काम स्पष्टपणे नमूद नाही.",
+      "sentences": [
+        "माझा भाव थिओ पॅरिसमध्ये कला व्यापारी म्हणून काम करीत होता,",
+        "पण माझ्या स्रोतांमध्ये त्याचे काम स्पष्टपणे नमूद नाही."
+      ],
+      "citations": [],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 613,
+        "llm_ms": 15802,
+        "total_ms": 16415
+      }
+    }
+  },
+  {
+    "id": "vg-multi-09",
+    "question": "तुम्ही द बेडरूम या चित्राच्या किती आवृत्त्या काढल्या?",
+    "response": {
+      "request_id": "f480208d2661",
+      "persona": "van-gogh",
+      "mode": "persona",
+      "question": "तुम्ही द बेडरूम या चित्राच्या किती आवृत्त्या काढल्या?",
+      "detected_language": "mr",
+      "search_query": "The Bedroom painting how many versions",
+      "passages": 8,
+      "status": "answered",
+      "answer": "मी 'द बेडरूम'चे तीन आवृत्त्या काढल्या आहेत.",
+      "sentences": [
+        "मी 'द बेडरूम'चे तीन आवृत्त्या काढल्या आहेत."
+      ],
+      "citations": [
+        {
+          "id": "van-gogh-aic-0000",
+          "source": "Art Institute of Chicago",
+          "url": "https://www.artic.edu/artworks/28560",
+          "licence": "CC BY 4.0 (Art Institute of Chicago descriptions)",
+          "snippet": "The Bedroom (1889). Oil on canvas. Perhaps the most famous depiction of a bedroom in Western art history, this vibrant painting documents Vincent van Gogh’s sleeping quarters in his beloved “Yellow House” in Arles, Franc"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 2631,
+        "llm_ms": 21104,
+        "total_ms": 23735
+      }
+    }
+  }
+]

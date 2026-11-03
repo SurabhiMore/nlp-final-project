@@ -44,6 +44,34 @@ from pipeline import config
 
 STATUSES = ("answered", "not_in_sources", "outside_time", "declined")
 DECLINED_STATUSES = {"not_in_sources", "outside_time", "declined"}
+SUPPORTED_LANGUAGES = {"en", "hi", "mr", "kn", "es"}
+NON_ENGLISH_LANGUAGES = {"hi", "mr", "kn", "es"}
+LANGUAGE_NAMES = {
+    "hi": "Hindi",
+    "mr": "Marathi",
+    "kn": "Kannada",
+    "es": "Spanish",
+    "en": "English",
+}
+
+
+def detect_language(text):
+    """Detect language of text. Returns an ISO 639-1 code: en, hi, mr, kn, or es.
+
+    Never raises; falls back to 'en' for short or ambiguous input.
+    """
+    if not text or not isinstance(text, str):
+        return "en"
+    clean = text.strip()
+    if len(clean) < 4:
+        return "en"
+    try:
+        from langdetect import detect, DetectorFactory
+        DetectorFactory.seed = 0
+        lang = detect(clean)
+        return lang if lang in SUPPORTED_LANGUAGES else "en"
+    except Exception:
+        return "en"
 
 def _output_rules(sound_names=()):
     exception = "introducing yourself or making a sound" if sound_names else "introducing yourself"
@@ -172,7 +200,14 @@ def _passages_block(chunks):
 def build_messages(persona, question, chunks, mode="persona"):
     if mode not in ("persona", "neutral"):
         raise ValueError("mode must be 'persona' or 'neutral'")
+    lang = detect_language(question)
     system = _persona_prompt(persona) if mode == "persona" else _neutral_prompt(persona)
+    if lang in NON_ENGLISH_LANGUAGES:
+        lang_name = LANGUAGE_NAMES[lang]
+        system += (
+            f"\n\nReply entirely in {lang_name}. Do not reply in English; translate the facts "
+            f"from the passages into {lang_name} while keeping citation IDs in English."
+        )
     user = f"Passages:\n\n{_passages_block(chunks)}\n\nVisitor's question: {question}\n\nReply with JSON only."
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
@@ -277,28 +312,100 @@ def parse_reply(text, allowed_ids, allowed_sounds=()):
 # know it", "I can only help with...". In our evaluation the model sometimes set a decline
 # status but then answered anyway from its own knowledge ("rex is Latin for king"), with
 # nothing to cite. A decline without any of these words is replaced with a fixed line.
-_SAYS_NO = re.compile(r"\b(?:not|no|never|cannot|nothing|only|beyond)\b|n't\b", re.I)
+_SAYS_NO = re.compile(
+    r"\b(?:not|no|never|cannot|nothing|only|beyond)\b|n't\b"
+    r"|\b(?:nunca|nada|tampoco|ningun|ninguna|ninguno)\b"
+    r"|(?:नहीं|कुछ नहीं)"
+    r"|(?:नाही|नाहीत|काही नाही|नव्हते)",
+    re.I
+)
 # Greetings and "who are you" questions are answered from persona.json, not from passages,
 # so they may be answered without a citation (rule 6 and 7 of the prompt).
+# Patterns cover English, Spanish ("hola", "quién eres", "eres real"), Hindi ("नमस्ते",
+# "आप कौन हैं/हो", "क्या आप असली"), and Marathi ("तुम्ही कोण आहात", "तुम्ही खरे").
 _ABOUT_YOU = re.compile(
     r"^\W*(?:hi|hello|hey|good (?:morning|afternoon|evening)|greetings)\b"
-    r"|\bwho (?:are|r) (?:you|u)\b|\bwhat are you\b|\bintroduce yourself\b|\bare you (?:real|an? ai|a robot)\b",
-    re.I)
+    r"|\bwho (?:are|r) (?:you|u)\b|\bwhat are you\b|\bintroduce yourself\b|\bare you (?:real|an? ai|a robot)\b"
+    # Spanish greetings & identity
+    r"|\b(?:hola|buenos d[ií]as|buenas tardes|buenas noches)\b"
+    r"|qui[eé]n (?:eres|es usted)|eres (?:real|una? ia|un robot)"
+    # Hindi greetings & identity
+    r"|नमस्ते|नमस्कार|प्रणाम"
+    r"|आप कौन (?:हैं|हो)|तुम कौन हो|क्या आप (?:असली|एआई|रोबोट)"
+    # Marathi identity
+    r"|तुम्ही कोण आहात|तुम्ही (?:खरे|एआय|रोबोट)",
+    re.I | re.UNICODE)
 
-
-def _fixed_line(status, persona, mode):
-    name = persona["name"]
-    if mode == "persona":
-        return {
+_FIXED_LINES = {
+    "en": {
+        "persona": {
             "not_in_sources": "My sources do not say anything about that.",
             "outside_time": "That came after my time, so I cannot know it.",
             "declined": "That is not something I can talk about here. Ask me about my own story instead.",
-        }[status]
-    return {
-        "not_in_sources": "The sources do not say anything about that.",
-        "outside_time": f"That came after {name}'s time, so {name} could not have known it.",
-        "declined": f"I can only answer questions about {name} and the museum.",
-    }[status]
+        },
+        "neutral": {
+            "not_in_sources": "The sources do not say anything about that.",
+            "outside_time": "That came after {name}'s time, so {name} could not have known it.",
+            "declined": "I can only answer questions about {name} and the museum.",
+        },
+    },
+    "es": {
+        "persona": {
+            "not_in_sources": "Mis fuentes no dicen nada al respecto.",
+            "outside_time": "Eso ocurrió después de mi época, así que no puedo saberlo.",
+            "declined": "No puedo hablar de eso aquí. Pregúntame sobre mi propia historia.",
+        },
+        "neutral": {
+            "not_in_sources": "Las fuentes no dicen nada al respecto.",
+            "outside_time": "Eso ocurrió después de la época de {name}, por lo que {name} no pudo haberlo sabido.",
+            "declined": "Solo puedo responder preguntas sobre {name} y el museo.",
+        },
+    },
+    "hi": {
+        "persona": {
+            "not_in_sources": "मेरे स्रोतों में इसके बारे में कुछ नहीं कहा गया है।",
+            "outside_time": "यह मेरे समय के बाद की बात है, इसलिए मैं इसे नहीं जान सकता।",
+            "declined": "मैं यहाँ इसके बारे में बात नहीं कर सकता। इसके बजाय मुझसे मेरी कहानी के बारे में पूछें।",
+        },
+        "neutral": {
+            "not_in_sources": "स्रोतों में इसके बारे में कुछ नहीं कहा गया है।",
+            "outside_time": "यह {name} के समय के बाद की बात है, इसलिए {name} इसे नहीं जान सकते थे।",
+            "declined": "मैं केवल {name} और संग्रहालय के बारे में सवालों के जवाब दे सकता हूँ।",
+        },
+    },
+    "mr": {
+        "persona": {
+            "not_in_sources": "माझ्या स्त्रोतांमध्ये याबद्दल काहीही सांगितलेले नाही.",
+            "outside_time": "ते माझ्या काळानंतरचे आहे, त्यामुळे मला ते माहित असणे शक्य नाही.",
+            "declined": "मी इथे या विषयावर बोलू शकत नाही. त्याऐवजी मला माझ्या स्वतःच्या कथेबद्दल विचारा.",
+        },
+        "neutral": {
+            "not_in_sources": "स्त्रोतांमध्ये याबद्दल काहीही सांगितलेले नाही.",
+            "outside_time": "ते {name} यांच्या काळानंतरचे आहे, त्यामुळे {name} यांना ते माहित असणे शक्य नव्हते.",
+            "declined": "मी फक्त {name} आणि संग्रहालयाबद्दलच्या प्रश्नांची उत्तरे देऊ शकतो.",
+        },
+    },
+    "kn": {
+        "persona": {
+            "not_in_sources": "ನನ್ನ ಮೂಲಗಳಲ್ಲಿ ಇದರ ಬಗ್ಗೆ ಏನೂ ಹೇಳಲಾಗಿಲ್ಲ.",
+            "outside_time": "ಅದು ನನ್ನ ಕಾಲದ ನಂತರ ಬಂದದ್ದು, ಆದ್ದರಿಂದ ನನಗೆ ಅದು ತಿಳಿದಿರಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+            "declined": "ನಾನು ಇಲ್ಲಿ ಅದರ ಬಗ್ಗೆ ಮಾತನಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ. ಬದಲಿಗೆ ನನ್ನ ಕಥೆಯ ಬಗ್ಗೆ ಕೇಳಿ.",
+        },
+        "neutral": {
+            "not_in_sources": "ಮೂಲಗಳಲ್ಲಿ ಇದರ ಬಗ್ಗೆ ಏನೂ ಹೇಳಲಾಗಿಲ್ಲ.",
+            "outside_time": "ಅದು {name} ಅವರ ಕಾಲದ ನಂತರದ್ದು, ಆದ್ದರಿಂದ {name} ಅವರಿಗೆ ಅದು ತಿಳಿದಿರಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+            "declined": "ನಾನು ಕೇವಲ {name} ಮತ್ತು ವಸ್ತುಸಂಗ್ರಹಾಲಯದ ಬಗ್ಗೆ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ.",
+        },
+    },
+}
+
+
+def _fixed_line(status, persona, mode, lang="en"):
+    name = persona["name"]
+    lang_lines = _FIXED_LINES.get(lang, _FIXED_LINES["en"])
+    mode_lines = lang_lines.get(mode, lang_lines["persona"])
+    template = mode_lines.get(status, _FIXED_LINES["en"][mode][status])
+    return template.format(name=name)
 
 
 def check_reply(result, persona, question, mode="persona"):
@@ -316,17 +423,65 @@ def check_reply(result, persona, question, mode="persona"):
     """
     result = dict(result)
     result["check"] = None
+    lang = detect_language(question)
     if result.get("parse_error") or not (result.get("answer", "").strip() or result.get("sound")):
-        result.update(answer=_fixed_line("not_in_sources", persona, mode), status="not_in_sources",
+        result.update(answer=_fixed_line("not_in_sources", persona, mode, lang=lang), status="not_in_sources",
                       citations=[], sound=None, check="unreadable_reply")
     elif result["status"] == "answered":
         if not result["citations"] and not result.get("sound") and not _ABOUT_YOU.search(question or ""):
-            result.update(answer=_fixed_line("not_in_sources", persona, mode), status="not_in_sources",
+            result.update(answer=_fixed_line("not_in_sources", persona, mode, lang=lang), status="not_in_sources",
                           check="uncited_answer")
     elif not _SAYS_NO.search(result["answer"].replace("\u2019", "'")):
-        result.update(answer=_fixed_line(result["status"], persona, mode), citations=[],
+        result.update(answer=_fixed_line(result["status"], persona, mode, lang=lang), citations=[],
                       check="decline_that_answers")
     return result
+
+
+def translate_for_search(question):
+    """Translate non-English question to English keywords for BM25 search.
+
+    Uses _call_llm so it gets the same retry logic, 429 handling, and
+    reasoning_effort stripping as the main answer path. Leaves English
+    questions untouched. If offline or translation fails, returns the
+    original question safely.
+    """
+    lang = detect_language(question)
+    if lang not in NON_ENGLISH_LANGUAGES:
+        return question
+    s = settings()
+    if s["provider"] == "offline" or not s["base_url"] or not s["model"]:
+        return question
+    # Use a short timeout so a slow translation never blocks the full answer.
+    s_fast = dict(s, timeout=min(s["timeout"], 10))
+    messages = [
+        {"role": "system", "content": 'You are a translator. Translate this visitor question into plain English keywords for search. Reply with a JSON object: {"translation": "english search keywords"}'},
+        {"role": "user", "content": question},
+    ]
+    try:
+        content = _call_llm(messages, s_fast)
+        if not content:
+            return question
+        content = content.strip()
+        # Parse JSON if the model replied with a JSON object (due to response_format: json_object)
+        if "{" in content and "}" in content:
+            try:
+                json_str = content[content.find("{"):content.rfind("}") + 1]
+                data = json.loads(json_str)
+                if isinstance(data, dict):
+                    for key in ("translation", "keywords", "query", "english", "search", "text"):
+                        if isinstance(data.get(key), str) and data[key].strip():
+                            return data[key].strip()
+                    for val in data.values():
+                        if isinstance(val, str) and val.strip():
+                            return val.strip()
+            except Exception:
+                pass
+        content = content.strip('"\n`* ')
+        if content:
+            return content
+    except Exception:
+        pass
+    return question
 
 
 def _offline_answer(chunks):
@@ -341,7 +496,7 @@ def _offline_answer(chunks):
 
 
 def answer(persona_id, question, chunks, mode="persona"):
-    """Answer one question. Returns answer, status, citations, sound, model and llm_ms."""
+    """Answer one question. Returns answer, status, citations, sound, model, detected_language and llm_ms."""
     persona = config.load_persona(persona_id)
     s = settings()
     start = time.perf_counter()
@@ -354,6 +509,7 @@ def answer(persona_id, question, chunks, mode="persona"):
     result = check_reply(result, persona, question, mode)
     result["model"] = model_label()
     result["mode"] = mode
+    result["detected_language"] = detect_language(question)
     result["llm_ms"] = round((time.perf_counter() - start) * 1000)
     if result["status"] == "answered" and not result["citations"] and not result.get("sound"):
         result["warning"] = "answered without citing a passage"

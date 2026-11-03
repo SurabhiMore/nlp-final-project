@@ -212,10 +212,12 @@ async def ask(
 
     # Clearly off-topic questions skip the search and the language model (pipeline/classifier.py).
     chunks = []
+    search_query = question
     result = classifier.short_circuit(question, exhibit, mode) if classifier else None
     if result is None:
         start = time.perf_counter()
-        chunks = retrieval.retrieve(persona, question, k=TOP_K)
+        search_query = persona_engine.translate_for_search(question) if persona_engine else question
+        chunks = retrieval.retrieve(persona, search_query, k=TOP_K)
         timings["retrieval_ms"] = _ms(start)
 
         start = time.perf_counter()
@@ -266,6 +268,7 @@ async def ask(
 
     timings["total_ms"] = _ms(total_start)
 
+    detected_lang = result.get("detected_language") or (persona_engine.detect_language(question) if persona_engine else "en")
     _write_log({
         "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "request_id": request_id,
@@ -274,6 +277,8 @@ async def ask(
         "mode": mode,
         "input": source,
         "question": question,
+        "detected_language": detected_lang,
+        "search_query": search_query,
         "heard": heard,
         "edited": bool(heard) and heard != question,
         "retrieved": [{"id": c["id"], "score": round(float(c.get("score", 0)), 3)} for c in chunks],
@@ -291,6 +296,9 @@ async def ask(
         "persona": persona,
         "mode": mode,
         "question": question,
+        "detected_language": detected_lang,
+        "search_query": search_query,
+        "passages": len(chunks),
         "status": result["status"],
         "answer": result["answer"],
         "sentences": sentences,

@@ -212,7 +212,7 @@ def test_ask_returns_the_same_fields_when_the_model_reply_is_broken(client, mode
     assert response.status_code == 200
     body = response.json()
     assert set(body) == {"request_id", "persona", "mode", "question", "status", "answer", "sentences",
-                         "citations", "sound", "audio", "timings"}
+                         "citations", "sound", "audio", "timings", "detected_language", "search_query", "passages"}
     assert body["status"] == "not_in_sources"
     assert body["citations"] == []
 
@@ -236,3 +236,145 @@ def test_evaluation_scores_the_same_reply_before_and_after():
     assert summary["all"]["before"]["unsupported_text_shown"] == 1
     assert summary["all"]["after"]["unsupported_text_shown"] == 0
     assert summary["all"]["after"]["changed_by_check"] == {"decline_that_answers": 1}
+
+
+# ---------------------------------------------------------------- multilingual questions (issue #50)
+
+@pytest.mark.parametrize("text, expected", [
+    ("आपका जन्म कब और कहाँ हुआ था?", "hi"),
+    ("¿Cuándo y dónde naciste?", "es"),
+    ("तुमचा जन्म कधी आणि कुठे झाला होता?", "mr"),
+    ("When and where were you born?", "en"),
+    ("", "en"),
+    ("   ", "en"),
+    ("a", "en"),
+    ("hi", "en"),
+    ("12345", "en"),
+    ("???", "en"),
+])
+def test_detect_language(text, expected):
+    assert engine.detect_language(text) == expected
+
+
+def test_build_messages_appends_multilingual_instruction():
+    persona = config.load_persona("van-gogh")
+    chunks = [{"id": "chunk-1", "source": "Letters", "text": "Some text"}]
+
+    # Spanish question
+    messages_es = engine.build_messages(persona, "¿Cuándo y dónde naciste?", chunks)
+    system_es = messages_es[0]["content"]
+    assert "Reply entirely in Spanish." in system_es
+    assert "while keeping citation IDs in English." in system_es
+
+    # Hindi question
+    messages_hi = engine.build_messages(persona, "आपका जन्म कब और कहाँ हुआ था?", chunks)
+    system_hi = messages_hi[0]["content"]
+    assert "Reply entirely in Hindi." in system_hi
+    assert "while keeping citation IDs in English." in system_hi
+
+    # Marathi question
+    messages_mr = engine.build_messages(persona, "तुमचा जन्म कधी आणि कुठे झाला होता?", chunks)
+    system_mr = messages_mr[0]["content"]
+    assert "Reply entirely in Marathi." in system_mr
+    assert "while keeping citation IDs in English." in system_mr
+
+    # English question should not have multilingual instruction
+    messages_en = engine.build_messages(persona, "When and where were you born?", chunks)
+    system_en = messages_en[0]["content"]
+    assert "while keeping citation IDs in English." not in system_en
+
+
+def test_answer_includes_detected_language(model_says):
+    q, passages, support = frozen("van-gogh", "vg-04")
+    cited = next(p["id"] for p in passages if p["id"] in support)
+    model_says(reply("Llegué a Arles en febrero de 1888.", citations=[cited]))
+    result = engine.answer("van-gogh", "¿Cuándo llegaste a la ciudad de Arles?", passages)
+    assert result["detected_language"] == "es"
+    assert result["status"] == "answered"
+
+
+def test_check_reply_preserves_multilingual_declines():
+    persona = config.load_persona("van-gogh")
+    reply_hi = {"answer": "मेरे स्रोतों में इस बारे में कोई जानकारी नहीं है।", "status": "not_in_sources", "citations": []}
+    checked_hi = engine.check_reply(reply_hi, persona, "आपका जन्म कब हुआ था?")
+    assert checked_hi["check"] is None
+    assert checked_hi["answer"] == reply_hi["answer"]
+
+    reply_es = {"answer": "Mis fuentes no dicen nada al respecto.", "status": "not_in_sources", "citations": []}
+    checked_es = engine.check_reply(reply_es, persona, "¿Cuándo naciste?")
+    assert checked_es["check"] is None
+    assert checked_es["answer"] == reply_es["answer"]
+
+
+def test_check_reply_uses_localized_fixed_line():
+    persona = config.load_persona("van-gogh")
+    broken_reply = {"answer": "", "status": "answered", "citations": [], "parse_error": True}
+    checked_hi = engine.check_reply(broken_reply, persona, "आपका जन्म कब हुआ था?")
+    assert checked_hi["status"] == "not_in_sources"
+    assert "मेरे स्रोतों में" in checked_hi["answer"]
+
+    checked_es = engine.check_reply(broken_reply, persona, "¿Cuándo naciste?")
+    assert checked_es["status"] == "not_in_sources"
+    assert "Mis fuentes no dicen nada" in checked_es["answer"]
+
+
+def test_translate_for_search_returns_english_or_fallback(monkeypatch):
+    assert engine.translate_for_search("When were you born?") == "When were you born?"
+    monkeypatch.setenv("LLM_PROVIDER", "offline")
+    assert engine.translate_for_search("¿Cuándo naciste?") == "¿Cuándo naciste?"
+
+
+# ---------------------------------------------------------------- _SAYS_NO regression: bare ना must not match mid-word
+
+def test_says_no_does_not_match_na_inside_words():
+    """ना on its own was a false trigger; it must not fire inside words like नाम or बनाना."""
+    # नाम (name) and बनाना (to make) both contain 'ना' but must NOT be treated as a decline.
+    import re
+    # They should NOT match the pattern
+    assert not engine._SAYS_NO.search("नाम क्या है")
+    assert not engine._SAYS_NO.search("बनाना चाहता हूँ")
+    # But a real Hindi decline should still match
+    assert engine._SAYS_NO.search("मुझे नहीं पता")
+
+
+# ---------------------------------------------------------------- _ABOUT_YOU covers multilingual greetings/identity
+
+@pytest.mark.parametrize("question", [
+    # Hindi
+    "नमस्ते",
+    "आप कौन हैं?",
+    "आप कौन हो?",
+    "तुम कौन हो?",
+    "क्या आप असली हैं?",
+    # Marathi
+    "तुम्ही कोण आहात?",
+    "तुम्ही खरे आहात का?",
+    # Spanish
+    "Hola",
+    "¿Quién eres?",
+    "quien eres",
+    "¿eres real?",
+])
+def test_about_you_matches_multilingual_identity_questions(question):
+    """Identity questions in Hindi, Marathi, and Spanish must not become not_in_sources."""
+    assert engine._ABOUT_YOU.search(question), (
+        f"_ABOUT_YOU did not match {question!r} — it will incorrectly return not_in_sources"
+    )
+
+
+def test_translate_for_search_cleans_json_responses(monkeypatch):
+    """When the LLM runs in JSON mode and returns {"translation": "..."}, translate_for_search
+    must extract the clean string rather than passing raw JSON to the BM25 tokenizer."""
+    monkeypatch.setenv("LLM_PROVIDER", "openai_compatible")
+    monkeypatch.setenv("LLM_BASE_URL", "http://model.invalid/v1")
+    monkeypatch.setenv("LLM_MODEL", "mock-model")
+
+    monkeypatch.setattr(engine, "_call_llm", lambda msgs, s: '{"translation": "when and where were you born"}')
+    assert engine.translate_for_search("¿Cuándo y dónde naciste?") == "when and where were you born"
+
+    monkeypatch.setattr(engine, "_call_llm", lambda msgs, s: '{"keywords": "three versions of the bedroom"}')
+    assert engine.translate_for_search("आपने द बेडरूम पेंटिंग के कितने संस्करण बनाए थे?") == "three versions of the bedroom"
+
+    # Raw string (non-JSON) fallback
+    monkeypatch.setattr(engine, "_call_llm", lambda msgs, s: "when and where were you born")
+    assert engine.translate_for_search("¿Cuándo y dónde naciste?") == "when and where were you born"
