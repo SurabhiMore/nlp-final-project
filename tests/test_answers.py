@@ -263,17 +263,20 @@ def test_build_messages_appends_multilingual_instruction():
     # Spanish question
     messages_es = engine.build_messages(persona, "¿Cuándo y dónde naciste?", chunks)
     system_es = messages_es[0]["content"]
-    assert "Reply in Spanish while keeping citation IDs in English." in system_es
+    assert "Reply entirely in Spanish." in system_es
+    assert "while keeping citation IDs in English." in system_es
 
     # Hindi question
     messages_hi = engine.build_messages(persona, "आपका जन्म कब और कहाँ हुआ था?", chunks)
     system_hi = messages_hi[0]["content"]
-    assert "Reply in Hindi while keeping citation IDs in English." in system_hi
+    assert "Reply entirely in Hindi." in system_hi
+    assert "while keeping citation IDs in English." in system_hi
 
     # Marathi question
     messages_mr = engine.build_messages(persona, "तुमचा जन्म कधी आणि कुठे झाला होता?", chunks)
     system_mr = messages_mr[0]["content"]
-    assert "Reply in Marathi while keeping citation IDs in English." in system_mr
+    assert "Reply entirely in Marathi." in system_mr
+    assert "while keeping citation IDs in English." in system_mr
 
     # English question should not have multilingual instruction
     messages_en = engine.build_messages(persona, "When and where were you born?", chunks)

@@ -203,7 +203,11 @@ def build_messages(persona, question, chunks, mode="persona"):
     lang = detect_language(question)
     system = _persona_prompt(persona) if mode == "persona" else _neutral_prompt(persona)
     if lang in NON_ENGLISH_LANGUAGES:
-        system += f"\n\nReply in {LANGUAGE_NAMES[lang]} while keeping citation IDs in English."
+        lang_name = LANGUAGE_NAMES[lang]
+        system += (
+            f"\n\nReply entirely in {lang_name}. Do not reply in English; translate the facts "
+            f"from the passages into {lang_name} while keeping citation IDs in English."
+        )
     user = f"Passages:\n\n{_passages_block(chunks)}\n\nVisitor's question: {question}\n\nReply with JSON only."
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
