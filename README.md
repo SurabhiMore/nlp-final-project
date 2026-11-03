@@ -1,3 +1,13 @@
+---
+title: Echoes.ai — Interactive AI Museum Guide
+emoji: 🎙️
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Company Name - Echoes.ai
 
 ## Project Name - Interactive AI Museum
@@ -52,6 +62,49 @@ uvicorn app.server:app --reload
 Open http://localhost:8000 on the same computer. Browsers only allow the microphone on
 `localhost` or on an https site, so to test on a phone, open an https tunnel to your laptop
 (for example `cloudflared tunnel --url http://localhost:8000`) and use the link it prints.
+
+## Deploy to Hugging Face Spaces
+
+Hugging Face Spaces gives the app a free public HTTPS URL, which is required for the
+microphone to work on real phones. The `Dockerfile` at the repo root handles everything.
+
+**One-time setup:**
+
+1. Go to https://huggingface.co/spaces and create a new Space. When it asks for the SDK,
+   choose **Docker**.
+2. Add the Space as a second remote in your local clone:
+   ```
+   git remote add space https://huggingface.co/spaces/<your-org>/<your-space-name>
+   ```
+3. Under **Space Settings → Variables and secrets**, add these three secrets (not plain
+   variables — secrets are hidden in logs and never visible after you save them):
+
+   | Secret name   | What to put in it |
+   |---------------|-------------------|
+   | `LLM_API_KEY`   | Your API key (Groq, OpenAI, etc.) |
+   | `LLM_BASE_URL`  | e.g. `https://api.groq.com/openai/v1` |
+   | `LLM_MODEL`     | e.g. `openai/gpt-oss-120b` |
+
+**Deploying:**
+
+```bash
+git push space main
+```
+
+The Space will build the Docker image and start the server automatically. The first build
+takes 5–10 minutes because it downloads PyTorch and the Whisper model. Subsequent pushes
+are faster because Docker caches the dependency layer.
+
+**Checking it worked:**
+
+Once the Space shows "Running", open `https://<your-space-url>/health` in a browser. You
+should see both exhibits listed and `"status": "ok"`. Then open the root URL on your phone
+— the microphone permission prompt should appear because the connection is HTTPS.
+
+**QR codes for user tests:**
+
+The QR codes in `artifacts/` point at the live Space URL. Print one and stick it next to
+an exhibit for a hands-free user test. Scan the code, ask a question, get an answer.
 
 To rebuild the passages from the sources, run `python scripts/build_corpus.py --all`. This
 downloads the latest version of each source, so if Wikipedia has changed, the passages and

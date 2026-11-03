@@ -1,0 +1,46 @@
+# .dockerignore — tell Docker which files to leave out of the build context.
+#
+# Without this, `docker build` sends the entire repo to the Docker daemon,
+# including the .venv folder (can be gigabytes), model weight caches, and log
+# files that contain visitor questions. Keeping the context small makes builds
+# faster and avoids accidentally baking secrets or personal data into the image.
+
+# Python virtual environments — dependencies are installed fresh inside the image
+.venv/
+venv/
+
+# Byte-compiled Python files — Python will regenerate these on first import
+__pycache__/
+*.pyc
+*.pyo
+
+# Cached model weights. Models are downloaded at container start (PRELOAD_MODELS=1)
+# or on first use. Baking them in would make the image enormous and they'd go stale.
+models/
+*.npy
+personas/*/embeddings.npy
+
+# Raw source downloads used to build the corpus. These are local-only and can be
+# hundreds of MB (the Met dataset alone is 318 MB).
+personas/*/sources/
+
+# Audio files that aren't exhibit sound effects. WAV files are produced at runtime
+# by Kokoro — they're ephemeral and never need to be in the image. The T. rex roar
+# and any other committed sound effects in personas/*/sounds/ are kept.
+*.wav
+*.webm
+*.mp3
+
+# Visitor question logs. These stay out of the image — the container writes new
+# logs to its own /app/logs/ at runtime.
+logs/
+
+# Secrets. These are provided as Spaces secrets at runtime, never baked in.
+.env
+
+# Development and OS clutter
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.csv
