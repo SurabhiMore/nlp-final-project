@@ -25,7 +25,7 @@ venv/lib/python3.11/site-packages/fastapi/testclient.py:1
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================= 3 passed, 21 deselected, 1 warning in 0.38s ==================
+================= 3 passed, 21 deselected, 1 warning in 0.41s ==================
 ```
 
 | Test | Checks | Result |
@@ -34,7 +34,7 @@ venv/lib/python3.11/site-packages/fastapi/testclient.py:1
 | `test_stats_empty_log` | empty file returns 200 and zero total | PASS |
 | `test_stats_missing_log` | missing file returns 200 and p50/p95 = 0 | PASS |
 
-### Full file (`pytest tests/test_server.py -v`)
+### Full file (`pytest tests/test_server.py -v`, after `pip install -r requirements.txt`)
 
 ```
 ============================= test session starts ==============================
@@ -44,45 +44,18 @@ configfile: pytest.ini
 plugins: anyio-4.15.1
 collected 24 items
 
-tests/test_server.py ............F...........                            [100%]
+tests/test_server.py ........................                            [100%]
 
-=================================== FAILURES ===================================
-________________ test_ask_detected_language_in_response_and_log ________________
-
-client = <starlette.testclient.TestClient object at 0x10d7995d0>
-tmp_path = PosixPath('/private/var/folders/28/bxl21glx1wjfwfj24j_gjsgc0000gn/T/pytest-of-aditikaranjkar/pytest-13/test_ask_detected_language_in_0')
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10d799490>
-
-    def test_ask_detected_language_in_response_and_log(client, tmp_path, monkeypatch):
-        """Response and qa_log.jsonl must contain detected_language, search_query, and passages."""
-        import json
-        from app import server
-    
-        log_file = tmp_path / "qa_log.jsonl"
-        monkeypatch.setattr(server, "LOG_PATH", log_file)
-        response = client.post("/ask", data={"persona": EXHIBIT, "text": "¿Cuándo y dónde naciste?"})
-        assert response.status_code == 200
-        body = response.json()
->       assert body.get("detected_language") == "es"
-E       AssertionError: assert 'en' == 'es'
-E         
-E         - es
-E         + en
-
-tests/test_server.py:139: AssertionError
 =============================== warnings summary ===============================
 venv/lib/python3.11/site-packages/fastapi/testclient.py:1
   /Users/aditikaranjkar/Documents/GitHub/nlp-final-project/venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-=========================== short test summary info ============================
-FAILED tests/test_server.py::test_ask_detected_language_in_response_and_log
-=================== 1 failed, 23 passed, 1 warning in 0.45s ====================
+======================== 24 passed, 1 warning in 0.73s =========================
 ```
 
-**Known unrelated failure:** `test_ask_detected_language_in_response_and_log` (`'en' == 'es'`).
-It fails identically on the branch point with these changes stashed, so it is not caused by this PR.
+All 24 tests in the file pass, including the three new `/stats` tests.
 
 ## Manual checks (real log, 3 entries)
 
@@ -91,7 +64,7 @@ It fails identically on the branch point with these changes stashed, so it is no
 | `GET /stats` returns all five keys | PASS |
 | `/stats.html` renders four sections with matching data | PASS |
 | `scripts/report_stats.py` output matches `/stats` | PASS |
-| Footer link opens `/stats.html` | TODO: fill in after clicking |
+| Footer link opens `/stats.html` | PASS |
 
 ### `scripts/report_stats.py` output
 
