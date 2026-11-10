@@ -29,7 +29,7 @@ north_star:
 - **Claim checker in `/ask`.** [`pipeline/claims.py`](../pipeline/claims.py) now runs on every answered reply in `/ask` and logs any date, number or name the cited passages do not contain as `unbacked_claims`, also returned in the response. `ENABLE_CLAIMS=0` switches it off ([test report](../tests/results/2026-11-09_feat-integrate-claims-check.md)) (evidence: #60, PR #65).
 - **`check_reply` keeps honest "I am an AI guide" replies.** A reply that says the exhibit is an AI guide is no longer replaced when the visitor asked what the exhibit really is. An "As an AI guide, ..." reply to an ordinary question with uncited facts is still replaced. The robustness rerun on gpt-oss-120b went from 16 of 20 passed to 19 of 20, with 0 needing manual review ([results](../eval/results/robustness_results.md), [test report](../tests/results/2026-11-10_fix-check-reply-transparency.md)) (evidence: #62, PR #66).
 - **Visitor questions grouped by topic on the curator page.** [`app/stats.py`](../app/stats.py) tags each logged question with a topic using keyword rules, with no language model, and `/stats.html` and `scripts/report_stats.py` show the questions and `not_in_sources` counts per topic. 56 of 66 held-out questions are tagged right (0.848), and 29 of 30 questions real visitors asked in the user tests ([results](../eval/results/topics_results.md), [test report](../tests/results/2026-11-10_feat-curator-topic-clustering.md)) (evidence: #61, PR #67).
-- **Multilingual evaluation for T. rex and Kannada** (in progress, no PR yet). Extends the Session 9 multilingual evaluation, which covered only Van Gogh in Spanish, Hindi and Marathi, to the T. rex exhibit and adds Kannada. TODO: results, or say it moves to Session 11 (evidence: #63).
+- **Multilingual replies for T. rex, and Kannada.** The Session 9 evaluation covered only Van Gogh in Spanish, Hindi and Marathi. It now covers both exhibits and adds Kannada: 12 questions per exhibit (3 each in Spanish, Hindi, Marathi and Kannada), run through the live `/ask` endpoint on gpt-oss-120b. Language detection was 12 of 12 for each exhibit, and every reply came back in the visitor's language and script, with citation IDs kept in English. Kannada declines are no longer replaced, because `_SAYS_NO` now recognises Kannada "no" words, and Kannada has its own fixed decline lines. `eval/run_multilingual.py` takes `--persona` ([results](../eval/results/multilingual_results.md), [test report](../tests/results/2026-11-10_feat-multilingual-trex-and-kannada.md)) (evidence: #63, PR #68).
 
 ## User evidence
 - TODO: outside user tests this week, if any.
@@ -48,12 +48,12 @@ north_star:
 - Decide whether the key-fact check should accept number words and synonyms. If it changes, rescore Sessions 8 and 10 together.
 - Rerun plain-guide mode on gpt-oss-120b so `compare_modes` can use the Session 10 results.
 - Fix the knowledge-injection failure vg-adv-ki-03 ("Theo was older").
-- Finish the T. rex and Kannada multilingual evaluation and open its PR (#63).
+- Review and merge #68.
 - TODO: carry-overs from Session 9 that are still open, for example voice in other languages.
 
 ## Each member
 - **Pratham Bharati (Product):** Grouped visitor questions by topic on the curator stats page, with a labelled held-out set and an evaluation on real visitor questions (evidence: #61, PR #67).
 - **Saurabh Gujar (Engineering):** Wired the claim checker into `/ask` behind `ENABLE_CLAIMS`, with unbacked claims logged and returned (evidence: #60, PR #65).
-- **Surabhi More (Data&Eval):** Started extending the multilingual evaluation to the T. rex exhibit and Kannada, and reviewed and merged PRs #65, #66 and #67 (evidence: #63).
+- **Surabhi More (Data&Eval):** Extended the multilingual evaluation to the T. rex exhibit and added Kannada, with 24 questions across both exhibits and Kannada-aware decline checks, and reviewed and merged PRs #65, #66 and #67 (evidence: #63, PR #68).
 - **Kshiti Deshpande (Users&Research):** Fixed `check_reply` so honest "I am an AI guide" replies are kept, and reran the robustness evaluation to 19 of 20 (evidence: #62, PR #66).
 - **Aditi Karanjkar (Operations):** Reran the north star on gpt-oss-120b, wrote the Session 7, 8 and 10 comparison script and summary, and wrote this report (evidence: #64, PR TODO).

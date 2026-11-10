@@ -106,6 +106,10 @@ def test_writes_json_and_markdown(tmp_path):
 
 def test_saved_answer_results_pair_cleanly():
     data = json.loads((cm.RESULTS_DIR / "answers_results.json").read_text(encoding="utf-8"))
+    modes = {r["mode"] for r in data["answers"]}
+    if not set(cm.MODES) <= modes:
+        pytest.skip(f"answers_results.json has only {sorted(modes)} results; "
+                    "rerun eval_answers with both modes to compare them")
     pairs = cm.pair_results(data["answers"])
     assert len(pairs) == len({(r["exhibit"], r["question_id"]) for r in data["answers"]})
 
