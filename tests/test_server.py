@@ -148,6 +148,26 @@ def test_ask_detected_language_in_response_and_log(client, tmp_path, monkeypatch
     assert "search_query" in log_entry
 
 
+def test_ask_kannada_detected_and_trex(client, tmp_path, monkeypatch):
+    """Kannada questions for T. rex exhibit must return detected_language='kn' and log it."""
+    import json
+    from app import server
+
+    log_file = tmp_path / "qa_log.jsonl"
+    monkeypatch.setattr(server, "LOG_PATH", log_file)
+    response = client.post("/ask", data={"persona": "t-rex", "text": "ನೀವು ಭೂಮಿಯ ಮೇಲೆ ಯಾವಾಗ ಜೀವಿಸಿದ್ದೀರಿ?"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body.get("detected_language") == "kn"
+    assert "search_query" in body
+    assert "passages" in body
+    assert log_file.exists()
+    with open(log_file, encoding="utf-8") as f:
+        log_entry = json.loads(f.readline())
+    assert log_entry.get("detected_language") == "kn"
+
+
+
 # ------------------------------------------------------------------ question classifier (issue #52)
 
 
