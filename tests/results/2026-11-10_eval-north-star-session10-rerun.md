@@ -1,15 +1,15 @@
 # Test report
 
-- Run: 2026-11-10 15:25 (UTC-05:00)
-- Code tested: commit fb27629 on branch eval/north-star-session10-rerun, no uncommitted changes
+- Run: 2026-11-10 15:30 (UTC-05:00)
+- Code tested: commit 6e44295 on branch eval/north-star-session10-rerun, no uncommitted changes
 - Command: python -m pytest -m "slow or not slow" --save-report
 - Python 3.11.17 on Darwin
-- Result: 1 failed, 513 passed in 52.0 s
-- 1 test(s) failed or could not run.
+- Result: 513 passed, 1 skipped in 19.5 s
+- All tests that ran passed.
 
 | Test | File | Result | Time (s) |
 |---|---|---|---|
-| test_supported_answer_keeps_its_citation | test_answers.py | passed | 0.12 |
+| test_supported_answer_keeps_its_citation | test_answers.py | passed | 0.10 |
 | test_honest_not_in_sources_is_kept_as_written | test_answers.py | passed | 0.00 |
 | test_decline_that_answers_from_model_knowledge_is_replaced[rex-means-king] | test_answers.py | passed | 0.00 |
 | test_decline_that_answers_from_model_knowledge_is_replaced[theo-art-dealer] | test_answers.py | passed | 0.00 |
@@ -62,7 +62,7 @@
 | test_build_messages_appends_multilingual_instruction | test_answers.py | passed | 0.00 |
 | test_answer_includes_detected_language | test_answers.py | passed | 0.00 |
 | test_check_reply_preserves_multilingual_declines | test_answers.py | passed | 0.00 |
-| test_check_reply_uses_localized_fixed_line | test_answers.py | passed | 0.00 |
+| test_check_reply_uses_localized_fixed_line | test_answers.py | passed | 0.01 |
 | test_check_reply_keeps_uncited_ai_guide_answer | test_answers.py | passed | 0.00 |
 | test_check_reply_keeps_ai_guide_decline | test_answers.py | passed | 0.00 |
 | test_check_reply_still_replaces_ai_guide_answer_to_ordinary_question | test_answers.py | passed | 0.00 |
@@ -91,7 +91,7 @@
 | test_extract_number_words | test_claims.py | passed | 0.00 |
 | test_extract_proper_names | test_claims.py | passed | 0.00 |
 | test_unit_synonym_matching | test_claims.py | passed | 0.00 |
-| test_parenthetical_conversion_accepted | test_claims.py | passed | 0.00 |
+| test_parenthetical_conversion_accepted | test_claims.py | passed | 0.03 |
 | test_name_subtoken_matching | test_claims.py | passed | 0.00 |
 | test_exhibit_persona_tokens_never_flagged | test_claims.py | passed | 0.00 |
 | test_number_words_match_digits_bidirectionally | test_claims.py | passed | 0.00 |
@@ -242,7 +242,7 @@
 | test_missing_mode_is_rejected | test_compare_modes.py | passed | 0.00 |
 | test_failed_call_is_rejected | test_compare_modes.py | passed | 0.00 |
 | test_writes_json_and_markdown | test_compare_modes.py | passed | 0.00 |
-| test_saved_answer_results_pair_cleanly | test_compare_modes.py | failed | 0.00 |
+| test_saved_answer_results_pair_cleanly | test_compare_modes.py | skipped | 0.00 |
 | test_interval_contains_the_observed_gap | test_compare_modes.py | passed | 0.00 |
 | test_identical_modes_give_an_interval_centred_on_zero | test_compare_modes.py | passed | 0.00 |
 | test_interval_allows_a_persona_win_even_with_none_observed | test_compare_modes.py | passed | 0.00 |
@@ -258,12 +258,12 @@
 | test_regressions_and_improvements_are_reported | test_compare_retrieval.py | passed | 0.00 |
 | test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
 | test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
-| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.17 |
+| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.18 |
 | test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.45 |
 | test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
 | test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
 | test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
-| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.17 |
+| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.16 |
 | test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.45 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[t-rex] | test_datasets.py | passed | 0.00 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[van-gogh] | test_datasets.py | passed | 0.00 |
@@ -421,8 +421,8 @@
 | test_enable_claims_0_skips_check_and_returns_empty_list | test_server.py | passed | 0.00 |
 | test_unbacked_claims_written_to_log | test_server.py | passed | 0.00 |
 | test_both_exhibits_load | test_smoke.py | passed | 0.00 |
-| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.17 |
-| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.46 |
+| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.16 |
+| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.45 |
 | test_search_returns_ranked_passages[t-rex] | test_smoke.py | passed | 0.00 |
 | test_search_returns_ranked_passages[van-gogh] | test_smoke.py | passed | 0.00 |
 | test_search_finds_the_passage_for_an_exact_wording_question | test_smoke.py | passed | 0.01 |
@@ -435,7 +435,7 @@
 | test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.01 |
 | test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
 | test_phone_page_is_served | test_smoke.py | passed | 0.00 |
-| test_voice_round_trip | test_smoke.py | passed | 41.72 |
+| test_voice_round_trip | test_smoke.py | passed | 9.65 |
 | test_topic_of[van-gogh-What is 17 times 23?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Can you help me write my chemistry homework?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Who are you?-the_guide] | test_stats.py | passed | 0.00 |
@@ -480,8 +480,8 @@
 | test_build_prompt_does_not_repeat_names | test_stt.py | passed | 0.00 |
 | test_build_prompt_stays_within_the_word_limit | test_stt.py | passed | 0.00 |
 | test_build_prompt_without_any_names | test_stt.py | passed | 0.00 |
-| test_every_exhibit_gets_a_prompt_with_its_name[t-rex] | test_stt.py | passed | 0.03 |
-| test_every_exhibit_gets_a_prompt_with_its_name[van-gogh] | test_stt.py | passed | 0.06 |
+| test_every_exhibit_gets_a_prompt_with_its_name[t-rex] | test_stt.py | passed | 0.02 |
+| test_every_exhibit_gets_a_prompt_with_its_name[van-gogh] | test_stt.py | passed | 0.04 |
 | test_average_logprob_weights_segments_by_tokens | test_stt.py | passed | 0.00 |
 | test_average_logprob_of_nothing_is_none | test_stt.py | passed | 0.00 |
 | test_low_confidence_flag_uses_the_threshold | test_stt.py | passed | 0.00 |
@@ -502,7 +502,7 @@
 | test_phone_page_has_the_transcript_step | test_stt.py | passed | 0.00 |
 | test_word_errors_counts_substitutions_deletions_and_insertions | test_stt.py | passed | 0.00 |
 | test_wer_ignores_case_punctuation_and_accents | test_stt.py | passed | 0.00 |
-| test_reference_set_is_forty_held_out_questions_copied_exactly | test_stt.py | passed | 0.01 |
+| test_reference_set_is_forty_held_out_questions_copied_exactly | test_stt.py | passed | 0.00 |
 | test_find_clips_skips_named_folders_and_unknown_ids | test_stt.py | passed | 0.00 |
 | test_check_lists_missing_clips | test_stt.py | passed | 0.00 |
 | test_summarize_counts_flags_against_mistakes | test_stt.py | passed | 0.00 |
@@ -510,7 +510,7 @@
 | test_suggest_threshold_separates_misheard_from_right_clips | test_stt.py | passed | 0.00 |
 | test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.02 |
 | test_run_without_recordings_says_where_to_put_them | test_stt.py | passed | 0.00 |
-| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 6.60 |
+| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 6.28 |
 | test_parse_year | test_timecheck.py | passed | 0.00 |
 | test_explicit_year_after_end_is_flagged | test_timecheck.py | passed | 0.00 |
 | test_year_inside_time_not_flagged | test_timecheck.py | passed | 0.00 |
@@ -523,7 +523,3 @@
 | test_cache_miss_online_fetches_and_saves | test_timecheck.py | passed | 0.00 |
 | test_persona_without_end_year_is_skipped | test_timecheck.py | passed | 0.00 |
 | test_own_name_is_ignored | test_timecheck.py | passed | 0.00 |
-
-Why they failed:
-
-- test_saved_answer_results_pair_cleanly (test_compare_modes.py): van-gogh/vg-32: no plain guide result
