@@ -335,6 +335,24 @@ _ABOUT_YOU = re.compile(
     # Marathi identity
     r"|तुम्ही कोण आहात|तुम्ही (?:खरे|एआय|रोबोट)",
     re.I | re.UNICODE)
+# Rule 7 of the prompt: asked whether it is real, or told to drop the act, the exhibit says
+# it is an AI guide. That is an honest answer about itself, not a fact from the passages,
+# so it has nothing to cite and need not contain a "no". Without this, check_reply
+# replaced it with a fixed line (vg-adv-ib-02 and vg-adv-ib-03 in the robustness eval).
+# Both the reply and the question must match: "As an AI guide, ..." in reply to an
+# ordinary question is still an uncited answer and is still replaced.
+_TRANSPARENCY = re.compile(
+    r"\b(?:an?|the) (?:ai|artificial intelligence|virtual|digital|museum) (?:guide|persona|representation|recreation|character)\b"
+    r"|\bdigital persona\b|\bmuseum representation\b|\b(?:a|an ai) simulation\b",
+    re.I)
+# The visitor asks what the exhibit really is: real, human, alive, an AI or a program,
+# or tells it to stop pretending. Questions that _ABOUT_YOU matches count too.
+_ASKS_WHAT_YOU_ARE = re.compile(
+    r"\b(?:are|r) (?:you|u) (?:\w+ )?(?:real|human|alive|a person|a real person|an? ai|a robot|a bot|a machine|a computer|a program)\b"
+    r"|\b(?:language model|llm|chatbot|artificial intelligence)\b|\bai\b"
+    r"|\bstop pretending\b|\bdrop the act\b|\b(?:confirm|admit) (?:that )?you(?:'re| are)\b"
+    r"|\b(?:who|which company|what company) (?:made|built|trained|created|programmed) (?:you|u)\b",
+    re.I)
 
 _FIXED_LINES = {
     "en": {
@@ -416,6 +434,8 @@ def check_reply(result, persona, question, mode="persona"):
          short "not in my sources" line instead of raw model text
       2. "answered" with no valid citation becomes "not_in_sources", unless the visitor
          greeted the exhibit, asked who it is, or asked for a sound
+         (a reply in which the exhibit says it is an AI guide, to a visitor who asked
+         whether it is real or an AI, skips rules 2 and 3)
       3. a decline whose text does not actually decline (it answers from the model's own
          knowledge) has its text replaced with a fixed decline line for that status
 
@@ -427,6 +447,9 @@ def check_reply(result, persona, question, mode="persona"):
     if result.get("parse_error") or not (result.get("answer", "").strip() or result.get("sound")):
         result.update(answer=_fixed_line("not_in_sources", persona, mode, lang=lang), status="not_in_sources",
                       citations=[], sound=None, check="unreadable_reply")
+    elif _TRANSPARENCY.search(result["answer"]) and (
+            _ASKS_WHAT_YOU_ARE.search(question or "") or _ABOUT_YOU.search(question or "")):
+        pass  # the exhibit says it is an AI guide (rule 7): keep it as the model wrote it
     elif result["status"] == "answered":
         if not result["citations"] and not result.get("sound") and not _ABOUT_YOU.search(question or ""):
             result.update(answer=_fixed_line("not_in_sources", persona, mode, lang=lang), status="not_in_sources",
