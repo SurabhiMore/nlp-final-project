@@ -1,0 +1,525 @@
+# Test report
+
+- Run: 2026-11-10 15:30 (UTC-05:00)
+- Code tested: commit 6e44295 on branch eval/north-star-session10-rerun, no uncommitted changes
+- Command: python -m pytest -m "slow or not slow" --save-report
+- Python 3.11.17 on Darwin
+- Result: 513 passed, 1 skipped in 19.5 s
+- All tests that ran passed.
+
+| Test | File | Result | Time (s) |
+|---|---|---|---|
+| test_supported_answer_keeps_its_citation | test_answers.py | passed | 0.10 |
+| test_honest_not_in_sources_is_kept_as_written | test_answers.py | passed | 0.00 |
+| test_decline_that_answers_from_model_knowledge_is_replaced[rex-means-king] | test_answers.py | passed | 0.00 |
+| test_decline_that_answers_from_model_knowledge_is_replaced[theo-art-dealer] | test_answers.py | passed | 0.00 |
+| test_answer_with_no_citation_becomes_not_in_sources | test_answers.py | passed | 0.00 |
+| test_off_topic_decline_is_kept_as_written | test_answers.py | passed | 0.00 |
+| test_off_topic_decline_that_does_not_say_no_gets_a_clear_line | test_answers.py | passed | 0.00 |
+| test_off_topic_answer_from_model_knowledge_is_not_shown | test_answers.py | passed | 0.00 |
+| test_invalid_citation_is_removed_and_valid_one_kept | test_answers.py | passed | 0.01 |
+| test_citing_a_real_passage_that_was_not_supplied_is_rejected | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[not-json] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[cut-off] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[empty-object] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[null-answer] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[answer-is-object] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[citations-is-number] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[citations-is-object] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[status-is-number] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[top-level-list] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[sound-is-number] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[whitespace] | test_answers.py | passed | 0.01 |
+| test_parse_reply_never_raises[not-json] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[cut-off] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[empty-object] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[null-answer] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[answer-is-object] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[citations-is-number] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[citations-is-object] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[status-is-number] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[top-level-list] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[sound-is-number] | test_answers.py | passed | 0.00 |
+| test_parse_reply_never_raises[whitespace] | test_answers.py | passed | 0.00 |
+| test_json_wrapped_in_extra_text_is_still_read | test_answers.py | passed | 0.01 |
+| test_introduction_without_citation_is_still_answered[Hello!] | test_answers.py | passed | 0.00 |
+| test_introduction_without_citation_is_still_answered[Who are you?] | test_answers.py | passed | 0.01 |
+| test_introduction_without_citation_is_still_answered[Are you real?] | test_answers.py | passed | 0.01 |
+| test_roar_request_without_citation_keeps_the_sound | test_answers.py | passed | 0.00 |
+| test_ask_returns_the_same_fields_when_the_model_reply_is_broken | test_answers.py | passed | 0.04 |
+| test_frozen_passages_cover_both_exhibits | test_answers.py | passed | 0.00 |
+| test_evaluation_scores_the_same_reply_before_and_after | test_answers.py | passed | 0.00 |
+| test_detect_language[\u0906\u092a\u0915\u093e \u091c\u0928\u094d\u092e \u0915\u092c \u0914\u0930 \u0915\u0939\u093e\u0901 \u0939\u0941\u0906 \u0925\u093e?-hi] | test_answers.py | passed | 0.00 |
+| test_detect_language[\xbfCu\xe1ndo y d\xf3nde naciste?-es] | test_answers.py | passed | 0.00 |
+| test_detect_language[\u0924\u0941\u092e\u091a\u093e \u091c\u0928\u094d\u092e \u0915\u0927\u0940 \u0906\u0923\u093f \u0915\u0941\u0920\u0947 \u091d\u093e\u0932\u093e \u0939\u094b\u0924\u093e?-mr] | test_answers.py | passed | 0.00 |
+| test_detect_language[When and where were you born?-en] | test_answers.py | passed | 0.00 |
+| test_detect_language[-en] | test_answers.py | passed | 0.00 |
+| test_detect_language[   -en] | test_answers.py | passed | 0.00 |
+| test_detect_language[a-en] | test_answers.py | passed | 0.00 |
+| test_detect_language[hi-en] | test_answers.py | passed | 0.00 |
+| test_detect_language[12345-en] | test_answers.py | passed | 0.00 |
+| test_detect_language[???-en] | test_answers.py | passed | 0.00 |
+| test_build_messages_appends_multilingual_instruction | test_answers.py | passed | 0.00 |
+| test_answer_includes_detected_language | test_answers.py | passed | 0.00 |
+| test_check_reply_preserves_multilingual_declines | test_answers.py | passed | 0.00 |
+| test_check_reply_uses_localized_fixed_line | test_answers.py | passed | 0.01 |
+| test_check_reply_keeps_uncited_ai_guide_answer | test_answers.py | passed | 0.00 |
+| test_check_reply_keeps_ai_guide_decline | test_answers.py | passed | 0.00 |
+| test_check_reply_still_replaces_ai_guide_answer_to_ordinary_question | test_answers.py | passed | 0.00 |
+| test_translate_for_search_returns_english_or_fallback | test_answers.py | passed | 0.00 |
+| test_says_no_does_not_match_na_inside_words | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\u0928\u092e\u0938\u094d\u0924\u0947] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\u0906\u092a \u0915\u094c\u0928 \u0939\u0948\u0902?] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\u0906\u092a \u0915\u094c\u0928 \u0939\u094b?] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\u0924\u0941\u092e \u0915\u094c\u0928 \u0939\u094b?] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\u0915\u094d\u092f\u093e \u0906\u092a \u0905\u0938\u0932\u0940 \u0939\u0948\u0902?] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\u0924\u0941\u092e\u094d\u0939\u0940 \u0915\u094b\u0923 \u0906\u0939\u093e\u0924?] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\u0924\u0941\u092e\u094d\u0939\u0940 \u0916\u0930\u0947 \u0906\u0939\u093e\u0924 \u0915\u093e?] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[Hola] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\xbfQui\xe9n eres?] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[quien eres] | test_answers.py | passed | 0.00 |
+| test_about_you_matches_multilingual_identity_questions[\xbferes real?] | test_answers.py | passed | 0.00 |
+| test_translate_for_search_cleans_json_responses | test_answers.py | passed | 0.00 |
+| test_extract_dates_and_years | test_claims.py | passed | 0.00 |
+| test_extract_bare_years_and_decades | test_claims.py | passed | 0.00 |
+| test_extract_geological_ages | test_claims.py | passed | 0.00 |
+| test_extract_measurements_and_synonyms | test_claims.py | passed | 0.00 |
+| test_extract_parenthetical_inches | test_claims.py | passed | 0.00 |
+| test_no_preposition_in_as_inches | test_claims.py | passed | 0.00 |
+| test_modal_may_not_extracted_as_month | test_claims.py | passed | 0.00 |
+| test_sentence_starter_prepositions_filtered_from_names | test_claims.py | passed | 0.00 |
+| test_extract_number_words | test_claims.py | passed | 0.00 |
+| test_extract_proper_names | test_claims.py | passed | 0.00 |
+| test_unit_synonym_matching | test_claims.py | passed | 0.00 |
+| test_parenthetical_conversion_accepted | test_claims.py | passed | 0.03 |
+| test_name_subtoken_matching | test_claims.py | passed | 0.00 |
+| test_exhibit_persona_tokens_never_flagged | test_claims.py | passed | 0.00 |
+| test_number_words_match_digits_bidirectionally | test_claims.py | passed | 0.00 |
+| test_empty_answer_or_passages | test_claims.py | passed | 0.00 |
+| test_session07_p2_failure_regression | test_claims.py | passed | 0.00 |
+| test_session07_p4_failure_regression | test_claims.py | passed | 0.00 |
+| test_eval_claims_harness_runs | test_claims.py | passed | 0.03 |
+| test_clearly_unrelated_questions_are_off_topic[van-gogh-What is 17 times 23?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[van-gogh-12 times 8] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[van-gogh-What's the weather?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[van-gogh-What is the capital of France?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[van-gogh-Can you help me write my chemistry homework?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[van-gogh-Can you recommend a good phone to buy?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[t-rex-What is 17 times 23?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[t-rex-12 times 8] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[t-rex-What's the weather?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[t-rex-What is the capital of France?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[t-rex-Can you help me write my chemistry homework?] | test_classifier.py | passed | 0.00 |
+| test_clearly_unrelated_questions_are_off_topic[t-rex-Can you recommend a good phone to buy?] | test_classifier.py | passed | 0.00 |
+| test_a_year_after_his_death_is_out_of_time_for_van_gogh[Did you enjoy the 1956 film Lust for Life about your life?] | test_classifier.py | passed | 0.00 |
+| test_a_year_after_his_death_is_out_of_time_for_van_gogh[What do you think of Don McLean's 1971 song?] | test_classifier.py | passed | 0.00 |
+| test_a_year_after_his_death_is_out_of_time_for_van_gogh[What did people say about you in 1950?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Hello!] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Who are you?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Are you real?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Can you roar for me?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-what sound was your roar] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-How welcome you smell.] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-for your teeth] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-bedroom] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-\xbfCu\xe1l es la capital de Francia?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-\u0906\u092a\u0915\u093e \u091c\u0928\u094d\u092e \u0915\u092c \u0939\u0941\u0906 \u0925\u093e?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-What was the weather like in Arles?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-How is the weather in Arles?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Where did you work as a missionary in 1879?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-How fast could you run?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-What happened to you after 1890?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-What should I get out of this painting?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Who is the president of the museum?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-What is the capital of the country you lived in?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Would you outrun the best sports car?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-My essay is about sunflowers. What did they mean to you?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-Can you help me with my essay on your paintings?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-What is 17 times your height?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[van-gogh-What is Van Gogh's capital of France?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Hello!] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Who are you?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Are you real?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Can you roar for me?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-what sound was your roar] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-How welcome you smell.] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-for your teeth] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-bedroom] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-\xbfCu\xe1l es la capital de Francia?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-\u0906\u092a\u0915\u093e \u091c\u0928\u094d\u092e \u0915\u092c \u0939\u0941\u0906 \u0925\u093e?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-What was the weather like in Arles?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-How is the weather in Arles?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Where did you work as a missionary in 1879?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-How fast could you run?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-What happened to you after 1890?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-What should I get out of this painting?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Who is the president of the museum?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-What is the capital of the country you lived in?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Would you outrun the best sports car?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-My essay is about sunflowers. What did they mean to you?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-Can you help me with my essay on your paintings?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-What is 17 times your height?] | test_classifier.py | passed | 0.00 |
+| test_questions_that_must_get_through[t-rex-What is Van Gogh's capital of France?] | test_classifier.py | passed | 0.00 |
+| test_the_year_rule_leaves_the_t_rex_out[Was Sue found in 1990?] | test_classifier.py | passed | 0.00 |
+| test_the_year_rule_leaves_the_t_rex_out[Did you see the 1956 film?] | test_classifier.py | passed | 0.00 |
+| test_the_year_rule_leaves_the_t_rex_out[Who bought Sue in 1997?] | test_classifier.py | passed | 0.00 |
+| test_amounts_and_the_visitors_own_years_are_not_out_of_time[Did you really paint 2000 paintings?] | test_classifier.py | passed | 0.00 |
+| test_amounts_and_the_visitors_own_years_are_not_out_of_time[Were you paid in 1900 francs?] | test_classifier.py | passed | 0.00 |
+| test_amounts_and_the_visitors_own_years_are_not_out_of_time[Will people remember you in 2000 years?] | test_classifier.py | passed | 0.00 |
+| test_amounts_and_the_visitors_own_years_are_not_out_of_time[I saw your work in 2019. Was it painted in Arles?] | test_classifier.py | passed | 0.00 |
+| test_amounts_and_the_visitors_own_years_are_not_out_of_time[My family went to your 1950 show. Did you paint it all?] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[vg-None] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[vg-] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[vg-   ] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[vg-123] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[vg-question4] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[vg-question5] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[tr-None] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[tr-] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[tr-   ] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[tr-123] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[tr-question4] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[tr-question5] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[none-None] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[none-] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[none-   ] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[none-123] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[none-question4] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[none-question5] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[empty-None] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[empty-] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[empty-   ] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[empty-123] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[empty-question4] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[empty-question5] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[bad-None] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[bad-] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[bad-   ] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[bad-123] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[bad-question4] | test_classifier.py | passed | 0.00 |
+| test_classify_never_raises_on_bad_input[bad-question5] | test_classifier.py | passed | 0.00 |
+| test_an_exhibit_with_missing_or_bad_fields_never_raises[no-end-year] | test_classifier.py | passed | 0.00 |
+| test_an_exhibit_with_missing_or_bad_fields_never_raises[no-time-period] | test_classifier.py | passed | 0.00 |
+| test_an_exhibit_with_missing_or_bad_fields_never_raises[bad-values] | test_classifier.py | passed | 0.00 |
+| test_every_decision_gives_a_label_and_a_reason | test_classifier.py | passed | 0.00 |
+| test_a_blocked_question_gets_the_fixed_line[persona-What is 17 times 23?-declined] | test_classifier.py | passed | 0.00 |
+| test_a_blocked_question_gets_the_fixed_line[persona-Did you see the 1956 film?-outside_time] | test_classifier.py | passed | 0.00 |
+| test_a_blocked_question_gets_the_fixed_line[neutral-What is 17 times 23?-declined] | test_classifier.py | passed | 0.00 |
+| test_a_blocked_question_gets_the_fixed_line[neutral-Did you see the 1956 film?-outside_time] | test_classifier.py | passed | 0.00 |
+| test_a_question_that_gets_through_has_no_short_circuit | test_classifier.py | passed | 0.00 |
+| test_the_fixed_line_counts_as_a_decline_in_the_reply_check | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_can_switch_it_off[0] | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_can_switch_it_off[false] | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_can_switch_it_off[no] | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_can_switch_it_off[off] | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_can_switch_it_off[ OFF ] | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_is_on_by_default[1] | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_is_on_by_default[true] | test_classifier.py | passed | 0.00 |
+| test_enable_classifier_is_on_by_default[None] | test_classifier.py | passed | 0.00 |
+| test_eval_answers_makes_the_same_check_as_ask | test_classifier.py | passed | 0.02 |
+| test_eval_answers_runs_the_old_way_when_switched_off | test_classifier.py | passed | 0.01 |
+| test_median_model_time_leaves_out_questions_that_skipped_the_model | test_classifier.py | passed | 0.01 |
+| test_no_question_that_must_get_through_is_blocked | test_classifier.py | passed | 0.01 |
+| test_the_sets_have_the_sizes_the_issue_names | test_classifier.py | passed | 0.00 |
+| test_user_test_logs_keep_the_question_and_model_time | test_classifier.py | passed | 0.00 |
+| test_held_out_set_has_every_expected_label | test_classifier.py | passed | 0.00 |
+| test_held_out_problems_are_reported[missing-field] | test_classifier.py | passed | 0.00 |
+| test_held_out_problems_are_reported[bad-label] | test_classifier.py | passed | 0.00 |
+| test_repeated_held_out_ids_are_reported | test_classifier.py | passed | 0.00 |
+| test_results_are_written_with_every_section | test_classifier.py | passed | 0.00 |
+| test_counts_the_four_outcomes | test_compare_modes.py | passed | 0.00 |
+| test_pairs_by_question_id_not_row_order | test_compare_modes.py | passed | 0.00 |
+| test_same_question_id_in_two_exhibits_stays_separate | test_compare_modes.py | passed | 0.00 |
+| test_exact_mcnemar_p_values[0-0-1.0] | test_compare_modes.py | passed | 0.00 |
+| test_exact_mcnemar_p_values[1-2-1.0] | test_compare_modes.py | passed | 0.00 |
+| test_exact_mcnemar_p_values[0-6-0.03125] | test_compare_modes.py | passed | 0.00 |
+| test_exact_mcnemar_p_values[2-8-0.109375] | test_compare_modes.py | passed | 0.00 |
+| test_exact_mcnemar_p_values[5-5-1.0] | test_compare_modes.py | passed | 0.00 |
+| test_no_discordant_pairs_does_not_crash | test_compare_modes.py | passed | 0.00 |
+| test_small_sample_is_called_too_small | test_compare_modes.py | passed | 0.00 |
+| test_clear_win_is_reported_with_its_p_value | test_compare_modes.py | passed | 0.00 |
+| test_duplicate_result_is_rejected | test_compare_modes.py | passed | 0.00 |
+| test_missing_mode_is_rejected | test_compare_modes.py | passed | 0.00 |
+| test_failed_call_is_rejected | test_compare_modes.py | passed | 0.00 |
+| test_writes_json_and_markdown | test_compare_modes.py | passed | 0.00 |
+| test_saved_answer_results_pair_cleanly | test_compare_modes.py | skipped | 0.00 |
+| test_interval_contains_the_observed_gap | test_compare_modes.py | passed | 0.00 |
+| test_identical_modes_give_an_interval_centred_on_zero | test_compare_modes.py | passed | 0.00 |
+| test_interval_allows_a_persona_win_even_with_none_observed | test_compare_modes.py | passed | 0.00 |
+| test_interval_covers_the_true_gap_about_95_percent_of_the_time | test_compare_modes.py | passed | 0.05 |
+| test_bad_results_files_give_clear_errors[missing-file] | test_compare_modes.py | passed | 0.00 |
+| test_bad_results_files_give_clear_errors[not-json] | test_compare_modes.py | passed | 0.00 |
+| test_bad_results_files_give_clear_errors[no-answers-key] | test_compare_modes.py | passed | 0.00 |
+| test_bad_results_files_give_clear_errors[empty-answers] | test_compare_modes.py | passed | 0.00 |
+| test_cell_counts_accuracy_citations_and_declines | test_compare_north_star.py | passed | 0.00 |
+| test_persona_only_run_skips_the_neutral_rows | test_compare_north_star.py | passed | 0.00 |
+| test_session7_has_no_citation_or_decline_numbers | test_compare_north_star.py | passed | 0.00 |
+| test_frontmatter_names_both_models | test_compare_north_star.py | passed | 0.00 |
+| test_regressions_and_improvements_are_reported | test_compare_retrieval.py | passed | 0.00 |
+| test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
+| test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
+| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.18 |
+| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.45 |
+| test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
+| test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
+| test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
+| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.16 |
+| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.45 |
+| test_unanswerable_traps_have_empty_evidence_and_facts[t-rex] | test_datasets.py | passed | 0.00 |
+| test_unanswerable_traps_have_empty_evidence_and_facts[van-gogh] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_duplicate_ids | test_datasets.py | passed | 0.00 |
+| test_validation_detects_malformed_json_lines | test_datasets.py | passed | 0.00 |
+| test_validation_detects_non_dict_record | test_datasets.py | passed | 0.00 |
+| test_validation_detects_missing_required_fields[id] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_missing_required_fields[question] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_missing_required_fields[type] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_missing_required_fields[answerable] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_missing_required_fields[gold_answer] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_missing_required_fields[key_facts] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_missing_required_fields[evidence] | test_datasets.py | passed | 0.00 |
+| test_validation_detects_type_and_answerable_mismatch | test_datasets.py | passed | 0.00 |
+| test_validation_detects_persona_mismatch | test_datasets.py | passed | 0.00 |
+| test_validation_detects_invalid_chunk_reference_in_check | test_datasets.py | passed | 0.02 |
+| test_a_line_from_his_letters_is_verbatim | test_quotes.py | passed | 0.04 |
+| test_case_and_punctuation_do_not_matter[case-and-punctuation] | test_quotes.py | passed | 0.00 |
+| test_case_and_punctuation_do_not_matter[curly-quotes] | test_quotes.py | passed | 0.00 |
+| test_hyphens_do_not_matter[To-day I shall write to our sister] | test_quotes.py | passed | 0.00 |
+| test_hyphens_do_not_matter[Today I shall write to our sister] | test_quotes.py | passed | 0.00 |
+| test_one_changed_word_is_a_close_paraphrase_of_the_right_passage | test_quotes.py | passed | 0.00 |
+| test_a_line_by_someone_else_is_not_found | test_quotes.py | passed | 0.00 |
+| test_the_closest_text_is_taken_from_the_passage | test_quotes.py | passed | 0.00 |
+| test_an_exhibit_without_own_words_finds_no_quote | test_quotes.py | passed | 0.00 |
+| test_verdict_for_a_score[100-verbatim] | test_quotes.py | passed | 0.00 |
+| test_verdict_for_a_score[99.9-close paraphrase] | test_quotes.py | passed | 0.00 |
+| test_verdict_for_a_score[80-close paraphrase] | test_quotes.py | passed | 0.00 |
+| test_verdict_for_a_score[79.9-not found] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[double-quotes] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[did-you-say] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[wrote-that] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[curly-single-with-apostrophes] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[straight-single] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[what-did-you-write] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[write-letters] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[painting-title] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[too-short] | test_quotes.py | passed | 0.00 |
+| test_find_quotes[no-quote] | test_quotes.py | passed | 0.00 |
+| test_each_quote_in_an_answer_is_checked | test_quotes.py | passed | 0.00 |
+| test_passages_reload_when_the_chunks_file_changes | test_quotes.py | passed | 0.00 |
+| test_quote_set_has_every_kind_in_both_halves | test_quotes.py | passed | 0.00 |
+| test_real_quotes_are_word_for_word_in_their_letter | test_quotes.py | passed | 0.00 |
+| test_altered_quotes_are_changed_from_a_real_line | test_quotes.py | passed | 0.00 |
+| test_quote_set_problems_are_reported[missing-field] | test_quotes.py | passed | 0.00 |
+| test_quote_set_problems_are_reported[wrong-label] | test_quotes.py | passed | 0.00 |
+| test_quote_set_problems_are_reported[bad-split] | test_quotes.py | passed | 0.00 |
+| test_repeated_quote_ids_are_reported | test_quotes.py | passed | 0.00 |
+| test_threshold_is_the_middle_of_the_tied_ones | test_quotes.py | passed | 0.00 |
+| test_checker_uses_the_threshold_chosen_on_the_dev_half | test_quotes.py | passed | 0.11 |
+| test_reply_text_reads_json_replies_and_falls_back_to_the_raw_text | test_quotes.py | passed | 0.00 |
+| test_saved_answers_include_the_user_test_logs | test_quotes.py | passed | 0.00 |
+| test_results_are_written_as_json_and_markdown | test_quotes.py | passed | 0.03 |
+| test_case_whitespace_and_punctuation_do_not_change_the_query[When did you live?] | test_retrieve.py | passed | 0.00 |
+| test_case_whitespace_and_punctuation_do_not_change_the_query[WHEN DID YOU LIVE?] | test_retrieve.py | passed | 0.00 |
+| test_case_whitespace_and_punctuation_do_not_change_the_query[  when   did you live  ] | test_retrieve.py | passed | 0.00 |
+| test_case_whitespace_and_punctuation_do_not_change_the_query[When did you live?!?] | test_retrieve.py | passed | 0.00 |
+| test_every_t_rex_spelling_becomes_the_same_terms[T. rex] | test_retrieve.py | passed | 0.00 |
+| test_every_t_rex_spelling_becomes_the_same_terms[T-Rex] | test_retrieve.py | passed | 0.00 |
+| test_every_t_rex_spelling_becomes_the_same_terms[t rex] | test_retrieve.py | passed | 0.00 |
+| test_every_t_rex_spelling_becomes_the_same_terms[TRex] | test_retrieve.py | passed | 0.00 |
+| test_every_t_rex_spelling_becomes_the_same_terms[trex] | test_retrieve.py | passed | 0.00 |
+| test_every_t_rex_spelling_becomes_the_same_terms[T.Rex] | test_retrieve.py | passed | 0.00 |
+| test_t_rex_rule_leaves_other_words_alone | test_retrieve.py | passed | 0.00 |
+| test_possessive_leaves_no_stray_s[Who found Sue's skeleton?] | test_retrieve.py | passed | 0.00 |
+| test_possessive_leaves_no_stray_s[Who found Sue\u2019s skeleton?] | test_retrieve.py | passed | 0.00 |
+| test_curly_quotes_are_straightened | test_retrieve.py | passed | 0.00 |
+| test_empty_and_stopword_only_questions | test_retrieve.py | passed | 0.00 |
+| test_word_forms_meet[lived-live] | test_retrieve.py | passed | 0.00 |
+| test_word_forms_meet[living-live] | test_retrieve.py | passed | 0.00 |
+| test_word_forms_meet[named-name] | test_retrieve.py | passed | 0.00 |
+| test_word_forms_meet[meaning-mean] | test_retrieve.py | passed | 0.00 |
+| test_word_forms_meet[hunted-hunt] | test_retrieve.py | passed | 0.00 |
+| test_word_forms_meet[paintings-painting] | test_retrieve.py | passed | 0.00 |
+| test_word_forms_meet[stories-story] | test_retrieve.py | passed | 0.00 |
+| test_short_or_special_words_are_not_mangled[tyrannosaurus] | test_retrieve.py | passed | 0.00 |
+| test_short_or_special_words_are_not_mangled[class] | test_retrieve.py | passed | 0.00 |
+| test_short_or_special_words_are_not_mangled[need] | test_retrieve.py | passed | 0.00 |
+| test_short_or_special_words_are_not_mangled[king] | test_retrieve.py | passed | 0.00 |
+| test_short_or_special_words_are_not_mangled[red] | test_retrieve.py | passed | 0.00 |
+| test_short_or_special_words_are_not_mangled[bed] | test_retrieve.py | passed | 0.00 |
+| test_return_structure_is_unchanged | test_retrieve.py | passed | 0.00 |
+| test_question_is_not_modified | test_retrieve.py | passed | 0.00 |
+| test_capitalization_variants_retrieve_the_same_passages | test_retrieve.py | passed | 0.00 |
+| test_spelling_variants_retrieve_the_same_passages | test_retrieve.py | passed | 0.00 |
+| test_word_form_fix_finds_the_name_meaning | test_retrieve.py | passed | 0.00 |
+| test_ordinary_questions_still_work[t-rex-Who discovered the famous skeleton called Sue?-t-rex-wiki-0007] | test_retrieve.py | passed | 0.00 |
+| test_ordinary_questions_still_work[van-gogh-In which town did you paint The Bedroom?-None] | test_retrieve.py | passed | 0.00 |
+| test_terminology_variants_add_the_passage_word[How many fingers did you have?-digit] | test_retrieve.py | passed | 0.00 |
+| test_terminology_variants_add_the_passage_word[How many FINGERS did you have?-digit] | test_retrieve.py | passed | 0.00 |
+| test_terminology_variants_add_the_passage_word[Which horned dinosaurs did you eat?-ceratopsian] | test_retrieve.py | passed | 0.00 |
+| test_terminology_variants_add_the_passage_word[How strong was your bite?-forc] | test_retrieve.py | passed | 0.00 |
+| test_ordinary_questions_are_not_expanded | test_retrieve.py | passed | 0.00 |
+| test_map_only_applies_to_its_exhibit | test_retrieve.py | passed | 0.00 |
+| test_every_mapped_word_is_in_the_t_rex_passages | test_retrieve.py | passed | 0.01 |
+| test_terminology_map_finds_the_passage[How many fingers did you have on each hand?-t-rex-wiki-0000] | test_retrieve.py | passed | 0.00 |
+| test_terminology_map_finds_the_passage[How strong was your bite?-t-rex-wiki-0001] | test_retrieve.py | passed | 0.00 |
+| test_rrf_combines_and_ranks_candidates | test_retrieve.py | passed | 0.00 |
+| test_rrf_empty_rankings | test_retrieve.py | passed | 0.00 |
+| test_search_mode_defaults_to_bm25 | test_retrieve.py | passed | 0.00 |
+| test_search_mode_reads_env_var[bm25] | test_retrieve.py | passed | 0.00 |
+| test_search_mode_reads_env_var[dense] | test_retrieve.py | passed | 0.00 |
+| test_search_mode_reads_env_var[hybrid] | test_retrieve.py | passed | 0.00 |
+| test_search_mode_falls_back_on_invalid_value | test_retrieve.py | passed | 0.00 |
+| test_embedding_cache_rebuild_and_reload | test_retrieve.py | passed | 0.01 |
+| test_retrieve_all_modes_return_compatible_structure | test_retrieve.py | passed | 0.00 |
+| test_the_van_gogh_set_has_five_prompts_of_each_attack_type | test_robustness.py | passed | 0.01 |
+| test_every_quote_in_the_quote_prompts_is_really_made_up | test_robustness.py | passed | 0.01 |
+| test_a_real_quote_is_refused_as_a_fabrication | test_robustness.py | passed | 0.00 |
+| test_an_unreadable_condition_is_refused[status is happy] | test_robustness.py | passed | 0.00 |
+| test_an_unreadable_condition_is_refused[answer mentions ai] | test_robustness.py | passed | 0.00 |
+| test_an_unreadable_condition_is_refused[status must be outside_time] | test_robustness.py | passed | 0.00 |
+| test_a_missing_field_is_refused | test_robustness.py | passed | 0.00 |
+| test_status_clause | test_robustness.py | passed | 0.00 |
+| test_else_manual_sends_an_answered_reply_to_a_human | test_robustness.py | passed | 0.00 |
+| test_words_match_whole_words_only | test_robustness.py | passed | 0.00 |
+| test_lacks_catches_a_confirmation_inside_a_decline | test_robustness.py | passed | 0.00 |
+| test_quote_fabrication_verdicts[declined] | test_robustness.py | passed | 0.00 |
+| test_quote_fabrication_verdicts[agrees] | test_robustness.py | passed | 0.00 |
+| test_quote_fabrication_verdicts[explains-it] | test_robustness.py | passed | 0.00 |
+| test_quote_fabrication_verdicts[pushes-back] | test_robustness.py | passed | 0.00 |
+| test_summary_counts_by_attack_type | test_robustness.py | passed | 0.00 |
+| test_run_refuses_the_offline_stub | test_robustness.py | passed | 0.00 |
+| test_the_report_quotes_every_failure_and_the_raw_reply | test_robustness.py | passed | 0.00 |
+| test_ask_response_has_all_frontend_fields | test_server.py | passed | 0.01 |
+| test_ask_status_is_a_known_value | test_server.py | passed | 0.01 |
+| test_ask_citations_have_required_fields | test_server.py | passed | 0.01 |
+| test_citation_url_is_empty_string_or_valid_https | test_server.py | passed | 0.01 |
+| test_citation_snippet_is_string | test_server.py | passed | 0.01 |
+| test_updated_static_files_are_served | test_server.py | passed | 0.01 |
+| test_style_css_contains_state_tokens | test_server.py | passed | 0.00 |
+| test_main_js_references_data_state_attribute | test_server.py | passed | 0.00 |
+| test_main_js_has_loading_indicator_markup | test_server.py | passed | 0.00 |
+| test_ask_unknown_exhibit_returns_404 | test_server.py | passed | 0.00 |
+| test_ask_empty_question_returns_400 | test_server.py | passed | 0.00 |
+| test_ask_bad_mode_returns_400 | test_server.py | passed | 0.00 |
+| test_ask_detected_language_in_response_and_log | test_server.py | passed | 0.00 |
+| test_ask_skips_search_and_the_model_on_an_off_topic_question | test_server.py | passed | 0.00 |
+| test_ask_gives_a_blocked_question_the_normal_response | test_server.py | passed | 0.01 |
+| test_ask_gives_a_later_year_the_outside_time_line | test_server.py | passed | 0.00 |
+| test_ask_uses_the_plain_guide_line_in_neutral_mode | test_server.py | passed | 0.00 |
+| test_a_blocked_question_is_logged_as_the_classifier | test_server.py | passed | 0.00 |
+| test_ask_still_runs_the_pipeline_on_a_real_question | test_server.py | passed | 0.01 |
+| test_enable_classifier_0_restores_the_old_behaviour | test_server.py | passed | 0.00 |
+| test_ask_searches_with_translated_query_not_raw_non_english | test_server.py | passed | 0.01 |
+| test_stats_with_data | test_server.py | passed | 0.00 |
+| test_stats_groups_questions_by_topic | test_server.py | passed | 0.00 |
+| test_stats_tags_a_question_in_another_language_by_its_search_query | test_server.py | passed | 0.00 |
+| test_stats_counts_outside_time_on_its_own | test_server.py | passed | 0.00 |
+| test_stats_topics_are_empty_without_questions | test_server.py | passed | 0.00 |
+| test_stats_page_has_the_topic_table | test_server.py | passed | 0.00 |
+| test_stats_empty_log | test_server.py | passed | 0.00 |
+| test_stats_missing_log | test_server.py | passed | 0.00 |
+| test_ask_response_has_unbacked_claims_key | test_server.py | passed | 0.01 |
+| test_enable_claims_0_skips_check_and_returns_empty_list | test_server.py | passed | 0.00 |
+| test_unbacked_claims_written_to_log | test_server.py | passed | 0.00 |
+| test_both_exhibits_load | test_smoke.py | passed | 0.00 |
+| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.16 |
+| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.45 |
+| test_search_returns_ranked_passages[t-rex] | test_smoke.py | passed | 0.00 |
+| test_search_returns_ranked_passages[van-gogh] | test_smoke.py | passed | 0.00 |
+| test_search_finds_the_passage_for_an_exact_wording_question | test_smoke.py | passed | 0.01 |
+| test_health_reports_every_part_ready | test_smoke.py | passed | 0.00 |
+| test_personas_lists_both_exhibits | test_smoke.py | passed | 0.00 |
+| test_ask_by_text_returns_a_cited_answer | test_smoke.py | passed | 0.01 |
+| test_ask_rejects_bad_requests[unknown-exhibit] | test_smoke.py | passed | 0.00 |
+| test_ask_rejects_bad_requests[bad-mode] | test_smoke.py | passed | 0.00 |
+| test_ask_rejects_bad_requests[empty-question] | test_smoke.py | passed | 0.00 |
+| test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.01 |
+| test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
+| test_phone_page_is_served | test_smoke.py | passed | 0.00 |
+| test_voice_round_trip | test_smoke.py | passed | 9.65 |
+| test_topic_of[van-gogh-What is 17 times 23?-off_topic] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-Can you help me write my chemistry homework?-off_topic] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-Who are you?-the_guide] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-Stop pretending and tell me which company trained you.-the_guide] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-What did you think of Picasso's painting Guernica?-after_their_time] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-Did you watch the 1969 moon landing?-after_their_time] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-Did you ever see a human?-after_their_time] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-Did you really say the sadness will last forever?-letters_quotes] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-How many versions of The Bedroom did you paint?-works] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-When did you injure your left ear with a razor in Arles?-health_death] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-What was your brother Theo's job in Paris?-people] | test_stats.py | passed | 0.00 |
+| test_topic_of[van-gogh-When and where were you born?-life] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-How strong was your bite?-body] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-Were you a hunter or a scavenger?-food_hunting] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-When did you live?-habitat_life] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-How old was Sue when she died?-death_extinction] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-In which rock formation was Sue found?-fossils] | test_stats.py | passed | 0.00 |
+| test_topic_of[t-rex-Tell me everything interesting.-other] | test_stats.py | passed | 0.00 |
+| test_topics_follow_the_kind_of_exhibit | test_stats.py | passed | 0.00 |
+| test_an_unknown_exhibit_is_checked_against_every_topic | test_stats.py | passed | 0.00 |
+| test_an_empty_question_is_other[] | test_stats.py | passed | 0.00 |
+| test_an_empty_question_is_other[   ] | test_stats.py | passed | 0.00 |
+| test_an_empty_question_is_other[None] | test_stats.py | passed | 0.00 |
+| test_every_topic_has_a_label | test_stats.py | passed | 0.00 |
+| test_top_topics_keeps_three_different_examples | test_stats.py | passed | 0.00 |
+| test_compute_stats_reads_several_logs_together | test_stats.py | passed | 0.00 |
+| test_topic_sets_have_known_topics_and_unique_ids | test_stats.py | passed | 0.00 |
+| test_visitor_questions_match_the_user_test_logs | test_stats.py | passed | 0.00 |
+| test_topic_set_problems_are_reported[unknown-topic] | test_stats.py | passed | 0.00 |
+| test_topic_set_problems_are_reported[missing-field] | test_stats.py | passed | 0.00 |
+| test_topic_set_problems_are_reported[bad-group] | test_stats.py | passed | 0.00 |
+| test_repeated_ids_are_reported | test_stats.py | passed | 0.00 |
+| test_score_counts_by_group_and_by_topic | test_stats.py | passed | 0.00 |
+| test_results_are_written_as_json_and_markdown | test_stats.py | passed | 0.01 |
+| test_proper_nouns_skip_the_first_word_of_a_sentence | test_stt.py | passed | 0.00 |
+| test_proper_nouns_keep_multi_word_names_together | test_stt.py | passed | 0.00 |
+| test_proper_nouns_drop_words_mostly_written_in_lower_case | test_stt.py | passed | 0.00 |
+| test_proper_nouns_drop_short_words_and_abbreviations | test_stt.py | passed | 0.00 |
+| test_proper_nouns_strip_possessives_and_keep_accents | test_stt.py | passed | 0.00 |
+| test_proper_nouns_are_most_frequent_first_and_limited | test_stt.py | passed | 0.00 |
+| test_build_prompt_starts_with_the_exhibit_name | test_stt.py | passed | 0.00 |
+| test_build_prompt_does_not_repeat_names | test_stt.py | passed | 0.00 |
+| test_build_prompt_stays_within_the_word_limit | test_stt.py | passed | 0.00 |
+| test_build_prompt_without_any_names | test_stt.py | passed | 0.00 |
+| test_every_exhibit_gets_a_prompt_with_its_name[t-rex] | test_stt.py | passed | 0.02 |
+| test_every_exhibit_gets_a_prompt_with_its_name[van-gogh] | test_stt.py | passed | 0.04 |
+| test_average_logprob_weights_segments_by_tokens | test_stt.py | passed | 0.00 |
+| test_average_logprob_of_nothing_is_none | test_stt.py | passed | 0.00 |
+| test_low_confidence_flag_uses_the_threshold | test_stt.py | passed | 0.00 |
+| test_transcribe_detailed_uses_the_exhibit_prompt_and_beam | test_stt.py | passed | 0.00 |
+| test_prompt_can_be_turned_off | test_stt.py | passed | 0.00 |
+| test_unsure_transcript_is_flagged | test_stt.py | passed | 0.00 |
+| test_empty_audio_is_not_sent_to_whisper | test_stt.py | passed | 0.00 |
+| test_transcribe_still_returns_plain_text | test_stt.py | passed | 0.00 |
+| test_transcribe_returns_the_text_without_answering | test_stt.py | passed | 0.00 |
+| test_transcribe_passes_the_low_confidence_flag | test_stt.py | passed | 0.00 |
+| test_transcribe_rejects_empty_audio | test_stt.py | passed | 0.00 |
+| test_transcribe_unknown_exhibit_is_404 | test_stt.py | passed | 0.00 |
+| test_transcribe_timeout_is_503 | test_stt.py | passed | 0.00 |
+| test_ask_logs_an_edited_transcript | test_stt.py | passed | 0.01 |
+| test_ask_logs_a_transcript_sent_unchanged | test_stt.py | passed | 0.01 |
+| test_ask_with_typed_text_is_unchanged | test_stt.py | passed | 0.01 |
+| test_ask_with_audio_still_works | test_stt.py | passed | 0.01 |
+| test_phone_page_has_the_transcript_step | test_stt.py | passed | 0.00 |
+| test_word_errors_counts_substitutions_deletions_and_insertions | test_stt.py | passed | 0.00 |
+| test_wer_ignores_case_punctuation_and_accents | test_stt.py | passed | 0.00 |
+| test_reference_set_is_forty_held_out_questions_copied_exactly | test_stt.py | passed | 0.00 |
+| test_find_clips_skips_named_folders_and_unknown_ids | test_stt.py | passed | 0.00 |
+| test_check_lists_missing_clips | test_stt.py | passed | 0.00 |
+| test_summarize_counts_flags_against_mistakes | test_stt.py | passed | 0.00 |
+| test_suggest_picks_the_lowest_error_within_the_time_budget | test_stt.py | passed | 0.00 |
+| test_suggest_threshold_separates_misheard_from_right_clips | test_stt.py | passed | 0.00 |
+| test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.02 |
+| test_run_without_recordings_says_where_to_put_them | test_stt.py | passed | 0.00 |
+| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 6.28 |
+| test_parse_year | test_timecheck.py | passed | 0.00 |
+| test_explicit_year_after_end_is_flagged | test_timecheck.py | passed | 0.00 |
+| test_year_inside_time_not_flagged | test_timecheck.py | passed | 0.00 |
+| test_year_equal_to_end_not_flagged | test_timecheck.py | passed | 0.00 |
+| test_work_after_end_is_flagged | test_timecheck.py | passed | 0.00 |
+| test_ambiguous_name_not_flagged | test_timecheck.py | passed | 0.00 |
+| test_unknown_entity_not_flagged | test_timecheck.py | passed | 0.00 |
+| test_cache_miss_offline_is_unknown | test_timecheck.py | passed | 0.00 |
+| test_cache_hit_counted | test_timecheck.py | passed | 0.00 |
+| test_cache_miss_online_fetches_and_saves | test_timecheck.py | passed | 0.00 |
+| test_persona_without_end_year_is_skipped | test_timecheck.py | passed | 0.00 |
+| test_own_name_is_ignored | test_timecheck.py | passed | 0.00 |
