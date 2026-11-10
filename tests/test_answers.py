@@ -245,6 +245,7 @@ def test_evaluation_scores_the_same_reply_before_and_after():
     ("आपका जन्म कब और कहाँ हुआ था?", "hi"),
     ("¿Cuándo y dónde naciste?", "es"),
     ("तुमचा जन्म कधी आणि कुठे झाला होता?", "mr"),
+    ("ನಿಮ್ಮ ಜನನ ಯಾವಾಗ ಮತ್ತು ಎಲ್ಲಿ ಆಯಿತು?", "kn"),
     ("When and where were you born?", "en"),
     ("", "en"),
     ("   ", "en"),
@@ -279,6 +280,12 @@ def test_build_messages_appends_multilingual_instruction():
     assert "Reply entirely in Marathi." in system_mr
     assert "while keeping citation IDs in English." in system_mr
 
+    # Kannada question
+    messages_kn = engine.build_messages(persona, "ನಿಮ್ಮ ಜನನ ಯಾವಾಗ ಮತ್ತು ಎಲ್ಲಿ ಆಯಿತು?", chunks)
+    system_kn = messages_kn[0]["content"]
+    assert "Reply entirely in Kannada." in system_kn
+    assert "while keeping citation IDs in English." in system_kn
+
     # English question should not have multilingual instruction
     messages_en = engine.build_messages(persona, "When and where were you born?", chunks)
     system_en = messages_en[0]["content"]
@@ -306,6 +313,11 @@ def test_check_reply_preserves_multilingual_declines():
     assert checked_es["check"] is None
     assert checked_es["answer"] == reply_es["answer"]
 
+    reply_kn = {"answer": "ನನ್ನ ಮೂಲಗಳಲ್ಲಿ ಇದರ ಬಗ್ಗೆ ಏನೂ ಇಲ್ಲ.", "status": "not_in_sources", "citations": []}
+    checked_kn = engine.check_reply(reply_kn, persona, "ನಿಮ್ಮ ಜನನ ಯಾವಾಗ ಆಯಿತು?")
+    assert checked_kn["check"] is None
+    assert checked_kn["answer"] == reply_kn["answer"]
+
 
 def test_check_reply_uses_localized_fixed_line():
     persona = config.load_persona("van-gogh")
@@ -317,6 +329,10 @@ def test_check_reply_uses_localized_fixed_line():
     checked_es = engine.check_reply(broken_reply, persona, "¿Cuándo naciste?")
     assert checked_es["status"] == "not_in_sources"
     assert "Mis fuentes no dicen nada" in checked_es["answer"]
+
+    checked_kn = engine.check_reply(broken_reply, persona, "ನಿಮ್ಮ ಜನನ ಯಾವಾಗ ಆಯಿತು?")
+    assert checked_kn["status"] == "not_in_sources"
+    assert "ನನ್ನ ಮೂಲಗಳಲ್ಲಿ" in checked_kn["answer"]
 
 
 def test_check_reply_keeps_uncited_ai_guide_answer():
@@ -367,6 +383,19 @@ def test_says_no_does_not_match_na_inside_words():
     # They should NOT match the pattern
     assert not engine._SAYS_NO.search("नाम क्या है")
     assert not engine._SAYS_NO.search("बनाना चाहता हूँ")
+
+
+def test_about_you_matches_kannada():
+    assert engine._ABOUT_YOU.search("ನಮಸ್ಕಾರ")
+    assert engine._ABOUT_YOU.search("ನೀವು ಯಾರು?")
+    assert engine._ABOUT_YOU.search("ನೀವು ನಿಜವಾದ ವ್ಯಕ್ತಿಯೇ?")
+
+
+def test_says_no_matches_kannada():
+    assert engine._SAYS_NO.search("ನನ್ನ ಮೂಲಗಳಲ್ಲಿ ಇದರ ಬಗ್ಗೆ ಏನೂ ಇಲ್ಲ.")
+    assert engine._SAYS_NO.search("ತಿಳಿಯಲು ಸಾಧ್ಯವಿಲ್ಲ.")
+    assert engine._SAYS_NO.search("ಏನೂ ಇಲ್ಲ")
+
     # But a real Hindi decline should still match
     assert engine._SAYS_NO.search("मुझे नहीं पता")
 

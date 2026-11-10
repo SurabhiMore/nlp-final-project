@@ -316,13 +316,15 @@ _SAYS_NO = re.compile(
     r"\b(?:not|no|never|cannot|nothing|only|beyond)\b|n't\b"
     r"|\b(?:nunca|nada|tampoco|ningun|ninguna|ninguno)\b"
     r"|(?:नहीं|कुछ नहीं)"
-    r"|(?:नाही|नाहीत|काही नाही|नव्हते)",
+    r"|(?:नाही|नाहीत|काही नाही|नव्हते)"
+    r"|(?:ಇಲ್ಲ|ಏನೂ ಇಲ್ಲ|ಸಾಧ್ಯವಿಲ್ಲ|ಗೊತ್ತಿಲ್ಲ|ತಿಳಿದಿಲ್ಲ|ಹೇಳಲಾಗಿಲ್ಲ)",
     re.I
 )
 # Greetings and "who are you" questions are answered from persona.json, not from passages,
 # so they may be answered without a citation (rule 6 and 7 of the prompt).
 # Patterns cover English, Spanish ("hola", "quién eres", "eres real"), Hindi ("नमस्ते",
-# "आप कौन हैं/हो", "क्या आप असली"), and Marathi ("तुम्ही कोण आहात", "तुम्ही खरे").
+# "आप कौन हैं/हो", "क्या आप असली"), Marathi ("तुम्ही कोण आहात", "तुम्ही खरे"), and
+# Kannada ("ನಮಸ್ಕಾರ", "ನೀವು ಯಾರು", "ನೀವು ನಿಜವಾದ").
 _ABOUT_YOU = re.compile(
     r"^\W*(?:hi|hello|hey|good (?:morning|afternoon|evening)|greetings)\b"
     r"|\bwho (?:are|r) (?:you|u)\b|\bwhat are you\b|\bintroduce yourself\b|\bare you (?:real|an? ai|a robot)\b"
@@ -333,7 +335,10 @@ _ABOUT_YOU = re.compile(
     r"|नमस्ते|नमस्कार|प्रणाम"
     r"|आप कौन (?:हैं|हो)|तुम कौन हो|क्या आप (?:असली|एआई|रोबोट)"
     # Marathi identity
-    r"|तुम्ही कोण आहात|तुम्ही (?:खरे|एआय|रोबोट)",
+    r"|तुम्ही कोण आहात|तुम्ही (?:खरे|एआय|रोबोट)"
+    # Kannada greetings & identity
+    r"|ನಮಸ್ಕಾರ|ನಮಸ್ತೆ|ಶುಭೋದಯ|ಶುಭ ಸಂಜೆ"
+    r"|ನೀವು ಯಾರು|ನೀನು ಯಾರು|ನಿಮ್ಮ ಪರಿಚಯ|ನೀವು (?:ನಿಜವಾದ|ಎಐ|ರೋಬೋಟ್)",
     re.I | re.UNICODE)
 # Rule 7 of the prompt: asked whether it is real, or told to drop the act, the exhibit says
 # it is an AI guide. That is an honest answer about itself, not a fact from the passages,
