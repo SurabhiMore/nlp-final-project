@@ -51,10 +51,15 @@ try:
     from pipeline import tts
 except ImportError:
     tts = None
+try:
+    from pipeline import claims as claims_checker
+except ImportError:
+    claims_checker = None
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 LOG_PATH = config.LOGS_DIR / "qa_log.jsonl"
 TOP_K = int(os.getenv("TOP_K", "8"))
+ENABLE_CLAIMS = os.getenv("ENABLE_CLAIMS", "1") == "1"
 _log_lock = threading.Lock()
 
 @asynccontextmanager
@@ -268,6 +273,17 @@ async def ask(
 
     timings["total_ms"] = _ms(total_start)
 
+    # Run the claim checker when enabled.  Only makes sense for answered
+    # questions that have cited passages; skip declined/off-topic ones.
+    unbacked_claims: list[str] = []
+    if (
+        ENABLE_CLAIMS
+        and claims_checker is not None
+        and result["status"] == "answered"
+        and chunks
+    ):
+        unbacked_claims = claims_checker.check_claims(result["answer"], chunks)
+
     detected_lang = result.get("detected_language") or (persona_engine.detect_language(question) if persona_engine else "en")
     _write_log({
         "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -288,6 +304,7 @@ async def ask(
         "sound": sound["name"] if sound else "",
         "model": result.get("model", ""),
         "stt_model": _stt_model_name() if source in ("audio", "transcript") else "",
+        "unbacked_claims": unbacked_claims,
         "timings": timings,
     })
 
@@ -305,6 +322,7 @@ async def ask(
         "citations": citations,
         "sound": sound,
         "audio": audio_clips,
+        "unbacked_claims": unbacked_claims,
         "timings": timings,
     }
 

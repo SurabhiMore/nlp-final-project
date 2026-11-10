@@ -300,3 +300,61 @@ def test_stats_missing_log(tmp_path, monkeypatch):
     r = _stats_client.get("/stats")
     assert r.status_code == 200
     assert r.json()["latency_ms"] == {"p50": 0, "p95": 0}
+
+
+# ------------------------------------------------------------------ claim checker (issue #60)
+
+
+def test_ask_response_has_unbacked_claims_key(client, monkeypatch):
+    """Every /ask response must include the unbacked_claims list, even when it's empty."""
+    import app.server as srv
+    monkeypatch.setattr(srv, "ENABLE_CLAIMS", True)
+    body = client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION}).json()
+    assert "unbacked_claims" in body, "unbacked_claims key missing from /ask response"
+    assert isinstance(body["unbacked_claims"], list), (
+        f"unbacked_claims should be a list, got {type(body['unbacked_claims'])}"
+    )
+
+
+def test_enable_claims_0_skips_check_and_returns_empty_list(client, monkeypatch):
+    """Setting ENABLE_CLAIMS=0 must bypass check_claims() and return an empty list."""
+    import app.server as srv
+
+    check_calls = []
+
+    def spy_check(answer, passages):
+        check_calls.append((answer, passages))
+        return ["some claim"]
+
+    monkeypatch.setattr(srv, "ENABLE_CLAIMS", False)
+    # Patch the module reference inside server so the spy would fire if the
+    # guard were somehow bypassed.
+    monkeypatch.setattr(srv.claims_checker, "check_claims", spy_check)
+
+    body = client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION}).json()
+    assert check_calls == [], "check_claims() should not be called when ENABLE_CLAIMS=0"
+    assert body["unbacked_claims"] == [], (
+        f"Expected empty list when disabled, got {body['unbacked_claims']!r}"
+    )
+
+
+def test_unbacked_claims_written_to_log(client, tmp_path, monkeypatch):
+    """The qa_log.jsonl entry must include unbacked_claims alongside the answer."""
+    import app.server as srv
+
+    log_file = tmp_path / "qa_log.jsonl"
+    monkeypatch.setattr(srv, "LOG_PATH", log_file)
+    monkeypatch.setattr(srv, "ENABLE_CLAIMS", True)
+    # Stub check_claims to a predictable value so we don't depend on the
+    # actual answer text getting flagged or not.
+    monkeypatch.setattr(srv.claims_checker, "check_claims", lambda answer, passages: ["1890"])
+
+    response = client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION})
+    assert response.status_code == 200
+
+    assert log_file.exists(), "qa_log.jsonl was not written"
+    entry = json.loads(log_file.read_text(encoding="utf-8").splitlines()[-1])
+    assert "unbacked_claims" in entry, "unbacked_claims missing from log entry"
+    assert entry["unbacked_claims"] == ["1890"], (
+        f"Expected ['1890'] in log, got {entry['unbacked_claims']!r}"
+    )
