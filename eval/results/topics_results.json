@@ -1,0 +1,448 @@
+{
+  "run_at": "2026-11-10T14:46:30+00:00",
+  "test": {
+    "questions": 66,
+    "right": 56,
+    "accuracy": 0.848,
+    "by_group": {
+      "visitor": {
+        "questions": 30,
+        "right": 29
+      },
+      "written": {
+        "questions": 36,
+        "right": 27
+      }
+    },
+    "by_topic": {
+      "off_topic": {
+        "questions": 4,
+        "tagged": 3,
+        "right": 3
+      },
+      "the_guide": {
+        "questions": 3,
+        "tagged": 2,
+        "right": 2
+      },
+      "after_their_time": {
+        "questions": 4,
+        "tagged": 2,
+        "right": 2
+      },
+      "works": {
+        "questions": 8,
+        "tagged": 9,
+        "right": 7
+      },
+      "letters_quotes": {
+        "questions": 2,
+        "tagged": 2,
+        "right": 2
+      },
+      "people": {
+        "questions": 6,
+        "tagged": 5,
+        "right": 5
+      },
+      "life": {
+        "questions": 5,
+        "tagged": 5,
+        "right": 5
+      },
+      "health_death": {
+        "questions": 6,
+        "tagged": 6,
+        "right": 6
+      },
+      "body": {
+        "questions": 8,
+        "tagged": 10,
+        "right": 8
+      },
+      "food_hunting": {
+        "questions": 3,
+        "tagged": 3,
+        "right": 3
+      },
+      "habitat_life": {
+        "questions": 5,
+        "tagged": 6,
+        "right": 4
+      },
+      "death_extinction": {
+        "questions": 2,
+        "tagged": 0,
+        "right": 0
+      },
+      "fossils": {
+        "questions": 6,
+        "tagged": 6,
+        "right": 5
+      },
+      "other": {
+        "questions": 4,
+        "tagged": 7,
+        "right": 4
+      }
+    },
+    "wrong": [
+      {
+        "id": "visit-s08-p6-2",
+        "exhibit": "van-gogh",
+        "question": "Start date of Gauguin's visit to Van Gogh's yellow house.",
+        "topic": "people",
+        "group": "visitor",
+        "tagged": "works"
+      },
+      {
+        "id": "top-vg-02",
+        "exhibit": "van-gogh",
+        "question": "Which of your pictures took you the longest?",
+        "topic": "works",
+        "group": "written",
+        "tagged": "other"
+      },
+      {
+        "id": "top-vg-15",
+        "exhibit": "van-gogh",
+        "question": "Do you know how much your paintings sell for now?",
+        "topic": "after_their_time",
+        "group": "written",
+        "tagged": "works"
+      },
+      {
+        "id": "top-vg-16",
+        "exhibit": "van-gogh",
+        "question": "Have you seen the immersive Van Gogh shows?",
+        "topic": "after_their_time",
+        "group": "written",
+        "tagged": "other"
+      },
+      {
+        "id": "top-tr-09",
+        "exhibit": "t-rex",
+        "question": "How big were your babies?",
+        "topic": "habitat_life",
+        "group": "written",
+        "tagged": "body"
+      },
+      {
+        "id": "top-tr-10",
+        "exhibit": "t-rex",
+        "question": "Why did all the dinosaurs disappear?",
+        "topic": "death_extinction",
+        "group": "written",
+        "tagged": "habitat_life"
+      },
+      {
+        "id": "top-tr-11",
+        "exhibit": "t-rex",
+        "question": "How long did you usually live?",
+        "topic": "death_extinction",
+        "group": "written",
+        "tagged": "habitat_life"
+      },
+      {
+        "id": "top-tr-15",
+        "exhibit": "t-rex",
+        "question": "Are birds really your cousins?",
+        "topic": "fossils",
+        "group": "written",
+        "tagged": "other"
+      },
+      {
+        "id": "top-tr-17",
+        "exhibit": "t-rex",
+        "question": "Can you do your loudest roar?",
+        "topic": "the_guide",
+        "group": "written",
+        "tagged": "body"
+      },
+      {
+        "id": "top-tr-18",
+        "exhibit": "t-rex",
+        "question": "What time does the museum close?",
+        "topic": "off_topic",
+        "group": "written",
+        "tagged": "fossils"
+      }
+    ]
+  },
+  "dev": {
+    "questions": 170,
+    "right": 166,
+    "accuracy": 0.976,
+    "by_group": {
+      "team": {
+        "questions": 170,
+        "right": 166
+      }
+    },
+    "by_topic": {
+      "off_topic": {
+        "questions": 25,
+        "tagged": 25,
+        "right": 25
+      },
+      "the_guide": {
+        "questions": 5,
+        "tagged": 5,
+        "right": 5
+      },
+      "after_their_time": {
+        "questions": 35,
+        "tagged": 36,
+        "right": 35
+      },
+      "works": {
+        "questions": 26,
+        "tagged": 26,
+        "right": 26
+      },
+      "letters_quotes": {
+        "questions": 7,
+        "tagged": 7,
+        "right": 7
+      },
+      "people": {
+        "questions": 7,
+        "tagged": 7,
+        "right": 7
+      },
+      "life": {
+        "questions": 14,
+        "tagged": 13,
+        "right": 13
+      },
+      "health_death": {
+        "questions": 6,
+        "tagged": 6,
+        "right": 6
+      },
+      "body": {
+        "questions": 19,
+        "tagged": 16,
+        "right": 16
+      },
+      "food_hunting": {
+        "questions": 5,
+        "tagged": 5,
+        "right": 5
+      },
+      "habitat_life": {
+        "questions": 6,
+        "tagged": 6,
+        "right": 6
+      },
+      "death_extinction": {
+        "questions": 2,
+        "tagged": 2,
+        "right": 2
+      },
+      "fossils": {
+        "questions": 12,
+        "tagged": 14,
+        "right": 12
+      },
+      "other": {
+        "questions": 1,
+        "tagged": 2,
+        "right": 1
+      }
+    },
+    "wrong": [
+      {
+        "id": "tr-07",
+        "exhibit": "t-rex",
+        "question": "How long is the most complete T. rex skeleton?",
+        "topic": "body",
+        "group": "team",
+        "tagged": "fossils"
+      },
+      {
+        "id": "tr-27",
+        "exhibit": "t-rex",
+        "question": "How long was your largest tooth found so far including its root?",
+        "topic": "body",
+        "group": "team",
+        "tagged": "fossils"
+      },
+      {
+        "id": "tr-30",
+        "exhibit": "t-rex",
+        "question": "Did you roar with an open mouth like the T-Rex in movies?",
+        "topic": "body",
+        "group": "team",
+        "tagged": "after_their_time"
+      },
+      {
+        "id": "clf-vg-19",
+        "exhibit": "van-gogh",
+        "question": "What happened to you in 1890?",
+        "topic": "life",
+        "group": "team",
+        "tagged": "other"
+      }
+    ]
+  },
+  "user_test_logs": {
+    "files": [
+      "artifacts/evidence/session05/P1_log.jsonl",
+      "artifacts/evidence/session07/P2_log.jsonl",
+      "artifacts/evidence/session07/P3_log.jsonl",
+      "artifacts/evidence/session07/P4_log.jsonl",
+      "artifacts/evidence/session08/P5_log.jsonl",
+      "artifacts/evidence/session08/P6_log.jsonl"
+    ],
+    "questions": 30,
+    "top_topics": [
+      {
+        "topic": "works",
+        "label": "Works and how they were made",
+        "count": 6,
+        "not_in_sources": 3,
+        "exhibits": {
+          "van-gogh": 6
+        },
+        "samples": [
+          "bedroom",
+          "What was your inspiration behind your paintings?",
+          "Name your first pin brush."
+        ]
+      },
+      {
+        "topic": "body",
+        "label": "Body, senses and sounds",
+        "count": 5,
+        "not_in_sources": 1,
+        "exhibits": {
+          "t-rex": 5
+        },
+        "samples": [
+          "How welcome you smell.",
+          "for your teeth",
+          "what sound was your roar"
+        ]
+      },
+      {
+        "topic": "other",
+        "label": "Other or unclear",
+        "count": 4,
+        "not_in_sources": 2,
+        "exhibits": {
+          "van-gogh": 2,
+          "t-rex": 2
+        },
+        "samples": [
+          "What was...",
+          "on the back.",
+          "Tell me everything interesting about this exhibit."
+        ]
+      },
+      {
+        "topic": "health_death",
+        "label": "Health and death",
+        "count": 3,
+        "not_in_sources": 0,
+        "exhibits": {
+          "van-gogh": 3
+        },
+        "samples": [
+          "Did you die?",
+          "The doctor that treated Vincent van Gogh at the very end of his life.",
+          "identify the physician who cared for Van Gogh during his final days."
+        ]
+      },
+      {
+        "topic": "people",
+        "label": "Family and friends",
+        "count": 2,
+        "not_in_sources": 1,
+        "exhibits": {
+          "van-gogh": 2
+        },
+        "samples": [
+          "What did your brother Theo do for a living?",
+          "And exactly that, Paul Gauguin, come to stay with Van Gogh and Arles."
+        ]
+      },
+      {
+        "topic": "fossils",
+        "label": "Fossils, names and science",
+        "count": 2,
+        "not_in_sources": 0,
+        "exhibits": {
+          "t-rex": 2
+        },
+        "samples": [
+          "The top formation was the T-Rex skeleton named Sue, discovered in...",
+          "The specific geological rock formation where the Sue T-Rex fossil was excavated."
+        ]
+      },
+      {
+        "topic": "life",
+        "label": "Life, places and money",
+        "count": 2,
+        "not_in_sources": 1,
+        "exhibits": {
+          "van-gogh": 2
+        },
+        "samples": [
+          "Did you move to Arles?",
+          "The name of the dog, you had as a boy."
+        ]
+      },
+      {
+        "topic": "off_topic",
+        "label": "Not about the exhibit",
+        "count": 2,
+        "not_in_sources": 0,
+        "exhibits": {
+          "t-rex": 2
+        },
+        "samples": [
+          "What is the capital of France?",
+          "12 times 8"
+        ]
+      },
+      {
+        "topic": "habitat_life",
+        "label": "Where and how they lived",
+        "count": 2,
+        "not_in_sources": 2,
+        "exhibits": {
+          "t-rex": 2
+        },
+        "samples": [
+          "A long-distance take to hatch in weeks.",
+          "Many hours to do sleep a day."
+        ]
+      },
+      {
+        "topic": "after_their_time",
+        "label": "After their time",
+        "count": 1,
+        "not_in_sources": 0,
+        "exhibits": {
+          "t-rex": 1
+        },
+        "samples": [
+          "You ever meet a human."
+        ]
+      },
+      {
+        "topic": "the_guide",
+        "label": "The guide itself",
+        "count": 1,
+        "not_in_sources": 1,
+        "exhibits": {
+          "van-gogh": 1
+        },
+        "samples": [
+          "can you hello in spanish"
+        ]
+      }
+    ]
+  }
+}
