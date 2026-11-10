@@ -112,6 +112,7 @@ python -m eval.eval_grounding          # reply check before and after, on frozen
 python -m eval.eval_quotes             # are quotes really in Van Gogh's letters? (pipeline/quotes.py)
 python -m eval.eval_robustness         # can visitors trick the persona into breaking its rules? (real model)
 python -m eval.eval_classifier         # does the question classifier block only what it should?
+python -m eval.eval_topics             # do visitor questions land in the right topic on /stats.html? (app/stats.py)
 python -m eval.eval_stt                # speech to text word error rate and speed (needs recordings, see below)
 python scripts/measure_latency.py      # how long each step takes
 ```

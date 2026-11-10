@@ -1,0 +1,66 @@
+{"id": "visit-s05-p1-1", "exhibit": "van-gogh", "question": "bedroom", "topic": "works", "group": "visitor", "source": "artifacts/evidence/session05/P1_log.jsonl:1"}
+{"id": "visit-s05-p1-2", "exhibit": "van-gogh", "question": "What was...", "topic": "other", "group": "visitor", "source": "artifacts/evidence/session05/P1_log.jsonl:2"}
+{"id": "visit-s05-p1-3", "exhibit": "van-gogh", "question": "What was your inspiration behind your paintings?", "topic": "works", "group": "visitor", "source": "artifacts/evidence/session05/P1_log.jsonl:3"}
+{"id": "visit-s05-p1-4", "exhibit": "t-rex", "question": "You ever meet a human.", "topic": "after_their_time", "group": "visitor", "source": "artifacts/evidence/session05/P1_log.jsonl:4"}
+{"id": "visit-s07-p2-1", "exhibit": "van-gogh", "question": "Did you move to Arles?", "topic": "life", "group": "visitor", "source": "artifacts/evidence/session07/P2_log.jsonl:1"}
+{"id": "visit-s07-p2-2", "exhibit": "van-gogh", "question": "The name of the dog, you had as a boy.", "topic": "life", "group": "visitor", "source": "artifacts/evidence/session07/P2_log.jsonl:2"}
+{"id": "visit-s07-p2-3", "exhibit": "t-rex", "question": "How welcome you smell.", "topic": "body", "group": "visitor", "source": "artifacts/evidence/session07/P2_log.jsonl:3"}
+{"id": "visit-s07-p2-4", "exhibit": "t-rex", "question": "A long-distance take to hatch in weeks.", "topic": "habitat_life", "group": "visitor", "source": "artifacts/evidence/session07/P2_log.jsonl:4"}
+{"id": "visit-s07-p2-5", "exhibit": "t-rex", "question": "What is the capital of France?", "topic": "off_topic", "group": "visitor", "source": "artifacts/evidence/session07/P2_log.jsonl:5"}
+{"id": "visit-s07-p3-1", "exhibit": "van-gogh", "question": "What did your brother Theo do for a living?", "topic": "people", "group": "visitor", "source": "artifacts/evidence/session07/P3_log.jsonl:1"}
+{"id": "visit-s07-p3-2", "exhibit": "van-gogh", "question": "Name your first pin brush.", "topic": "works", "group": "visitor", "source": "artifacts/evidence/session07/P3_log.jsonl:2"}
+{"id": "visit-s07-p3-3", "exhibit": "t-rex", "question": "for your teeth", "topic": "body", "group": "visitor", "source": "artifacts/evidence/session07/P3_log.jsonl:3"}
+{"id": "visit-s07-p3-4", "exhibit": "t-rex", "question": "Many hours to do sleep a day.", "topic": "habitat_life", "group": "visitor", "source": "artifacts/evidence/session07/P3_log.jsonl:4"}
+{"id": "visit-s07-p3-5", "exhibit": "t-rex", "question": "12 times 8", "topic": "off_topic", "group": "visitor", "source": "artifacts/evidence/session07/P3_log.jsonl:5"}
+{"id": "visit-s07-p4-1", "exhibit": "van-gogh", "question": "Did you die?", "topic": "health_death", "group": "visitor", "source": "artifacts/evidence/session07/P4_log.jsonl:1"}
+{"id": "visit-s07-p4-2", "exhibit": "van-gogh", "question": "did you whistle to a song while painting", "topic": "works", "group": "visitor", "source": "artifacts/evidence/session07/P4_log.jsonl:2"}
+{"id": "visit-s07-p4-3", "exhibit": "t-rex", "question": "on the back.", "topic": "other", "group": "visitor", "source": "artifacts/evidence/session07/P4_log.jsonl:3"}
+{"id": "visit-s07-p4-4", "exhibit": "t-rex", "question": "what sound was your roar", "topic": "body", "group": "visitor", "source": "artifacts/evidence/session07/P4_log.jsonl:4"}
+{"id": "visit-s07-p4-5", "exhibit": "van-gogh", "question": "can you hello in spanish", "topic": "the_guide", "group": "visitor", "source": "artifacts/evidence/session07/P4_log.jsonl:5"}
+{"id": "visit-s08-p5-1", "exhibit": "van-gogh", "question": "The doctor that treated Vincent van Gogh at the very end of his life.", "topic": "health_death", "group": "visitor", "source": "artifacts/evidence/session08/P5_log.jsonl:1"}
+{"id": "visit-s08-p5-2", "exhibit": "van-gogh", "question": "And exactly that, Paul Gauguin, come to stay with Van Gogh and Arles.", "topic": "people", "group": "visitor", "source": "artifacts/evidence/session08/P5_log.jsonl:2"}
+{"id": "visit-s08-p5-3", "exhibit": "t-rex", "question": "The top formation was the T-Rex skeleton named Sue, discovered in...", "topic": "fossils", "group": "visitor", "source": "artifacts/evidence/session08/P5_log.jsonl:3"}
+{"id": "visit-s08-p5-4", "exhibit": "t-rex", "question": "How long was the T-Rex's tail? Actually, how long was the T-Rex's skull?", "topic": "body", "group": "visitor", "source": "artifacts/evidence/session08/P5_log.jsonl:4"}
+{"id": "visit-s08-p5-5", "exhibit": "van-gogh", "question": "Go paint Starry Night while he was... wait. Actually, how many paintings did he sell during his lifetime?", "topic": "works", "group": "visitor", "source": "artifacts/evidence/session08/P5_log.jsonl:5"}
+{"id": "visit-s08-p5-6", "exhibit": "van-gogh", "question": "Tell me everything interesting about this exhibit.", "topic": "other", "group": "visitor", "source": "artifacts/evidence/session08/P5_log.jsonl:6"}
+{"id": "visit-s08-p6-1", "exhibit": "van-gogh", "question": "identify the physician who cared for Van Gogh during his final days.", "topic": "health_death", "group": "visitor", "source": "artifacts/evidence/session08/P6_log.jsonl:1"}
+{"id": "visit-s08-p6-2", "exhibit": "van-gogh", "question": "Start date of Gauguin's visit to Van Gogh's yellow house.", "topic": "people", "group": "visitor", "source": "artifacts/evidence/session08/P6_log.jsonl:2"}
+{"id": "visit-s08-p6-3", "exhibit": "t-rex", "question": "The specific geological rock formation where the Sue T-Rex fossil was excavated.", "topic": "fossils", "group": "visitor", "source": "artifacts/evidence/session08/P6_log.jsonl:3"}
+{"id": "visit-s08-p6-4", "exhibit": "t-rex", "question": "what did T-Rex weigh", "topic": "body", "group": "visitor", "source": "artifacts/evidence/session08/P6_log.jsonl:4"}
+{"id": "visit-s08-p6-5", "exhibit": "t-rex", "question": "Give me a deep dive into the history of this display.", "topic": "other", "group": "visitor", "source": "artifacts/evidence/session08/P6_log.jsonl:5"}
+{"id": "top-vg-01", "exhibit": "van-gogh", "question": "Why did you use so much yellow?", "topic": "works", "group": "written", "source": "written for this set"}
+{"id": "top-vg-02", "exhibit": "van-gogh", "question": "Which of your pictures took you the longest?", "topic": "works", "group": "written", "source": "written for this set"}
+{"id": "top-vg-03", "exhibit": "van-gogh", "question": "Did you ever paint at night outside?", "topic": "works", "group": "written", "source": "written for this set"}
+{"id": "top-vg-04", "exhibit": "van-gogh", "question": "What was your relationship like with your sister Wil?", "topic": "people", "group": "written", "source": "written for this set"}
+{"id": "top-vg-05", "exhibit": "van-gogh", "question": "Were you ever in love?", "topic": "people", "group": "written", "source": "written for this set"}
+{"id": "top-vg-06", "exhibit": "van-gogh", "question": "Did you and Gauguin stay friends after the fight?", "topic": "people", "group": "written", "source": "written for this set"}
+{"id": "top-vg-07", "exhibit": "van-gogh", "question": "Where did you grow up?", "topic": "life", "group": "written", "source": "written for this set"}
+{"id": "top-vg-08", "exhibit": "van-gogh", "question": "Were you poor your whole life?", "topic": "life", "group": "written", "source": "written for this set"}
+{"id": "top-vg-09", "exhibit": "van-gogh", "question": "What did you eat most days?", "topic": "life", "group": "written", "source": "written for this set"}
+{"id": "top-vg-10", "exhibit": "van-gogh", "question": "How did you lose your ear?", "topic": "health_death", "group": "written", "source": "written for this set"}
+{"id": "top-vg-11", "exhibit": "van-gogh", "question": "Were you sick for a long time?", "topic": "health_death", "group": "written", "source": "written for this set"}
+{"id": "top-vg-12", "exhibit": "van-gogh", "question": "How did you die?", "topic": "health_death", "group": "written", "source": "written for this set"}
+{"id": "top-vg-13", "exhibit": "van-gogh", "question": "Did you write a lot of letters to Theo?", "topic": "letters_quotes", "group": "written", "source": "written for this set"}
+{"id": "top-vg-14", "exhibit": "van-gogh", "question": "Is it true you said you dream your painting and then paint your dream?", "topic": "letters_quotes", "group": "written", "source": "written for this set"}
+{"id": "top-vg-15", "exhibit": "van-gogh", "question": "Do you know how much your paintings sell for now?", "topic": "after_their_time", "group": "written", "source": "written for this set"}
+{"id": "top-vg-16", "exhibit": "van-gogh", "question": "Have you seen the immersive Van Gogh shows?", "topic": "after_their_time", "group": "written", "source": "written for this set"}
+{"id": "top-vg-17", "exhibit": "van-gogh", "question": "Hi Vincent, are you a robot?", "topic": "the_guide", "group": "written", "source": "written for this set"}
+{"id": "top-vg-18", "exhibit": "van-gogh", "question": "Can you help me with my maths test tomorrow?", "topic": "off_topic", "group": "written", "source": "written for this set"}
+{"id": "top-tr-01", "exhibit": "t-rex", "question": "How tall were you standing up?", "topic": "body", "group": "written", "source": "written for this set"}
+{"id": "top-tr-02", "exhibit": "t-rex", "question": "Why were your arms so tiny?", "topic": "body", "group": "written", "source": "written for this set"}
+{"id": "top-tr-03", "exhibit": "t-rex", "question": "Could you see me if I stood still?", "topic": "body", "group": "written", "source": "written for this set"}
+{"id": "top-tr-04", "exhibit": "t-rex", "question": "What was your favourite thing to eat?", "topic": "food_hunting", "group": "written", "source": "written for this set"}
+{"id": "top-tr-05", "exhibit": "t-rex", "question": "Did you ever eat other T. rexes?", "topic": "food_hunting", "group": "written", "source": "written for this set"}
+{"id": "top-tr-06", "exhibit": "t-rex", "question": "How did you catch your prey?", "topic": "food_hunting", "group": "written", "source": "written for this set"}
+{"id": "top-tr-07", "exhibit": "t-rex", "question": "What was the world like when you were alive?", "topic": "habitat_life", "group": "written", "source": "written for this set"}
+{"id": "top-tr-08", "exhibit": "t-rex", "question": "Did you live alone or in a family?", "topic": "habitat_life", "group": "written", "source": "written for this set"}
+{"id": "top-tr-09", "exhibit": "t-rex", "question": "How big were your babies?", "topic": "habitat_life", "group": "written", "source": "written for this set"}
+{"id": "top-tr-10", "exhibit": "t-rex", "question": "Why did all the dinosaurs disappear?", "topic": "death_extinction", "group": "written", "source": "written for this set"}
+{"id": "top-tr-11", "exhibit": "t-rex", "question": "How long did you usually live?", "topic": "death_extinction", "group": "written", "source": "written for this set"}
+{"id": "top-tr-12", "exhibit": "t-rex", "question": "How do scientists know what you looked like?", "topic": "fossils", "group": "written", "source": "written for this set"}
+{"id": "top-tr-13", "exhibit": "t-rex", "question": "Where can I see a real T. rex skeleton?", "topic": "fossils", "group": "written", "source": "written for this set"}
+{"id": "top-tr-14", "exhibit": "t-rex", "question": "Who named you?", "topic": "fossils", "group": "written", "source": "written for this set"}
+{"id": "top-tr-15", "exhibit": "t-rex", "question": "Are birds really your cousins?", "topic": "fossils", "group": "written", "source": "written for this set"}
+{"id": "top-tr-16", "exhibit": "t-rex", "question": "Have you seen yourself in movies?", "topic": "after_their_time", "group": "written", "source": "written for this set"}
+{"id": "top-tr-17", "exhibit": "t-rex", "question": "Can you do your loudest roar?", "topic": "the_guide", "group": "written", "source": "written for this set"}
+{"id": "top-tr-18", "exhibit": "t-rex", "question": "What time does the museum close?", "topic": "off_topic", "group": "written", "source": "written for this set"}

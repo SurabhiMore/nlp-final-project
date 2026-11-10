@@ -17,6 +17,9 @@
   <p id="summary">Loading…</p>
   <h2>Per exhibit</h2>
   <table id="exhibits"></table>
+  <h2>Questions by topic</h2>
+  <p>What visitors ask about. Each question has one topic, picked by keyword rules.</p>
+  <table id="topics"></table>
   <h2>Most-asked questions</h2>
   <table id="top"></table>
   <h2>Corpus gaps (not in sources)</h2>
@@ -41,8 +44,11 @@ fetch("/stats")
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(d => {
     document.getElementById("summary").textContent = d.total_questions + " questions logged";
-    fill("exhibits", ["Exhibit", "Answered", "Declined", "Not in sources"],
-      Object.entries(d.per_exhibit).map(([k, v]) => [k, v.answered, v.declined, v.not_in_sources]));
+    fill("exhibits", ["Exhibit", "Answered", "Declined", "Not in sources", "After their time"],
+      Object.entries(d.per_exhibit).map(([k, v]) => [k, v.answered, v.declined, v.not_in_sources, v.outside_time]));
+    fill("topics", ["Topic", "Questions", "Not in sources", "Exhibits", "For example"],
+      d.top_topics.map(t => [t.label, t.count, t.not_in_sources,
+        Object.entries(t.exhibits).map(([k, v]) => k + " (" + v + ")").join(", "), t.samples.join(" / ")]));
     fill("top", ["Question", "Count"], d.top_questions.map(q => [q.question, q.count]));
     fill("gaps", ["Question", "Count"], d.top_not_in_sources.map(q => [q.question, q.count]));
     fill("latency", ["Metric", "ms"], [["p50", d.latency_ms.p50], ["p95", d.latency_ms.p95]]);

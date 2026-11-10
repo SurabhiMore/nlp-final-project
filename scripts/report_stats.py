@@ -1,3 +1,9 @@
+"""Print the curator stats in the terminal.
+
+    python scripts/report_stats.py                                          # logs/qa_log.jsonl
+    python scripts/report_stats.py --log artifacts/evidence/session0*/P*_log.jsonl   # the user test logs
+"""
+import argparse
 import sys
 from pathlib import Path
 
@@ -9,12 +15,22 @@ LOG_PATH = ROOT / "logs" / "qa_log.jsonl"
 
 
 def main():
-    s = compute_stats(LOG_PATH)
+    parser = argparse.ArgumentParser(description="Print the curator stats for one or more question logs.")
+    parser.add_argument("--log", nargs="+", default=[str(LOG_PATH)], help="log files to read together")
+    args = parser.parse_args()
+
+    s = compute_stats(args.log)
     print(f"Total questions: {s['total_questions']}\n")
     print("Per exhibit")
     for ex, c in s["per_exhibit"].items():
-        print(f"  {ex:<20} answered={c['answered']}  declined={c['declined']}  not_in_sources={c['not_in_sources']}")
+        print(f"  {ex:<20} answered={c['answered']}  declined={c['declined']}  not_in_sources={c['not_in_sources']}"
+              f"  outside_time={c['outside_time']}")
     if not s["per_exhibit"]:
+        print("  (none)")
+    print("\nTop topics")
+    for t in s["top_topics"][:5]:
+        print(f"  {t['count']:>3}  {t['label']} ({t['not_in_sources']} not in sources), for example: {t['samples'][0]}")
+    if not s["top_topics"]:
         print("  (none)")
     for title, key in (("Top questions", "top_questions"),
                        ("Corpus gaps (not_in_sources)", "top_not_in_sources")):
