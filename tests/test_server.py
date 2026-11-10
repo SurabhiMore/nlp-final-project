@@ -265,7 +265,7 @@ from fastapi.testclient import TestClient as _TC
 import app.server as _srv
 
 _stats_client = _TC(_srv.app)
-_STATS_KEYS = {"total_questions", "per_exhibit", "top_questions", "top_not_in_sources", "latency_ms"}
+_STATS_KEYS = {"total_questions", "per_exhibit", "top_questions", "top_not_in_sources", "top_topics", "latency_ms"}
 
 
 def test_stats_with_data(tmp_path, monkeypatch):
@@ -284,6 +284,55 @@ def test_stats_with_data(tmp_path, monkeypatch):
     assert body["total_questions"] == 3
     assert body["top_questions"][0]["count"] == 2
     assert body["latency_ms"]["p50"] == 900
+
+
+# issue-61: topics on /stats
+def _stats_for(rows, tmp_path, monkeypatch):
+    log = tmp_path / "qa_log.jsonl"
+    log.write_text("\n".join(_json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
+    monkeypatch.setattr(_srv, "LOG_PATH", log)
+    r = _stats_client.get("/stats")
+    assert r.status_code == 200
+    return r.json()
+
+
+def test_stats_groups_questions_by_topic(tmp_path, monkeypatch):
+    body = _stats_for([
+        {"question": "When did you paint Irises?", "persona": "van-gogh", "status": "answered"},
+        {"question": "Why did you paint the sunflowers?", "persona": "van-gogh", "status": "not_in_sources"},
+        {"question": "How strong was your bite?", "persona": "t-rex", "status": "answered"},
+        {"question": "What is 12 times 8?", "persona": "t-rex", "status": "declined"},
+    ], tmp_path, monkeypatch)
+    topics = body["top_topics"]
+    assert [t["topic"] for t in topics] == ["works", "body", "off_topic"]  # most asked first, then by label
+    works = topics[0]
+    assert works["label"] == "Works and how they were made"
+    assert (works["count"], works["not_in_sources"], works["exhibits"]) == (2, 1, {"van-gogh": 2})
+    assert works["samples"] == ["When did you paint Irises?", "Why did you paint the sunflowers?"]
+    assert sum(t["count"] for t in topics) == 4
+
+
+def test_stats_tags_a_question_in_another_language_by_its_search_query(tmp_path, monkeypatch):
+    body = _stats_for([{"question": "आपका जन्म कब हुआ था?", "search_query": "when were you born",
+                        "persona": "van-gogh", "status": "answered"}], tmp_path, monkeypatch)
+    assert body["top_topics"][0]["topic"] == "life"
+    assert body["top_topics"][0]["samples"] == ["आपका जन्म कब हुआ था?"]
+
+
+def test_stats_counts_outside_time_on_its_own(tmp_path, monkeypatch):
+    body = _stats_for([{"question": "Did you ever see a human?", "persona": "t-rex", "status": "outside_time"}],
+                      tmp_path, monkeypatch)
+    assert body["per_exhibit"]["t-rex"] == {"answered": 0, "declined": 0, "not_in_sources": 0, "outside_time": 1}
+    assert body["top_topics"][0]["topic"] == "after_their_time"
+
+
+def test_stats_topics_are_empty_without_questions(tmp_path, monkeypatch):
+    assert _stats_for([], tmp_path, monkeypatch)["top_topics"] == []
+
+
+def test_stats_page_has_the_topic_table(client):
+    page = client.get("/stats.html").text
+    assert 'id="topics"' in page and "top_topics" in page
 
 
 def test_stats_empty_log(tmp_path, monkeypatch):
