@@ -46,6 +46,7 @@ One file per area, so pull requests don't edit the same file:
 | `test_classifier.py` | Question classifier and its evaluation |
 | `test_stt.py` | Speech to text prompts and confidence flag, `/transcribe`, and its evaluation |
 | `test_server.py` | Server endpoints beyond the smoke tests |
+| `test_stats.py` | Topic tags on the curator stats page and their evaluation |
 
 Name tests after the behaviour they check, for example
 `test_citation_not_in_passages_is_dropped`, so a failure says what broke.

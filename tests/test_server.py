@@ -285,7 +285,7 @@ from fastapi.testclient import TestClient as _TC
 import app.server as _srv
 
 _stats_client = _TC(_srv.app)
-_STATS_KEYS = {"total_questions", "per_exhibit", "top_questions", "top_not_in_sources", "latency_ms"}
+_STATS_KEYS = {"total_questions", "per_exhibit", "top_questions", "top_not_in_sources", "top_topics", "latency_ms"}
 
 
 def test_stats_with_data(tmp_path, monkeypatch):
@@ -306,6 +306,55 @@ def test_stats_with_data(tmp_path, monkeypatch):
     assert body["latency_ms"]["p50"] == 900
 
 
+# issue-61: topics on /stats
+def _stats_for(rows, tmp_path, monkeypatch):
+    log = tmp_path / "qa_log.jsonl"
+    log.write_text("\n".join(_json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
+    monkeypatch.setattr(_srv, "LOG_PATH", log)
+    r = _stats_client.get("/stats")
+    assert r.status_code == 200
+    return r.json()
+
+
+def test_stats_groups_questions_by_topic(tmp_path, monkeypatch):
+    body = _stats_for([
+        {"question": "When did you paint Irises?", "persona": "van-gogh", "status": "answered"},
+        {"question": "Why did you paint the sunflowers?", "persona": "van-gogh", "status": "not_in_sources"},
+        {"question": "How strong was your bite?", "persona": "t-rex", "status": "answered"},
+        {"question": "What is 12 times 8?", "persona": "t-rex", "status": "declined"},
+    ], tmp_path, monkeypatch)
+    topics = body["top_topics"]
+    assert [t["topic"] for t in topics] == ["works", "body", "off_topic"]  # most asked first, then by label
+    works = topics[0]
+    assert works["label"] == "Works and how they were made"
+    assert (works["count"], works["not_in_sources"], works["exhibits"]) == (2, 1, {"van-gogh": 2})
+    assert works["samples"] == ["When did you paint Irises?", "Why did you paint the sunflowers?"]
+    assert sum(t["count"] for t in topics) == 4
+
+
+def test_stats_tags_a_question_in_another_language_by_its_search_query(tmp_path, monkeypatch):
+    body = _stats_for([{"question": "आपका जन्म कब हुआ था?", "search_query": "when were you born",
+                        "persona": "van-gogh", "status": "answered"}], tmp_path, monkeypatch)
+    assert body["top_topics"][0]["topic"] == "life"
+    assert body["top_topics"][0]["samples"] == ["आपका जन्म कब हुआ था?"]
+
+
+def test_stats_counts_outside_time_on_its_own(tmp_path, monkeypatch):
+    body = _stats_for([{"question": "Did you ever see a human?", "persona": "t-rex", "status": "outside_time"}],
+                      tmp_path, monkeypatch)
+    assert body["per_exhibit"]["t-rex"] == {"answered": 0, "declined": 0, "not_in_sources": 0, "outside_time": 1}
+    assert body["top_topics"][0]["topic"] == "after_their_time"
+
+
+def test_stats_topics_are_empty_without_questions(tmp_path, monkeypatch):
+    assert _stats_for([], tmp_path, monkeypatch)["top_topics"] == []
+
+
+def test_stats_page_has_the_topic_table(client):
+    page = client.get("/stats.html").text
+    assert 'id="topics"' in page and "top_topics" in page
+
+
 def test_stats_empty_log(tmp_path, monkeypatch):
     log = tmp_path / "qa_log.jsonl"
     log.write_text("")
@@ -320,3 +369,61 @@ def test_stats_missing_log(tmp_path, monkeypatch):
     r = _stats_client.get("/stats")
     assert r.status_code == 200
     assert r.json()["latency_ms"] == {"p50": 0, "p95": 0}
+
+
+# ------------------------------------------------------------------ claim checker (issue #60)
+
+
+def test_ask_response_has_unbacked_claims_key(client, monkeypatch):
+    """Every /ask response must include the unbacked_claims list, even when it's empty."""
+    import app.server as srv
+    monkeypatch.setattr(srv, "ENABLE_CLAIMS", True)
+    body = client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION}).json()
+    assert "unbacked_claims" in body, "unbacked_claims key missing from /ask response"
+    assert isinstance(body["unbacked_claims"], list), (
+        f"unbacked_claims should be a list, got {type(body['unbacked_claims'])}"
+    )
+
+
+def test_enable_claims_0_skips_check_and_returns_empty_list(client, monkeypatch):
+    """Setting ENABLE_CLAIMS=0 must bypass check_claims() and return an empty list."""
+    import app.server as srv
+
+    check_calls = []
+
+    def spy_check(answer, passages):
+        check_calls.append((answer, passages))
+        return ["some claim"]
+
+    monkeypatch.setattr(srv, "ENABLE_CLAIMS", False)
+    # Patch the module reference inside server so the spy would fire if the
+    # guard were somehow bypassed.
+    monkeypatch.setattr(srv.claims_checker, "check_claims", spy_check)
+
+    body = client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION}).json()
+    assert check_calls == [], "check_claims() should not be called when ENABLE_CLAIMS=0"
+    assert body["unbacked_claims"] == [], (
+        f"Expected empty list when disabled, got {body['unbacked_claims']!r}"
+    )
+
+
+def test_unbacked_claims_written_to_log(client, tmp_path, monkeypatch):
+    """The qa_log.jsonl entry must include unbacked_claims alongside the answer."""
+    import app.server as srv
+
+    log_file = tmp_path / "qa_log.jsonl"
+    monkeypatch.setattr(srv, "LOG_PATH", log_file)
+    monkeypatch.setattr(srv, "ENABLE_CLAIMS", True)
+    # Stub check_claims to a predictable value so we don't depend on the
+    # actual answer text getting flagged or not.
+    monkeypatch.setattr(srv.claims_checker, "check_claims", lambda answer, passages: ["1890"])
+
+    response = client.post("/ask", data={"persona": EXHIBIT, "text": QUESTION})
+    assert response.status_code == 200
+
+    assert log_file.exists(), "qa_log.jsonl was not written"
+    entry = json.loads(log_file.read_text(encoding="utf-8").splitlines()[-1])
+    assert "unbacked_claims" in entry, "unbacked_claims missing from log entry"
+    assert entry["unbacked_claims"] == ["1890"], (
+        f"Expected ['1890'] in log, got {entry['unbacked_claims']!r}"
+    )
