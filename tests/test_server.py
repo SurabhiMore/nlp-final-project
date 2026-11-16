@@ -490,3 +490,43 @@ def test_speak_kannada_returns_204(client):
     assert response.status_code == 204
     assert response.content == b""
 
+
+def test_ask_with_typed_text_and_speak_true(client, monkeypatch):
+    """When a visitor types a question with speak=true, it synthesizes audio in persona voice."""
+    import app.server as srv
+    synthesize_calls = []
+
+    def fake_synthesize_sentences(text, voice, speed=1.0, pitch=1.0):
+        synthesize_calls.append({"text": text, "voice": voice})
+        return [{"sentence": "I arrived in Arles.", "wav": b"RIFFfake", "ms": 50}]
+
+    monkeypatch.setattr(srv.tts, "synthesize_sentences", fake_synthesize_sentences)
+    response = client.post("/ask", data={"persona": "van-gogh", "text": "When did you arrive?", "speak": "true"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["tts_skipped"] is False
+    assert len(body["audio"]) == 1
+    assert synthesize_calls[0]["voice"] == "bm_lewis"
+
+
+def test_ask_with_typed_hindi_and_speak_true(client, monkeypatch):
+    """When a visitor types in Hindi with speak=true, it uses Hindi TTS voice."""
+    import app.server as srv
+    synthesize_calls = []
+
+    def fake_synthesize_sentences(text, voice, **kw):
+        synthesize_calls.append({"text": text, "voice": voice})
+        return [{"sentence": "मैं अर्ल्स आया।", "wav": b"RIFFfake_hi", "ms": 60}]
+
+    monkeypatch.setattr(srv.tts, "synthesize_sentences", fake_synthesize_sentences)
+    response = client.post(
+        "/ask",
+        data={"persona": "van-gogh", "text": "आप अर्ल्स कब पहुंचे?", "speak": "true"},
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["tts_skipped"] is False
+    assert len(body["audio"]) == 1
+    assert synthesize_calls[0]["voice"] == "hf_alpha"
+
+

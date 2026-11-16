@@ -261,6 +261,10 @@ async def ask(
             "note": exhibit.get("sounds", {}).get(result["sound"], {}).get("description", ""),
         }
 
+    detected_lang = result.get("detected_language") or (
+        persona_engine.detect_language(question) if persona_engine else "en"
+    )
+
     sentences = tts.speech_chunks(result["answer"]) if tts else []
     audio_clips = []
     tts_skipped = False
@@ -312,7 +316,6 @@ async def ask(
     ):
         unbacked_claims = claims_checker.check_claims(result["answer"], chunks)
 
-    detected_lang = result.get("detected_language") or (persona_engine.detect_language(question) if persona_engine else "en")
     _write_log({
         "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "request_id": request_id,

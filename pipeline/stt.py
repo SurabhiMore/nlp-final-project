@@ -206,12 +206,12 @@ def is_low_confidence(avg_logprob, threshold=None):
     return avg_logprob < (low_confidence_threshold() if threshold is None else threshold)
 
 
-def transcribe_detailed(audio_bytes, persona_id=None, model=None, beam=None, prompt=None):
+def transcribe_detailed(audio_bytes, persona_id=None, language=None, model=None, beam=None, prompt=None):
     """Turn recorded audio (webm, ogg, wav, mp4 and so on) into text, with a confidence flag.
 
-    Whisper auto-detects the spoken language. When the detection probability is
-    below WHISPER_LANG_MIN_PROB the result falls back to English, so short or
-    quiet English clips are not misidentified as another language.
+    Whisper auto-detects the spoken language (unless `language` is explicitly passed).
+    When the detection probability is below WHISPER_LANG_MIN_PROB the result falls back
+    to English, so short or quiet English clips are not misidentified as another language.
 
     The English vocabulary prompt is skipped for non-English audio because an
     English prompt would mislead Whisper when the question is in Hindi or Spanish.
@@ -227,7 +227,7 @@ def transcribe_detailed(audio_bytes, persona_id=None, model=None, beam=None, pro
     model = model or model_name()
     beam = beam or beam_size()
     result = {"text": "", "avg_logprob": None, "low_confidence": True, "duration_s": 0.0,
-              "model": model, "beam_size": beam, "prompt": "", "detected_language": "en"}
+              "model": model, "beam_size": beam, "prompt": "", "detected_language": language or "en"}
     if not audio_bytes:
         return result
 
@@ -235,7 +235,7 @@ def transcribe_detailed(audio_bytes, persona_id=None, model=None, beam=None, pro
         # language=None lets Whisper detect the language from the first 30 s.
         segments, info = _get_model(model).transcribe(
             io.BytesIO(audio_bytes),
-            language=None,
+            language=language,
             beam_size=beam,
             vad_filter=True,
         )
@@ -255,9 +255,9 @@ def transcribe_detailed(audio_bytes, persona_id=None, model=None, beam=None, pro
 
     # Decide which language to report. Fall back to English when detection is
     # uncertain so that short English clips are not misidentified.
-    detected = getattr(info, "language", "en") or "en"
+    detected = language or getattr(info, "language", "en") or "en"
     det_prob = getattr(info, "language_probability", 1.0) or 0.0
-    if det_prob < lang_min_prob():
+    if language is None and det_prob < lang_min_prob():
         detected = "en"
 
     # Only use the English vocabulary prompt when the spoken language is English.
@@ -302,6 +302,6 @@ def transcribe_detailed(audio_bytes, persona_id=None, model=None, beam=None, pro
     return result
 
 
-def transcribe(audio_bytes, persona_id=None):
+def transcribe(audio_bytes, persona_id=None, language=None):
     """Just the text of a recording. See transcribe_detailed."""
-    return transcribe_detailed(audio_bytes, persona_id=persona_id)["text"]
+    return transcribe_detailed(audio_bytes, persona_id=persona_id, language=language)["text"]
