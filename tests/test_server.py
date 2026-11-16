@@ -427,3 +427,66 @@ def test_unbacked_claims_written_to_log(client, tmp_path, monkeypatch):
     assert entry["unbacked_claims"] == ["1890"], (
         f"Expected ['1890'] in log, got {entry['unbacked_claims']!r}"
     )
+
+
+# ---------------------------------------------------------------- /speak endpoint
+
+def test_speak_english_uses_persona_voice(client, monkeypatch):
+    import app.server as srv
+    synthesize_calls = []
+
+    def fake_synthesize(text, voice, speed=1.0, pitch=1.0):
+        synthesize_calls.append({"text": text, "voice": voice, "speed": speed, "pitch": pitch})
+        return b"RIFFfake_wav_data"
+
+    monkeypatch.setattr(srv.tts, "synthesize", fake_synthesize)
+    response = client.post("/speak", data={"persona": "van-gogh", "text": "I painted starry night."})
+    assert response.status_code == 200
+    assert response.content == b"RIFFfake_wav_data"
+    assert len(synthesize_calls) == 1
+    assert synthesize_calls[0]["voice"] == "bm_lewis"
+
+
+def test_speak_hindi_uses_hindi_voice(client, monkeypatch):
+    import app.server as srv
+    synthesize_calls = []
+
+    def fake_synthesize(text, voice, **kw):
+        synthesize_calls.append({"text": text, "voice": voice})
+        return b"RIFFfake_wav_hindi"
+
+    monkeypatch.setattr(srv.tts, "synthesize", fake_synthesize)
+    response = client.post("/speak", data={"persona": "van-gogh", "text": "नमस्ते, मैं विन्सेंट हूँ।", "lang": "hi"})
+    assert response.status_code == 200
+    assert response.content == b"RIFFfake_wav_hindi"
+    assert len(synthesize_calls) == 1
+    assert synthesize_calls[0]["voice"] == "hf_alpha"
+
+
+def test_speak_spanish_uses_spanish_voice(client, monkeypatch):
+    import app.server as srv
+    synthesize_calls = []
+
+    def fake_synthesize(text, voice, **kw):
+        synthesize_calls.append({"text": text, "voice": voice})
+        return b"RIFFfake_wav_spanish"
+
+    monkeypatch.setattr(srv.tts, "synthesize", fake_synthesize)
+    response = client.post("/speak", data={"persona": "van-gogh", "text": "Hola, soy Vincent.", "lang": "es"})
+    assert response.status_code == 200
+    assert response.content == b"RIFFfake_wav_spanish"
+    assert len(synthesize_calls) == 1
+    assert synthesize_calls[0]["voice"] == "ef_dora"
+
+
+def test_speak_marathi_returns_204(client):
+    response = client.post("/speak", data={"persona": "van-gogh", "text": "नमस्कार, मी व्हिन्सेंट आहे.", "lang": "mr"})
+    assert response.status_code == 204
+    assert response.content == b""
+
+
+def test_speak_kannada_returns_204(client):
+    response = client.post("/speak", data={"persona": "van-gogh", "text": "ನಮಸ್ಕಾರ, ನಾನು ವಿನ್ಸೆಂಟ್.", "lang": "kn"})
+    assert response.status_code == 204
+    assert response.content == b""
+
