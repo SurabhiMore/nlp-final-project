@@ -1,6 +1,6 @@
 # Roadmap
 
-Echoes.ai, version 5, October 25, 2026. Owned by Pratham.
+Echoes.ai, version 6, November 16, 2026. Owned by Pratham.
 
 We want to build something a museum would actually use, and we want to learn real NLP while we
 do it. So every week each of us builds a piece of the system, tests it on questions it hasn't
@@ -83,33 +83,70 @@ The question classifier planned for Kshiti moved to the Sessions 10 to 12 list. 
 to speech to text instead, because all three people in the Session 7 user tests brought up being
 misheard.
 
-**Session 9 (November 3): the checks in the product**
+**Session 9 (November 3): the checks in the product (issues #50 to #54)**
 
-- Connect the Session 8 checks to `/ask`, each behind a setting so it can be switched off, and
-  measure the north star with and without them.
-- Fix what the Session 8 results show. For the quote checker that means short quotes, and
-  quotes from other translations of the letters, which need meaning-based matching.
-- Put the product on a public https link, so user tests can run on phones from the QR code.
+- Surabhi (#50): replies in the visitor's language for typed questions in Hindi, Marathi and
+  Spanish, with the question turned into English keywords for search
+- Saurabh (#51): Docker, and a free Cloudflare tunnel with QR codes, so phones can use the
+  microphone. There is no permanent link: Docker Spaces on Hugging Face now need a paid plan, and
+  we are not spending money on this
+- Pratham (#52): a question classifier that answers clearly off-topic questions without search
+  or the model
+- Aditi (#53): the curator stats page, and the Session 9 report
+- Kshiti (#54): 20 adversarial prompts with an automatic check (16 of 20 held)
+
+We had planned to connect all the Session 8 checks to `/ask` and measure the north star with and
+without them. Only the claim checker went in, a week later (#60), and the with-and-without run
+did not happen. The quote checker's misses on short quotes and other translations were not fixed.
 
 Owners for Session 9 onwards are picked when we write the issues each week.
 
-## Sessions 10 to 12: scaling up (November 10, 17 and 24)
+## Sessions 10 to 12: scaling up, then getting ready for demo day (November 10, 17 and 24)
 
-We'll pick two or three of these depending on what users ask for:
+We planned to pick two or three of these, depending on what users asked for. We did four:
 
-- a third exhibit of a new kind (an object), and then building exhibits automatically from
-  museum and Wikidata records
-- answers in Hindi, Marathi, Kannada and Spanish
-- speech recognition errors by accent, and teaching it art words like "chiaroscuro"
-- a curator dashboard that groups visitor questions by topic
-- testing whether people can trick the persona into breaking its rules
-- the question classifier (moved from Sessions 7 to 9)
+- answers in Hindi, Marathi, Kannada and Spanish (#50, #63), typed only so far; voice is #71
+- a curator dashboard that groups visitor questions by topic (#53, #61)
+- testing whether people can trick the persona into breaking its rules (#54, #62)
+- the question classifier (#52)
 
-Fixed dates in these weeks:
+We dropped the other two, because there were not enough weeks left:
 
-- Session 11 (November 17): our demo day slot is assigned.
-- Session 12 (November 24): the last weekly report. Final numbers are measured on held-out
-  questions with the model that runs in the demo.
+- a third exhibit of a new kind (an object), and building exhibits automatically from museum and
+  Wikidata records. A new exhibit still needs only a `persona.json` and its sources.
+- speech recognition errors by accent, and art words like "chiaroscuro". We measured the word
+  error rate per speaker in Session 8 (#41) and did not go further.
+
+**Session 10 (November 10): numbers on the same model (issues #60 to #64)**
+
+- Aditi (#64): the north star again on gpt-oss-120b. It was 59 of 64, the same as Session 7, so
+  the Session 8 drop came from llama3, not our code. Also the Session 10 report
+- Saurabh (#60): the claim checker in `/ask`, behind `ENABLE_CLAIMS`. It logs details the cited
+  passages do not contain, but does not block them
+- Kshiti (#62): the reply check now keeps honest "I am an AI guide" answers, and robustness went
+  from 16 to 19 of 20
+- Pratham (#61): visitor questions grouped by topic on the curator page, with 29 of 30 real
+  visitor questions tagged right
+- Surabhi (#63): other languages for the T. rex as well, and Kannada
+
+**Session 11 (November 17): users again, and the last new features (issues #70 to #74)**
+
+- Kshiti (#70): a user test on people's own phones through the tunnel, our first since Session 8.
+  The testers also write the questions for the final numbers, so nobody on the team writes them
+- Saurabh (#71): spoken questions and answers in Hindi and Spanish
+- Surabhi (#72): key-fact scoring that accepts number words and synonyms, with Sessions 7, 8 and
+  10 rescored the same way, and why vg-07 and vg-08 fail
+- Aditi (#73): the plain guide on gpt-oss-120b, the persona against it, and the Session 11 report
+- Pratham (#74): the demo script, the outline of the final report, a README setup test with
+  someone from outside the team, and this roadmap
+
+Our demo day slot is assigned in this session.
+
+**Session 12 (November 24): the final numbers**
+
+The last weekly report. The final numbers are measured once, on the questions the Session 11
+testers wrote, with gpt-oss-120b, the model in the demo. We also make the slides and record the
+backup demo.
 
 ## Demo day (Sessions 13 and 14: December 1 and 8)
 
@@ -155,3 +192,6 @@ augmented generation (week 10), knowledge graphs (week 11), and bias and ethics 
 - Version 5, October 25: the real schedule. Session 7 lists what we did, Session 8 matches issues
   #39 to #43, the question classifier moved to Sessions 10 to 12, and the plan now runs to demo
   day on December 1 and 8.
+- Version 6, November 16: Sessions 9 and 10 as they went, Session 11 matches issues #70 to #74,
+  Session 12 holds the final run, the https link is a free Cloudflare tunnel instead of Hugging
+  Face Spaces (#51), and we list what we dropped from the scaling list.

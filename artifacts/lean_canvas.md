@@ -1,6 +1,6 @@
 # Lean canvas
 
-Echoes.ai, version 4, October 25, 2026. Pratham keeps this page up to date and we go over it
+Echoes.ai, version 5, November 16, 2026. Pratham keeps this page up to date and we go over it
 as a team every week.
 
 ## Value proposition
@@ -50,29 +50,36 @@ settings file is the same for every exhibit. We test it on two very different on
 - **Tyrannosaurus rex**, a creature with no words of its own. It speaks as a character built
   from what scientists have written, says when scientists are unsure, and never saw a human.
 
-Later, curators get a page where they can upload material for their own exhibits and see what
-visitors ask.
+Questions typed in Hindi, Marathi, Kannada or Spanish get answers in the same language
+(#50, #63). Voice is English only so far (#71).
+
+Curators get a page (`/stats.html`) that shows what visitors ask, grouped by topic, and which
+questions the sources could not answer (#53, #61). Uploading material for new exhibits is still
+for later.
 
 ## How users find it
 
 Visitors find it through the QR code next to each exhibit, which links straight to that
 exhibit (`/?persona=<id>`). For museums, we want to pilot with a campus gallery, which we
-haven't contacted yet. Until then we test in person, on a laptop, with people from outside the
-team: one in Session 5 and three in Session 7. The product is not on a public https link yet,
-and a QR code needs one.
+haven't contacted yet. Until then we test in person with people from outside the team: one in
+Session 5, three in Session 7 and two in Session 8, all on a laptop, and in Session 11 on
+people's own phones (#70). A QR code needs an https link, so for each test session a free
+Cloudflare tunnel gives us one, but only while a laptop runs the server (#51).
 
 ## Cost
 
 During the course it costs nothing. We use Whisper for speech to text (MIT licence), Kokoro for
-text to speech (Apache 2.0), and a free LLM tier or a local open model. For now it runs on our
-laptops; we plan to host it for free on Hugging Face Spaces.
+text to speech (Apache 2.0), and a free LLM tier or a local open model. It runs on our laptops,
+with a free Cloudflare tunnel for user tests on phones. We dropped the plan to host it on Hugging
+Face Spaces, because Docker Spaces now need a paid plan and we aren't spending money on this.
 
 One visitor question is roughly 10 seconds of audio to transcribe, one LLM call with about
 2,000 tokens in (eight passages plus the question) and 150 out, and 15 seconds of speech to
 generate. On a free LLM tier that is no money, only rate limits, and those limits already
 matter: the 128-call answer evaluation in Session 7 hit Groq's daily limit and needed a second
-key. We are aiming for under one cent per question on a paid tier, but that is a guess until we
-log real token counts.
+key, and a 64-question run in Session 10 used about 180K of the 200K tokens a day. We are aiming
+for under one cent per question on a paid tier, but that is a guess until we log real token
+counts.
 
 ## The number we watch
 
@@ -94,7 +101,27 @@ We also track search quality (Recall@5), how long a reply takes, and task succes
 
 Model used: openai/gpt-oss-120b on Groq's free tier, with low reasoning effort. Measured on 22 held-out questions per exhibit. A hand check of 20 random answers agreed with the automatic scoring on all 20. Details in `eval/results/`.
 
-## Numbers now (Session 7)
+## Numbers now (Session 10)
+
+| Measure | Van Gogh | T. rex |
+|---|---|---|
+| Grounded answer accuracy, persona | 0.938 (30 of 32) | 0.906 (29 of 32) |
+| Trap questions declined | 9 of 9 | 9 of 9 |
+
+Same model as Session 7 (openai/gpt-oss-120b, low reasoning effort, 8 passages per question) and
+the same 64 questions, so the totals compare directly: 59 of 64 both times, after the classifier,
+the claim checker and the language changes went in ([comparison](../eval/results/north_star_comparison.md)).
+3 of the 5 misses are correct answers in other words that the strict check does not accept. #72
+changes the check and rescores every session the same way. The plain guide was not rerun this
+time (#73).
+
+Also measured since Session 7, all on gpt-oss-120b: 19 of 20 adversarial prompts held (#62), the
+classifier blocked 0 of 98 questions it must let through (#52), the topic tags were right on 29 of
+30 real visitor questions (#61), the language of 12 of 12 questions per exhibit in Hindi, Marathi,
+Kannada and Spanish was detected correctly, and in Session 9 all 9 Van Gogh questions in Spanish,
+Hindi and Marathi were answered in the same language (#50, #63).
+
+## Session 7 numbers
 
 | Measure | Van Gogh | T. rex |
 |---|---|---|
@@ -128,18 +155,20 @@ Voice. A recording of someone's voice is personal data. We never save the audio;
 into text in memory. Request logs stay out of the repo, and only anonymized extracts go into
 our evidence folder. Some visitors will be children.
 
-Honesty. The guide says it is an AI. We use a made-up voice, never a clone of a real person's
-voice.
+Honesty. The guide says it is an AI when asked, and our reply check keeps that answer (#62). We
+use a made-up voice, never a clone of a real person's voice.
 
 Bias. Speech recognition does worse with accented speech. In Session 7 it misheard 6 of the 12
-spoken questions, and in Session 8 we measure its word error rate on at least 40 recorded
-questions, with as many accents as we can find (#41).
+spoken questions. In Session 8 we measured it on 40 recorded questions from 5 speakers: a word
+error rate of 0.053 with the small model and the exhibit prompt (#41). Voice is English only, so
+visitors who speak other languages have to type (#50, #63, #71).
 
 When it's wrong. It cites its source, admits when it doesn't know, and only quotes passages
 marked as the exhibit's own words. Session 7 showed a gap: an answer can cite a real passage and
-still add a detail that passage does not have. So we are building checks that test answers
-against their sources: one for details such as dates and names (#40) and one for quotes (#42).
-Wrong answers found in testing feed our error analysis.
+still add a detail that passage does not have. So we built checks that test answers against
+their sources. The claim checker runs on every answer in `/ask` and logs dates, numbers and names
+the passages do not contain (#40, #60), but does not block them yet. The quote checker (#42) is
+not connected to `/ask`. Wrong answers found in testing feed our error analysis.
 
 ## Risks
 
@@ -149,18 +178,21 @@ Wrong answers found in testing feed our error analysis.
    not have ("July 1890"), and a participant rated one of them 5 of 5 for believing it. Next: the
    claim checker (#40) and the quote checker (#42). The quote checker gets 44 of 46 held-out
    quotes right (0.957) and called no false quote word for word
-   ([results](../eval/results/quotes_results.md)).
+   ([results](../eval/results/quotes_results.md)). Session 10: the claim checker runs in `/ask`
+   (#60), and 19 of 20 adversarial prompts held. The one that failed agreed that Theo was older
+   than Vincent, which he was not (#62).
 2. Voice is too slow to feel like a conversation. Found in Session 5: on a laptop CPU, the
    large Whisper model took about 14 seconds per question, so we use a smaller one on a CPU.
    Found in Session 7: the answer is on screen about 1.2 seconds after the question, but the
-   first spoken word took 6.6 seconds when last measured. Next: measure the full delay again and
-   try a GPU for the demo.
+   first spoken word took 6.6 seconds when last measured. Across all 30 user test questions, the
+   server took a median of 1.1 seconds to answer, and the slowest 5% took about 8 seconds. The
+   time to the first spoken word is measured again in #71.
 3. People feel awkward talking out loud in a quiet gallery. Test: recorded task tests with
    people from outside the team. Found in Session 7: 12 of 15 questions were asked by voice, and
    what people complained about was being misheard, not talking out loud (risk 7). Those tests
    were on a laptop, not in a quiet gallery.
 4. Others are already doing this. Test: focus on measured accuracy, and ask a curator what they
-   would actually need (not done yet).
+   would actually need (still not done; the topic page in #61 is our guess at it).
 5. The sources are too thin to answer "why" questions. Partly addressed: we added Van Gogh's
    letters and museum descriptions after finding the Met data has no descriptive text.
 6. Exhibits without their own words, like the T. rex, must not state debated science as fact.
@@ -169,7 +201,9 @@ Wrong answers found in testing feed our error analysis.
 7. Speech to text mishears questions, especially names. Found in Session 7: 6 of 12 spoken
    questions were misheard, all three people brought it up, and one switched to typing. Test:
    word error rate on recorded questions for several speech settings, and a transcript the
-   visitor can fix before the question is sent (#41).
+   visitor can fix before the question is sent (#41). Result: a word error rate of 0.053 on 40
+   clips from 5 speakers with the small model and the exhibit prompt, and the transcript box is in
+   the product.
 
 ## Changes
 
@@ -183,3 +217,7 @@ Wrong answers found in testing feed our error analysis.
 - Version 4, October 25: added the Session 7 numbers and user test results, updated risks 1 to 4
   with what Session 7 showed, added risk 7 (misheard questions), and added the claim and quote
   checkers to what happens when it's wrong.
+- Version 5, November 16: replaced the Hugging Face Spaces plan with a laptop and a free
+  Cloudflare tunnel, because Docker Spaces now need a paid plan (#51); added the Session 10
+  numbers, other languages, the curator page and the Session 8 speech results; updated risks 1, 2,
+  4 and 7.
