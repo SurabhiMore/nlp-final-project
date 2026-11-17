@@ -166,3 +166,62 @@ def test_validation_detects_invalid_chunk_reference_in_check(monkeypatch, capsys
     assert problems > 0
     captured = capsys.readouterr()
     assert "not found in van-gogh corpus" in captured.out or "evidence not found in any passage" in captured.out
+
+
+@pytest.mark.parametrize("text, key_facts, expected", [
+    ("I lived about six million years ago.", [["6 million"]], True),
+    ("I roamed 6 million years ago.", [["six million"]], True),
+    ("I had two clawed fingers.", [["2"]], True),
+    ("I had 2 clawed fingers.", [["two"]], True),
+    ("I painted three versions.", [["3"]], True),
+    ("I painted 3 versions.", [["three"]], True),
+    ("It measured twelve metres.", [["12"]], True),
+    ("It weighed 8 tons.", [["eight"]], True),
+    ("I had twenty teeth.", [["20"]], True),
+])
+def test_key_facts_present_accepts_number_words(text, key_facts, expected):
+    """key_facts_present accepts number words for digits and vice versa."""
+    assert datasets.key_facts_present(text, key_facts) == expected
+
+
+@pytest.mark.parametrize("text, key_facts, expected", [
+    ("I could see up to 6 kilometres away.", [["6 km"]], True),
+    ("I could see up to 6 kilometers away.", [["6 km"]], True),
+    ("I could see up to 6 km away.", [["6 kilometres"]], True),
+    ("I could see up to 6 km away.", [["6 kilometers"]], True),
+    ("The stride was 9 metres long.", [["9 m"]], True),
+    ("The stride was 9 meters long.", [["9 m"]], True),
+    ("The stride was 9 m long.", [["9 metres"]], True),
+    ("The tooth measured 30 centimetres.", [["30 cm"]], True),
+    ("The tooth measured 30 centimeters.", [["30 cm"]], True),
+    ("The claw was 15 millimetres.", [["15 mm"]], True),
+    ("The claw was 15 millimeters.", [["15 mm"]], True),
+])
+def test_key_facts_present_accepts_unit_spellings(text, key_facts, expected):
+    """key_facts_present accepts standard unit abbreviations and spellings."""
+    assert datasets.key_facts_present(text, key_facts) == expected
+
+
+def test_key_facts_present_accepts_combined_number_and_units():
+    """key_facts_present accepts number words combined with unit spellings."""
+    text = "I could spot objects as far as six kilometres away."
+    key_facts = [["6 km"]]
+    assert datasets.key_facts_present(text, key_facts)
+
+    text2 = "I had keen vision up to six kilometers away."
+    assert datasets.key_facts_present(text2, [["6 km", "6 kilometers", "6 kilometres"]])
+
+    text3 = "My stride was nine metres."
+    assert datasets.key_facts_present(text3, [["9 m"]])
+
+
+def test_key_facts_present_alternatives():
+    """key_facts_present correctly matches synonyms added as alternatives."""
+    # tr-09: 'strongest' for 'largest'
+    text_bite = "Scientists estimate my bite was the strongest of any land animal."
+    assert datasets.key_facts_present(text_bite, [["largest", "strongest"]])
+
+    # tr-28: 'dim light' for 'low-light'
+    text_vision = "My eyes were not great in dim light, so I hunted during the day."
+    assert datasets.key_facts_present(text_vision, [["day", "diurnal"], ["low-light", "poor", "dim light"]])
+

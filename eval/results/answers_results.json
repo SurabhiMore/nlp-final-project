@@ -5,10 +5,10 @@
   "summary": {
     "t-rex/persona": {
       "questions": 32,
-      "grounded_accuracy": 0.906,
+      "grounded_accuracy": 1.0,
       "answerable_questions": 23,
-      "answer_accuracy": 0.87,
-      "grounded_on_answerable": 0.87,
+      "answer_accuracy": 1.0,
+      "grounded_on_answerable": 1.0,
       "trap_questions": 9,
       "decline_accuracy": 1.0,
       "answered_without_citation": 0,
@@ -31,10 +31,10 @@
     },
     "all/persona": {
       "questions": 64,
-      "grounded_accuracy": 0.922,
+      "grounded_accuracy": 0.969,
       "answerable_questions": 46,
-      "answer_accuracy": 0.891,
-      "grounded_on_answerable": 0.891,
+      "answer_accuracy": 0.957,
+      "grounded_on_answerable": 0.957,
       "trap_questions": 18,
       "decline_accuracy": 1.0,
       "answered_without_citation": 0,
@@ -365,9 +365,9 @@
       "parse_error": null,
       "check": null,
       "passages_per_question": 8,
-      "correct": false,
-      "grounded": false,
-      "facts_in_answer": false,
+      "correct": true,
+      "grounded": true,
+      "facts_in_answer": true,
       "backed_by_citation": true
     },
     {
@@ -883,9 +883,9 @@
       "parse_error": null,
       "check": null,
       "passages_per_question": 8,
-      "correct": false,
-      "grounded": false,
-      "facts_in_answer": false,
+      "correct": true,
+      "grounded": true,
+      "facts_in_answer": true,
       "backed_by_citation": true
     },
     {
@@ -1028,9 +1028,9 @@
       "parse_error": null,
       "check": null,
       "passages_per_question": 8,
-      "correct": false,
-      "grounded": false,
-      "facts_in_answer": false,
+      "correct": true,
+      "grounded": true,
+      "facts_in_answer": true,
       "backed_by_citation": true
     },
     {

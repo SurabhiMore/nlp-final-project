@@ -30,13 +30,31 @@ HELDOUT_DIR = QUESTIONS_DIR / "heldout"   # written before tuning search; never 
 QUESTION_TYPES = {"fact", "date", "why", "painting", "quote", "outside_time", "not_in_sources", "off_topic"}
 DECLINE_TYPES = {"outside_time", "not_in_sources", "off_topic"}
 
+NUMBER_WORDS = {
+    "zero": "0", "one": "1", "two": "2", "three": "3", "four": "4",
+    "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9",
+    "ten": "10", "eleven": "11", "twelve": "12", "thirteen": "13",
+    "fourteen": "14", "fifteen": "15", "sixteen": "16", "seventeen": "17",
+    "eighteen": "18", "nineteen": "19", "twenty": "20",
+    "thirty": "30", "forty": "40", "fifty": "50", "sixty": "60",
+    "seventy": "70", "eighty": "80", "ninety": "90",
+}
+
+UNIT_WORDS = {
+    "km": "km", "kilometre": "km", "kilometres": "km", "kilometer": "km", "kilometers": "km",
+    "m": "m", "metre": "m", "metres": "m", "meter": "m", "meters": "m",
+    "cm": "cm", "centimetre": "cm", "centimetres": "cm", "centimeter": "cm", "centimeters": "cm",
+    "mm": "mm", "millimetre": "mm", "millimetres": "mm", "millimeter": "mm", "millimeters": "mm",
+}
+
 def normalize(text):
-    """Lowercase, fold accents and quotes, and keep only letters, digits and spaces."""
+    """Lowercase, fold accents and quotes, normalize number words and units, and keep only letters, digits and spaces."""
     text = unicodedata.normalize("NFKD", text or "")
     text = "".join(ch for ch in text if not unicodedata.combining(ch))
     text = text.lower().replace("’", "'").replace("‘", "'")
     text = re.sub(r"[^a-z0-9]+", " ", text)
-    return " ".join(text.split())
+    words = [NUMBER_WORDS.get(w, UNIT_WORDS.get(w, w)) for w in text.split()]
+    return " ".join(words)
 
 def load_chunks(persona_id):
     path = config.chunks_path(persona_id)
