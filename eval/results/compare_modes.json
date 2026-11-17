@@ -1,78 +1,78 @@
 {
   "source": {
     "file": "eval/results/answers_results.json",
-    "run_at": "2026-09-29T14:57:27+00:00",
+    "run_at": "2026-11-17T19:23:46+00:00",
     "model": "openai/gpt-oss-120b",
     "passages_per_question": 8
   },
   "matched_by": "exhibit and question id",
   "correct_means": "grounded, as scored by eval_answers.py",
   "overall": {
-    "questions": 44,
-    "persona_correct": 38,
-    "plain_guide_correct": 39,
-    "persona_accuracy": 0.864,
-    "plain_guide_accuracy": 0.886,
-    "difference_points": -2.3,
+    "questions": 64,
+    "persona_correct": 62,
+    "plain_guide_correct": 61,
+    "persona_accuracy": 0.969,
+    "plain_guide_accuracy": 0.953,
+    "difference_points": 1.6,
     "difference_interval_95": [
-      -12.1,
-      7.0
+      -5.4,
+      9.2
     ],
     "outcomes": {
-      "both correct": 37,
-      "persona only": 1,
-      "plain guide only": 2,
-      "both wrong": 4
+      "both correct": 60,
+      "persona only": 2,
+      "plain guide only": 1,
+      "both wrong": 1
     },
     "discordant": 3,
     "mcnemar_exact_p": 1.0,
     "smallest_possible_p": 0.25,
-    "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 3 questions, and even a 3 to 0 split would give p = 0.250, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -12.1 to +7.0 points (persona minus plain guide)."
+    "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 3 questions, and even a 3 to 0 split would give p = 0.250, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -5.4 to +9.2 points (persona minus plain guide)."
   },
   "by_exhibit": {
     "t-rex": {
-      "questions": 22,
-      "persona_correct": 19,
-      "plain_guide_correct": 19,
-      "persona_accuracy": 0.864,
-      "plain_guide_accuracy": 0.864,
-      "difference_points": 0.0,
+      "questions": 32,
+      "persona_correct": 32,
+      "plain_guide_correct": 30,
+      "persona_accuracy": 1.0,
+      "plain_guide_accuracy": 0.938,
+      "difference_points": 6.2,
       "difference_interval_95": [
-        -15.9,
-        15.9
+        -5.4,
+        20.1
       ],
       "outcomes": {
-        "both correct": 18,
-        "persona only": 1,
-        "plain guide only": 1,
-        "both wrong": 2
+        "both correct": 30,
+        "persona only": 2,
+        "plain guide only": 0,
+        "both wrong": 0
       },
       "discordant": 2,
-      "mcnemar_exact_p": 1.0,
+      "mcnemar_exact_p": 0.5,
       "smallest_possible_p": 0.5,
-      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 2 questions, and even a 2 to 0 split would give p = 0.500, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -15.9 to +15.9 points (persona minus plain guide)."
+      "conclusion": "No evidence of a difference (p = 0.50). The modes disagreed on only 2 questions, and even a 2 to 0 split would give p = 0.500, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -5.4 to +20.1 points (persona minus plain guide)."
     },
     "van-gogh": {
-      "questions": 22,
-      "persona_correct": 19,
-      "plain_guide_correct": 20,
-      "persona_accuracy": 0.864,
-      "plain_guide_accuracy": 0.909,
-      "difference_points": -4.5,
+      "questions": 32,
+      "persona_correct": 30,
+      "plain_guide_correct": 31,
+      "persona_accuracy": 0.938,
+      "plain_guide_accuracy": 0.969,
+      "difference_points": -3.1,
       "difference_interval_95": [
-        -19.6,
-        8.3
+        -15.4,
+        6.9
       ],
       "outcomes": {
-        "both correct": 19,
+        "both correct": 30,
         "persona only": 0,
         "plain guide only": 1,
-        "both wrong": 2
+        "both wrong": 1
       },
       "discordant": 1,
       "mcnemar_exact_p": 1.0,
       "smallest_possible_p": 1.0,
-      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 1 question, and even a 1 to 0 split would give p = 1.000, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -19.6 to +8.3 points (persona minus plain guide)."
+      "conclusion": "No evidence of a difference (p = 1.00). The modes disagreed on only 1 question, and even a 1 to 0 split would give p = 1.000, so this sample is too small to show a difference either way. The 95% interval for the gap runs from -15.4 to +6.9 points (persona minus plain guide)."
     }
   },
   "questions": [
@@ -96,17 +96,17 @@
       "exhibit": "t-rex",
       "question_id": "tr-03",
       "question": "What does the rex in your name mean?",
-      "persona_correct": false,
-      "plain_guide_correct": false,
-      "outcome": "both wrong"
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
     },
     {
       "exhibit": "t-rex",
       "question_id": "tr-04",
       "question": "Who gave you the name Tyrannosaurus rex, and when?",
-      "persona_correct": false,
+      "persona_correct": true,
       "plain_guide_correct": true,
-      "outcome": "plain guide only"
+      "outcome": "both correct"
     },
     {
       "exhibit": "t-rex",
@@ -144,9 +144,9 @@
       "exhibit": "t-rex",
       "question_id": "tr-09",
       "question": "How strong was your bite?",
-      "persona_correct": false,
+      "persona_correct": true,
       "plain_guide_correct": false,
-      "outcome": "both wrong"
+      "outcome": "persona only"
     },
     {
       "exhibit": "t-rex",
@@ -161,8 +161,8 @@
       "question_id": "tr-11",
       "question": "How fast could you run?",
       "persona_correct": true,
-      "plain_guide_correct": false,
-      "outcome": "persona only"
+      "plain_guide_correct": true,
+      "outcome": "both correct"
     },
     {
       "exhibit": "t-rex",
@@ -253,6 +253,86 @@
       "outcome": "both correct"
     },
     {
+      "exhibit": "t-rex",
+      "question_id": "tr-23",
+      "question": "How good was your sense of smell?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-24",
+      "question": "What kind of vision did you have, and how far could you see objects clearly?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-25",
+      "question": "What was the nickname of the specimen found in Saskatchewan, and how heavy was it?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-26",
+      "question": "Which horned dinosaur was among your primary prey targets?",
+      "persona_correct": true,
+      "plain_guide_correct": false,
+      "outcome": "persona only"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-27",
+      "question": "How long was your largest tooth found so far including its root?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-28",
+      "question": "Did you hunt primarily during the day or at night?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-29",
+      "question": "What was your estimated body temperature, and was your metabolism warm-blooded?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-30",
+      "question": "Did you roar with an open mouth like the T-Rex in movies?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-31",
+      "question": "How many weeks did it take for your eggs to hatch in a nest?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "t-rex",
+      "question_id": "tr-32",
+      "question": "Did you see the Chicxulub asteroid impact that ended the dinosaurs?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
       "exhibit": "van-gogh",
       "question_id": "vg-01",
       "question": "When and where were you born?",
@@ -272,9 +352,9 @@
       "exhibit": "van-gogh",
       "question_id": "vg-03",
       "question": "What was your brother Theo's job in Paris?",
-      "persona_correct": false,
+      "persona_correct": true,
       "plain_guide_correct": true,
-      "outcome": "plain guide only"
+      "outcome": "both correct"
     },
     {
       "exhibit": "van-gogh",
@@ -305,8 +385,8 @@
       "question_id": "vg-07",
       "question": "In the portrait Gauguin painted of you, what were you doing?",
       "persona_correct": false,
-      "plain_guide_correct": false,
-      "outcome": "both wrong"
+      "plain_guide_correct": true,
+      "outcome": "plain guide only"
     },
     {
       "exhibit": "van-gogh",
@@ -424,6 +504,86 @@
       "exhibit": "van-gogh",
       "question_id": "vg-22",
       "question": "Can you recommend a good phone to buy?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-23",
+      "question": "Who was your doctor and friend in Auvers-sur-Oise?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-24",
+      "question": "At which asylum were you staying when you created The Starry Night?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-25",
+      "question": "Which two chairs did you paint while preparing for or living with Gauguin in Arles?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-26",
+      "question": "What was your father's profession, and what church did he serve?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-27",
+      "question": "When did you injure your left ear with a razor in Arles?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-28",
+      "question": "What three things became your staple diet while living in poverty in Antwerp?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-29",
+      "question": "What were your reported last words before you died in Auvers?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-30",
+      "question": "Did you cut off your entire ear or only part of it?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-31",
+      "question": "What do you think of Don McLean's 1971 song 'Vincent (Starry, Starry Night)'?",
+      "persona_correct": true,
+      "plain_guide_correct": true,
+      "outcome": "both correct"
+    },
+    {
+      "exhibit": "van-gogh",
+      "question_id": "vg-32",
+      "question": "What did you write to Theo about Leonardo da Vinci's Mona Lisa?",
       "persona_correct": true,
       "plain_guide_correct": true,
       "outcome": "both correct"
