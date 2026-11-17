@@ -1,17 +1,17 @@
 # Test report
 
-- Run: 2026-11-17 14:37 (UTC-05:00)
-- Code tested: commit f3c0609 on branch eval/plain-guide-rerun-session11, no uncommitted changes
+- Run: 2026-11-17 15:39 (UTC-05:00)
+- Code tested: commit a23a229 on branch eval/plain-guide-rerun-session11, no uncommitted changes
 - Command: python -m pytest -m "slow or not slow" --save-report
 - Python 3.11.17 on Darwin
-- Result: 540 passed in 27.1 s
+- Result: 571 passed in 27.6 s
 - All tests that ran passed.
 
 | Test | File | Result | Time (s) |
 |---|---|---|---|
-| test_supported_answer_keeps_its_citation | test_answers.py | passed | 0.15 |
+| test_supported_answer_keeps_its_citation | test_answers.py | passed | 0.11 |
 | test_honest_not_in_sources_is_kept_as_written | test_answers.py | passed | 0.00 |
-| test_decline_that_answers_from_model_knowledge_is_replaced[rex-means-king] | test_answers.py | passed | 0.01 |
+| test_decline_that_answers_from_model_knowledge_is_replaced[rex-means-king] | test_answers.py | passed | 0.00 |
 | test_decline_that_answers_from_model_knowledge_is_replaced[theo-art-dealer] | test_answers.py | passed | 0.00 |
 | test_answer_with_no_citation_becomes_not_in_sources | test_answers.py | passed | 0.00 |
 | test_off_topic_decline_is_kept_as_written | test_answers.py | passed | 0.00 |
@@ -46,7 +46,7 @@
 | test_introduction_without_citation_is_still_answered[Who are you?] | test_answers.py | passed | 0.01 |
 | test_introduction_without_citation_is_still_answered[Are you real?] | test_answers.py | passed | 0.01 |
 | test_roar_request_without_citation_keeps_the_sound | test_answers.py | passed | 0.00 |
-| test_ask_returns_the_same_fields_when_the_model_reply_is_broken | test_answers.py | passed | 0.04 |
+| test_ask_returns_the_same_fields_when_the_model_reply_is_broken | test_answers.py | passed | 0.06 |
 | test_frozen_passages_cover_both_exhibits | test_answers.py | passed | 0.00 |
 | test_evaluation_scores_the_same_reply_before_and_after | test_answers.py | passed | 0.00 |
 | test_detect_language[\u0906\u092a\u0915\u093e \u091c\u0928\u094d\u092e \u0915\u092c \u0914\u0930 \u0915\u0939\u093e\u0901 \u0939\u0941\u0906 \u0925\u093e?-hi] | test_answers.py | passed | 0.00 |
@@ -261,13 +261,13 @@
 | test_regressions_and_improvements_are_reported | test_compare_retrieval.py | passed | 0.00 |
 | test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
 | test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
-| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.21 |
-| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.54 |
+| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.19 |
+| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.53 |
 | test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
 | test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
 | test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
 | test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.19 |
-| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.54 |
+| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.53 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[t-rex] | test_datasets.py | passed | 0.00 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[van-gogh] | test_datasets.py | passed | 0.00 |
 | test_validation_detects_duplicate_ids | test_datasets.py | passed | 0.00 |
@@ -397,6 +397,7 @@
 | test_retrieve_all_modes_return_compatible_structure | test_retrieve.py | passed | 0.00 |
 | test_the_van_gogh_set_has_five_prompts_of_each_attack_type | test_robustness.py | passed | 0.01 |
 | test_every_quote_in_the_quote_prompts_is_really_made_up | test_robustness.py | passed | 0.01 |
+| test_the_t_rex_set_loads_and_has_every_attack_type | test_robustness.py | passed | 0.00 |
 | test_a_real_quote_is_refused_as_a_fabrication | test_robustness.py | passed | 0.00 |
 | test_an_unreadable_condition_is_refused[status is happy] | test_robustness.py | passed | 0.00 |
 | test_an_unreadable_condition_is_refused[answer mentions ai] | test_robustness.py | passed | 0.00 |
@@ -444,11 +445,18 @@
 | test_stats_empty_log | test_server.py | passed | 0.00 |
 | test_stats_missing_log | test_server.py | passed | 0.00 |
 | test_ask_response_has_unbacked_claims_key | test_server.py | passed | 0.01 |
-| test_enable_claims_0_skips_check_and_returns_empty_list | test_server.py | passed | 0.01 |
+| test_enable_claims_0_skips_check_and_returns_empty_list | test_server.py | passed | 0.00 |
 | test_unbacked_claims_written_to_log | test_server.py | passed | 0.00 |
+| test_speak_english_uses_persona_voice | test_server.py | passed | 0.00 |
+| test_speak_hindi_uses_hindi_voice | test_server.py | passed | 0.00 |
+| test_speak_spanish_uses_spanish_voice | test_server.py | passed | 0.00 |
+| test_speak_marathi_returns_204 | test_server.py | passed | 0.00 |
+| test_speak_kannada_returns_204 | test_server.py | passed | 0.00 |
+| test_ask_with_typed_text_and_speak_true | test_server.py | passed | 0.01 |
+| test_ask_with_typed_hindi_and_speak_true | test_server.py | passed | 0.01 |
 | test_both_exhibits_load | test_smoke.py | passed | 0.00 |
 | test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.19 |
-| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.53 |
+| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.52 |
 | test_search_returns_ranked_passages[t-rex] | test_smoke.py | passed | 0.00 |
 | test_search_returns_ranked_passages[van-gogh] | test_smoke.py | passed | 0.00 |
 | test_search_finds_the_passage_for_an_exact_wording_question | test_smoke.py | passed | 0.01 |
@@ -461,7 +469,7 @@
 | test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.01 |
 | test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
 | test_phone_page_is_served | test_smoke.py | passed | 0.00 |
-| test_voice_round_trip | test_smoke.py | passed | 15.30 |
+| test_voice_round_trip | test_smoke.py | passed | 12.21 |
 | test_topic_of[van-gogh-What is 17 times 23?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Can you help me write my chemistry homework?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Who are you?-the_guide] | test_stats.py | passed | 0.00 |
@@ -489,7 +497,7 @@
 | test_top_topics_keeps_three_different_examples | test_stats.py | passed | 0.00 |
 | test_compute_stats_reads_several_logs_together | test_stats.py | passed | 0.00 |
 | test_topic_sets_have_known_topics_and_unique_ids | test_stats.py | passed | 0.00 |
-| test_visitor_questions_match_the_user_test_logs | test_stats.py | passed | 0.01 |
+| test_visitor_questions_match_the_user_test_logs | test_stats.py | passed | 0.00 |
 | test_topic_set_problems_are_reported[unknown-topic] | test_stats.py | passed | 0.00 |
 | test_topic_set_problems_are_reported[missing-field] | test_stats.py | passed | 0.00 |
 | test_topic_set_problems_are_reported[bad-group] | test_stats.py | passed | 0.00 |
@@ -516,7 +524,11 @@
 | test_unsure_transcript_is_flagged | test_stt.py | passed | 0.00 |
 | test_empty_audio_is_not_sent_to_whisper | test_stt.py | passed | 0.00 |
 | test_transcribe_still_returns_plain_text | test_stt.py | passed | 0.00 |
-| test_transcribe_returns_the_text_without_answering | test_stt.py | passed | 0.00 |
+| test_hindi_audio_is_detected_and_prompt_is_skipped | test_stt.py | passed | 0.00 |
+| test_low_language_probability_falls_back_to_english | test_stt.py | passed | 0.00 |
+| test_spanish_audio_is_detected | test_stt.py | passed | 0.00 |
+| test_unsupported_language_falls_back_to_english | test_stt.py | passed | 0.00 |
+| test_transcribe_returns_the_text_without_answering | test_stt.py | passed | 0.01 |
 | test_transcribe_passes_the_low_confidence_flag | test_stt.py | passed | 0.00 |
 | test_transcribe_rejects_empty_audio | test_stt.py | passed | 0.00 |
 | test_transcribe_unknown_exhibit_is_404 | test_stt.py | passed | 0.00 |
@@ -526,6 +538,10 @@
 | test_ask_with_typed_text_is_unchanged | test_stt.py | passed | 0.01 |
 | test_ask_with_audio_still_works | test_stt.py | passed | 0.01 |
 | test_phone_page_has_the_transcript_step | test_stt.py | passed | 0.00 |
+| test_transcribe_returns_detected_language | test_stt.py | passed | 0.00 |
+| test_ask_hindi_audio_sets_tts_skipped_false | test_stt.py | passed | 0.01 |
+| test_ask_marathi_audio_sets_tts_skipped | test_stt.py | passed | 0.00 |
+| test_ask_kannada_audio_sets_tts_skipped | test_stt.py | passed | 0.00 |
 | test_word_errors_counts_substitutions_deletions_and_insertions | test_stt.py | passed | 0.00 |
 | test_wer_ignores_case_punctuation_and_accents | test_stt.py | passed | 0.00 |
 | test_reference_set_is_forty_held_out_questions_copied_exactly | test_stt.py | passed | 0.00 |
@@ -534,9 +550,9 @@
 | test_summarize_counts_flags_against_mistakes | test_stt.py | passed | 0.00 |
 | test_suggest_picks_the_lowest_error_within_the_time_budget | test_stt.py | passed | 0.00 |
 | test_suggest_threshold_separates_misheard_from_right_clips | test_stt.py | passed | 0.00 |
-| test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.03 |
+| test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.02 |
 | test_run_without_recordings_says_where_to_put_them | test_stt.py | passed | 0.00 |
-| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 7.26 |
+| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 11.26 |
 | test_parse_year | test_timecheck.py | passed | 0.00 |
 | test_explicit_year_after_end_is_flagged | test_timecheck.py | passed | 0.00 |
 | test_year_inside_time_not_flagged | test_timecheck.py | passed | 0.00 |
@@ -549,3 +565,18 @@
 | test_cache_miss_online_fetches_and_saves | test_timecheck.py | passed | 0.00 |
 | test_persona_without_end_year_is_skipped | test_timecheck.py | passed | 0.00 |
 | test_own_name_is_ignored | test_timecheck.py | passed | 0.00 |
+| test_split_sentences_basic_punctuation | test_tts.py | passed | 0.00 |
+| test_split_sentences_hindi_danda | test_tts.py | passed | 0.00 |
+| test_split_sentences_mixed_danda_and_period | test_tts.py | passed | 0.00 |
+| test_split_sentences_danda_only | test_tts.py | passed | 0.00 |
+| test_split_sentences_empty_and_whitespace | test_tts.py | passed | 0.00 |
+| test_split_sentences_keeps_abbreviations_together | test_tts.py | passed | 0.00 |
+| test_voice_for_language_english_returns_none | test_tts.py | passed | 0.00 |
+| test_voice_for_language_hindi_returns_a_voice | test_tts.py | passed | 0.00 |
+| test_voice_for_language_spanish_returns_a_voice | test_tts.py | passed | 0.00 |
+| test_voice_for_language_marathi_returns_none | test_tts.py | passed | 0.00 |
+| test_voice_for_language_kannada_returns_none | test_tts.py | passed | 0.00 |
+| test_voice_for_language_unknown_returns_none | test_tts.py | passed | 0.00 |
+| test_pipeline_for_rejects_unsupported_lang_code | test_tts.py | passed | 0.00 |
+| test_pipeline_for_accepts_hindi_lang_code | test_tts.py | passed | 0.00 |
+| test_speech_chunks_with_hindi_danda | test_tts.py | passed | 0.00 |
