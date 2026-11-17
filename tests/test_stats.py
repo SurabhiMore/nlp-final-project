@@ -130,7 +130,10 @@ def test_results_are_written_as_json_and_markdown(tmp_path):
     json_path, md_path = ev.write_outputs(ev.run(), tmp_path)
     report = json.loads(json_path.read_text(encoding="utf-8"))
     assert (report["test"]["questions"], report["dev"]["questions"]) == (66, 170)
-    assert report["user_test_logs"]["questions"] == 30
+    # Every user test log counts, so this grows when a session adds logs.
+    logged = sum(1 for path in ev.EVIDENCE_DIR.glob("session*/*_log.jsonl")
+                 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+    assert report["user_test_logs"]["questions"] == logged >= 30
     text = md_path.read_text(encoding="utf-8")
     assert "## Held-out questions" in text and "## Development questions" in text
     assert "## The user test logs on the curator page" in text

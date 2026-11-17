@@ -119,6 +119,11 @@ Browsers (specifically Safari on iOS and Chrome on Android) **block microphone a
    cloudflared tunnel --url http://localhost:7860
    ```
 
+   Keep the laptop open, awake and plugged in while people test. If it sleeps, the tunnel drops
+   and the link stops working for good, so you need a new one. On a Mac,
+   `caffeinate -i cloudflared tunnel --url http://localhost:8000` keeps it awake while the tunnel
+   runs. If the link still drops, add `--protocol http2`.
+
 3. **Open the HTTPS URL on your phone:**
    Cloudflare outputs a public link like `https://random-words.trycloudflare.com`. Open that URL on your phone's browser (tested on both iOS and Android). The microphone permission prompt will appear.
    *(Note for iPhone users: Ensure your physical Silent switch is OFF so Safari plays Web Audio. On Android, check that media volume is turned up).*
