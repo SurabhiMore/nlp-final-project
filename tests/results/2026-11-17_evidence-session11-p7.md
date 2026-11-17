@@ -1,10 +1,10 @@
 # Test report
 
-- Run: 2026-11-17 14:24 (UTC-05:00)
-- Code tested: commit 6d0d8d4 on branch evidence/session11-p7, no uncommitted changes
+- Run: 2026-11-17 14:29 (UTC-05:00)
+- Code tested: commit 51e064f on branch evidence/session11-p7, no uncommitted changes
 - Command: python -m pytest -m "slow or not slow" --save-report
 - Python 3.12.15 on Darwin
-- Result: 517 passed, 1 skipped in 11.8 s
+- Result: 517 passed, 1 skipped in 9.7 s
 - All tests that ran passed.
 
 | Test | File | Result | Time (s) |
@@ -17,7 +17,7 @@
 | test_off_topic_decline_is_kept_as_written | test_answers.py | passed | 0.00 |
 | test_off_topic_decline_that_does_not_say_no_gets_a_clear_line | test_answers.py | passed | 0.00 |
 | test_off_topic_answer_from_model_knowledge_is_not_shown | test_answers.py | passed | 0.00 |
-| test_invalid_citation_is_removed_and_valid_one_kept | test_answers.py | passed | 0.01 |
+| test_invalid_citation_is_removed_and_valid_one_kept | test_answers.py | passed | 0.00 |
 | test_citing_a_real_passage_that_was_not_supplied_is_rejected | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[not-json] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[cut-off] | test_answers.py | passed | 0.01 |
@@ -26,7 +26,7 @@
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[answer-is-object] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[citations-is-number] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[citations-is-object] | test_answers.py | passed | 0.01 |
-| test_malformed_reply_never_crashes_and_never_shows_raw_output[status-is-number] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[status-is-number] | test_answers.py | passed | 0.00 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[top-level-list] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[sound-is-number] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[whitespace] | test_answers.py | passed | 0.01 |
@@ -261,13 +261,13 @@
 | test_regressions_and_improvements_are_reported | test_compare_retrieval.py | passed | 0.00 |
 | test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
 | test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
-| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.15 |
-| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.41 |
+| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.14 |
+| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.39 |
 | test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
 | test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
 | test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
-| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.16 |
-| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.40 |
+| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.14 |
+| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.39 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[t-rex] | test_datasets.py | passed | 0.00 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[van-gogh] | test_datasets.py | passed | 0.00 |
 | test_validation_detects_duplicate_ids | test_datasets.py | passed | 0.00 |
@@ -425,8 +425,8 @@
 | test_enable_claims_0_skips_check_and_returns_empty_list | test_server.py | passed | 0.00 |
 | test_unbacked_claims_written_to_log | test_server.py | passed | 0.00 |
 | test_both_exhibits_load | test_smoke.py | passed | 0.00 |
-| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.15 |
-| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.40 |
+| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.14 |
+| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.39 |
 | test_search_returns_ranked_passages[t-rex] | test_smoke.py | passed | 0.00 |
 | test_search_returns_ranked_passages[van-gogh] | test_smoke.py | passed | 0.00 |
 | test_search_finds_the_passage_for_an_exact_wording_question | test_smoke.py | passed | 0.01 |
@@ -439,7 +439,7 @@
 | test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.01 |
 | test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
 | test_phone_page_is_served | test_smoke.py | passed | 0.00 |
-| test_voice_round_trip | test_smoke.py | passed | 5.66 |
+| test_voice_round_trip | test_smoke.py | passed | 5.00 |
 | test_topic_of[van-gogh-What is 17 times 23?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Can you help me write my chemistry homework?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Who are you?-the_guide] | test_stats.py | passed | 0.00 |
@@ -514,7 +514,7 @@
 | test_suggest_threshold_separates_misheard_from_right_clips | test_stt.py | passed | 0.00 |
 | test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.02 |
 | test_run_without_recordings_says_where_to_put_them | test_stt.py | passed | 0.00 |
-| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 3.25 |
+| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 1.88 |
 | test_parse_year | test_timecheck.py | passed | 0.00 |
 | test_explicit_year_after_end_is_flagged | test_timecheck.py | passed | 0.00 |
 | test_year_inside_time_not_flagged | test_timecheck.py | passed | 0.00 |
