@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libsndfile1 \
         git \
         curl \
+        espeak-ng \
     && rm -rf /var/lib/apt/lists/*
 
 # ----- working directory ------------------------------------------------------

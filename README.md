@@ -41,6 +41,18 @@ python -m spacy download en_core_web_sm
 cp .env.example .env               # fill in your LLM API key and settings
 ```
 
+**Hindi and Spanish voice (optional):** Kokoro uses `espeak-ng` to generate phonemes for non-English voices. Without it, Hindi and Spanish TTS will raise an error when first called. English voices work fine without it.
+
+```bash
+# macOS
+brew install espeak-ng
+
+# Ubuntu / Debian / Docker
+sudo apt-get install -y espeak-ng
+```
+
+Marathi (mr) and Kannada (kn) have no Kokoro voice. When a visitor asks in those languages the answer text is shown, but no audio is played.
+
 Check the test questions and start the server:
 
 ```bash

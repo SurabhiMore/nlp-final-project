@@ -16,6 +16,12 @@ Theo, Arles or Maastrichtian. Whisper reads it as text that came just before the
 question, so it is more likely to spell those names right. The prompt is built
 the same way for every exhibit; see build_prompt.
 
+Language detection: Whisper auto-detects the spoken language. When the detection
+probability is below WHISPER_LANG_MIN_PROB (default 0.6), Whisper falls back to
+English so that short or quiet English clips are not misidentified. The English
+vocabulary prompt is skipped for non-English audio because an English prompt
+would mislead Whisper on a Hindi or Spanish recording.
+
 Every transcript also gets a confidence flag from Whisper's average log
 probability per token. The phone page asks the visitor to check a transcript
 that is flagged before sending it.
@@ -30,6 +36,7 @@ Settings (environment variables, all optional):
   WHISPER_BEAM_SIZE       default 1
   WHISPER_PROMPT          "1" (default) to use the exhibit's vocabulary prompt, "0" to turn it off
   WHISPER_LOW_CONFIDENCE  average log probability below which a transcript is flagged, default -0.35
+  WHISPER_LANG_MIN_PROB   language detection probability below which we fall back to English, default 0.6
   WHISPER_TIMEOUT         seconds before giving up on one clip, default 30 (0 means no limit)
 """
 
@@ -44,6 +51,7 @@ from collections import Counter
 
 DEFAULT_BEAM_SIZE = 1
 DEFAULT_LOW_CONFIDENCE = -0.35  # flagged 7 of 11 misheard clips and 4 of 29 right ones
+DEFAULT_LANG_MIN_PROB = 0.6  # below this we trust English detection more than Whisper's guess
 PROMPT_WORDS = 40  # Whisper keeps only the last 223 tokens of a prompt, so keep it well under that
 
 _models = {}
@@ -73,6 +81,11 @@ def prompt_enabled():
 
 def low_confidence_threshold():
     return float(os.getenv("WHISPER_LOW_CONFIDENCE", DEFAULT_LOW_CONFIDENCE))
+
+
+def lang_min_prob():
+    """Minimum language detection probability before we fall back to English."""
+    return float(os.getenv("WHISPER_LANG_MIN_PROB", DEFAULT_LANG_MIN_PROB))
 
 
 def _get_model(name=None):
@@ -193,57 +206,102 @@ def is_low_confidence(avg_logprob, threshold=None):
     return avg_logprob < (low_confidence_threshold() if threshold is None else threshold)
 
 
-def transcribe_detailed(audio_bytes, persona_id=None, language="en", model=None, beam=None, prompt=None):
+def transcribe_detailed(audio_bytes, persona_id=None, language=None, model=None, beam=None, prompt=None):
     """Turn recorded audio (webm, ogg, wav, mp4 and so on) into text, with a confidence flag.
 
-    persona_id picks the exhibit's vocabulary prompt (unless WHISPER_PROMPT=0).
-    Pass `prompt` to use other prompt text instead, or "" for no prompt.
+    Whisper auto-detects the spoken language (unless `language` is explicitly passed).
+    When the detection probability is below WHISPER_LANG_MIN_PROB the result falls back
+    to English, so short or quiet English clips are not misidentified as another language.
 
-    Returns {"text", "avg_logprob", "low_confidence", "duration_s", "model", "beam_size", "prompt"}.
+    The English vocabulary prompt is skipped for non-English audio because an
+    English prompt would mislead Whisper when the question is in Hindi or Spanish.
+
+    persona_id picks the exhibit's vocabulary prompt for English audio
+    (unless WHISPER_PROMPT=0). Pass `prompt` to use other text instead, or "" for none.
+
+    Returns {"text", "avg_logprob", "low_confidence", "duration_s", "model",
+             "beam_size", "prompt", "detected_language"}.
     The audio is decoded in memory and never written to disk.
     Raises RuntimeError if transcription takes longer than WHISPER_TIMEOUT seconds.
     """
     model = model or model_name()
     beam = beam or beam_size()
-    if prompt is None:
-        prompt = exhibit_prompt(persona_id) if persona_id and prompt_enabled() else ""
     result = {"text": "", "avg_logprob": None, "low_confidence": True, "duration_s": 0.0,
-              "model": model, "beam_size": beam, "prompt": prompt}
+              "model": model, "beam_size": beam, "prompt": "", "detected_language": language or "en"}
     if not audio_bytes:
         return result
 
     def _run():
+        # language=None lets Whisper detect the language from the first 30 s.
         segments, info = _get_model(model).transcribe(
             io.BytesIO(audio_bytes),
             language=language,
             beam_size=beam,
-            initial_prompt=prompt or None,
             vad_filter=True,
         )
         segments = list(segments)
-        return segments, info.duration
+        return segments, info
 
     timeout = float(os.getenv("WHISPER_TIMEOUT", "30") or 0) or None
     with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
         future = pool.submit(_run)
         try:
-            segments, duration = future.result(timeout=timeout)
+            segments, info = future.result(timeout=timeout)
         except concurrent.futures.TimeoutError:
             raise RuntimeError(
                 f"Transcription timed out after {timeout}s. "
                 "Set WHISPER_TIMEOUT env var to adjust or 0 to disable."
             )
 
+    # Decide which language to report. Fall back to English when detection is
+    # uncertain so that short English clips are not misidentified.
+    detected = language or getattr(info, "language", "en") or "en"
+    det_prob = getattr(info, "language_probability", 1.0) or 0.0
+    if language is None and det_prob < lang_min_prob():
+        detected = "en"
+
+    # Only use the English vocabulary prompt when the spoken language is English.
+    # An English prompt confuses Whisper when the recording is in Hindi or Spanish.
+    if prompt is None:
+        if detected == "en" and persona_id and prompt_enabled():
+            prompt = exhibit_prompt(persona_id)
+        else:
+            prompt = ""
+
+    if prompt:
+        # Re-run with the prompt now that we know the language is English.
+        def _run_with_prompt():
+            segs, inf = _get_model(model).transcribe(
+                io.BytesIO(audio_bytes),
+                language="en",
+                beam_size=beam,
+                initial_prompt=prompt or None,
+                vad_filter=True,
+            )
+            return list(segs), inf
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(_run_with_prompt)
+            try:
+                segments, info = future.result(timeout=timeout)
+            except concurrent.futures.TimeoutError:
+                raise RuntimeError(
+                    f"Transcription timed out after {timeout}s. "
+                    "Set WHISPER_TIMEOUT env var to adjust or 0 to disable."
+                )
+
     logprob = average_logprob(segments)
     result.update(
         text=" ".join(segment.text.strip() for segment in segments).strip(),
         avg_logprob=None if logprob is None else round(logprob, 3),
         low_confidence=is_low_confidence(logprob),
-        duration_s=round(duration, 2),
+        duration_s=round(getattr(info, "duration", 0.0), 2),
+        prompt=prompt,
+        detected_language=detected,
     )
     return result
 
 
-def transcribe(audio_bytes, language="en", persona_id=None):
+def transcribe(audio_bytes, persona_id=None, language=None):
     """Just the text of a recording. See transcribe_detailed."""
     return transcribe_detailed(audio_bytes, persona_id=persona_id, language=language)["text"]

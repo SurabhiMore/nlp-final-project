@@ -162,6 +162,7 @@ async def transcribe(persona: str = Form(...), audio: UploadFile = File(...)):
         "text": heard["text"],
         "low_confidence": heard["low_confidence"],
         "avg_logprob": heard["avg_logprob"],
+        "detected_language": heard.get("detected_language", "en"),
         "stt_model": heard["model"],
         "timings": {"stt_ms": _ms(start)},
     }
@@ -201,6 +202,7 @@ async def ask(
     question = (text or "").strip()
     heard = (heard or "").strip()
     source = "transcript" if heard else "text"
+    stt_detected_lang = None  # set below if the question came in as audio
     if heard and stt_ms is not None:
         timings["stt_ms"] = stt_ms
     if audio is not None:
@@ -209,7 +211,11 @@ async def ask(
             from pipeline import stt
 
             start = time.perf_counter()
-            question = stt.transcribe(audio_bytes, persona_id=persona)
+            heard_detail = stt.transcribe_detailed(audio_bytes, persona_id=persona)
+            question = heard_detail["text"]
+            # Pass the STT-detected language through so the answer pipeline can
+            # reply in the right language and the TTS picks the right voice.
+            stt_detected_lang = heard_detail.get("detected_language", "en")
             timings["stt_ms"] = _ms(start)
             source = "audio"
     if not question:
@@ -255,21 +261,49 @@ async def ask(
             "note": exhibit.get("sounds", {}).get(result["sound"], {}).get("description", ""),
         }
 
+    detected_lang = (
+        stt_detected_lang
+        or result.get("detected_language")
+        or (persona_engine.detect_language(question) if persona_engine else "en")
+    )
+
     sentences = tts.speech_chunks(result["answer"]) if tts else []
     audio_clips = []
-    if speak and sentences:
-        voice = exhibit["voice"]["kokoro_voice"]
-        speed = float(exhibit["voice"].get("speed", 1.0))
-        pitch = float(exhibit["voice"].get("pitch", 1.0))
-        start = time.perf_counter()
-        for clip in tts.synthesize_sentences(result["answer"], voice=voice, speed=speed, pitch=pitch):
-            audio_clips.append({
-                "sentence": clip["sentence"],
-                "wav_base64": base64.b64encode(clip["wav"]).decode("ascii"),
-            })
-            if "tts_first_ms" not in timings:
-                timings["tts_first_ms"] = clip["ms"]
-        timings["tts_total_ms"] = _ms(start)
+    tts_skipped = False
+    if speak and tts:
+        # Pick the right voice for the detected language.
+        # For English, use the exhibit's configured voice.
+        # For Hindi and Spanish, use the Kokoro multilingual voice.
+        # For Marathi and Kannada, Kokoro has no voice: skip audio and show text.
+        lang_for_tts = stt_detected_lang or detected_lang
+        multilang_voice = tts.voice_for_language(lang_for_tts)
+        if lang_for_tts in ("mr", "kn"):
+            tts_skipped = True
+        elif multilang_voice is not None:
+            # Non-English voice: use it at default speed/pitch.
+            start = time.perf_counter()
+            for clip in tts.synthesize_sentences(result["answer"], voice=multilang_voice):
+                audio_clips.append({
+                    "sentence": clip["sentence"],
+                    "wav_base64": base64.b64encode(clip["wav"]).decode("ascii"),
+                })
+                if "tts_first_ms" not in timings:
+                    timings["tts_first_ms"] = clip["ms"]
+            timings["tts_total_ms"] = _ms(start)
+        else:
+            # English: use the exhibit's configured voice.
+            voice = exhibit["voice"]["kokoro_voice"]
+            speed = float(exhibit["voice"].get("speed", 1.0))
+            pitch = float(exhibit["voice"].get("pitch", 1.0))
+            start = time.perf_counter()
+            for clip in tts.synthesize_sentences(result["answer"], voice=voice, speed=speed, pitch=pitch):
+                audio_clips.append({
+                    "sentence": clip["sentence"],
+                    "wav_base64": base64.b64encode(clip["wav"]).decode("ascii"),
+                })
+                if "tts_first_ms" not in timings:
+                    timings["tts_first_ms"] = clip["ms"]
+            timings["tts_total_ms"] = _ms(start)
 
     timings["total_ms"] = _ms(total_start)
 
@@ -284,7 +318,6 @@ async def ask(
     ):
         unbacked_claims = claims_checker.check_claims(result["answer"], chunks)
 
-    detected_lang = result.get("detected_language") or (persona_engine.detect_language(question) if persona_engine else "en")
     _write_log({
         "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "request_id": request_id,
@@ -322,14 +355,20 @@ async def ask(
         "citations": citations,
         "sound": sound,
         "audio": audio_clips,
+        "tts_skipped": tts_skipped,
         "unbacked_claims": unbacked_claims,
         "timings": timings,
     }
 
 
 @app.post("/speak")
-def speak_sentence(persona: str = Form(...), text: str = Form(...)):
-    """Turn one sentence into speech in the exhibit's voice."""
+def speak_sentence(persona: str = Form(...), text: str = Form(...), lang: str = Form("en")):
+    """Turn one sentence into speech in the right voice for the detected language.
+
+    For English, the exhibit's configured persona voice is used.
+    For Hindi and Spanish, the Kokoro multilingual voice is used.
+    For Marathi and Kannada, returns 204 No Content because Kokoro has no voice.
+    """
     if tts is None:
         raise HTTPException(status_code=503, detail="Text to speech is not merged yet.")
     exhibit = _get_persona(persona)
@@ -339,13 +378,26 @@ def speak_sentence(persona: str = Form(...), text: str = Form(...)):
     if len(text) > 600:
         raise HTTPException(status_code=400, detail="Send one sentence at a time.")
 
+    if (not lang or lang == "en") and persona_engine:
+        detected = persona_engine.detect_language(text)
+        if detected != "en":
+            lang = detected
+
+    multilang_voice = tts.voice_for_language(lang)
+    if lang in ("mr", "kn"):
+        # No Kokoro voice for Marathi or Kannada: caller should show text only.
+        return Response(status_code=204)
+
     start = time.perf_counter()
-    wav = tts.synthesize(
-        text,
-        voice=exhibit["voice"]["kokoro_voice"],
-        speed=float(exhibit["voice"].get("speed", 1.0)),
-        pitch=float(exhibit["voice"].get("pitch", 1.0)),
-    )
+    if multilang_voice is not None:
+        wav = tts.synthesize(text, voice=multilang_voice)
+    else:
+        wav = tts.synthesize(
+            text,
+            voice=exhibit["voice"]["kokoro_voice"],
+            speed=float(exhibit["voice"].get("speed", 1.0)),
+            pitch=float(exhibit["voice"].get("pitch", 1.0)),
+        )
     return Response(content=wav, media_type="audio/wav", headers={"X-TTS-ms": str(_ms(start))})
 
 

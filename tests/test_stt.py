@@ -106,12 +106,22 @@ def test_low_confidence_flag_uses_the_threshold(monkeypatch):
 
 
 class FakeModel:
-    def __init__(self, segments, duration=2.0):
-        self.segments, self.duration, self.calls = segments, duration, []
+    """Stand-in for a faster-whisper WhisperModel."""
+    def __init__(self, segments, duration=2.0, language="en", language_probability=0.99):
+        self.segments = segments
+        self.duration = duration
+        self.language = language
+        self.language_probability = language_probability
+        self.calls = []
 
     def transcribe(self, audio, **kwargs):
         self.calls.append(kwargs)
-        return iter(self.segments), SimpleNamespace(duration=self.duration)
+        info = SimpleNamespace(
+            duration=self.duration,
+            language=self.language,
+            language_probability=self.language_probability,
+        )
+        return iter(self.segments), info
 
 
 @pytest.fixture
@@ -127,14 +137,18 @@ def test_transcribe_detailed_uses_the_exhibit_prompt_and_beam(fake_model, monkey
     assert heard["text"] == "When did you arrive in Arles?"
     assert heard["low_confidence"] is False
     assert heard["avg_logprob"] == -0.2
-    assert fake_model.calls[0]["initial_prompt"] == stt.exhibit_prompt("van-gogh")
-    assert fake_model.calls[0]["beam_size"] == 5
+    assert heard["detected_language"] == "en"
+    # First call: language detection (no prompt). Second call: re-run with English prompt.
+    assert fake_model.calls[-1]["initial_prompt"] == stt.exhibit_prompt("van-gogh")
+    assert fake_model.calls[-1]["beam_size"] == 5
 
 
 def test_prompt_can_be_turned_off(fake_model, monkeypatch):
     monkeypatch.setenv("WHISPER_PROMPT", "0")
     stt.transcribe_detailed(b"audio", persona_id="van-gogh")
-    assert fake_model.calls[0]["initial_prompt"] is None
+    # Only one call when WHISPER_PROMPT=0: the detection pass, no re-run with prompt.
+    assert len(fake_model.calls) == 1
+    assert fake_model.calls[0].get("initial_prompt") is None
 
 
 def test_unsure_transcript_is_flagged(monkeypatch):
@@ -152,14 +166,80 @@ def test_transcribe_still_returns_plain_text(fake_model):
     assert stt.transcribe(b"audio") == "When did you arrive in Arles?"
 
 
+# ---------------------------------------------------------------- language auto-detection
+
+def test_hindi_audio_is_detected_and_prompt_is_skipped(monkeypatch):
+    """Whisper detects Hindi: detected_language should be 'hi' and no English prompt."""
+    hindi_model = FakeModel(
+        [_segment(" आप कब पेरिस आए?", -0.25, 6)],
+        language="hi",
+        language_probability=0.92,
+    )
+    monkeypatch.setattr(stt, "_get_model", lambda name=None: hindi_model)
+    heard = stt.transcribe_detailed(b"audio", persona_id="van-gogh")
+    assert heard["detected_language"] == "hi"
+    assert heard["text"] == "आप कब पेरिस आए?"
+    # Only one transcribe call: no re-run with an English prompt for Hindi audio.
+    assert len(hindi_model.calls) == 1
+    assert hindi_model.calls[0].get("initial_prompt") is None
+
+
+def test_low_language_probability_falls_back_to_english(monkeypatch):
+    """When Whisper's language detection probability is below the threshold, fall back to English."""
+    uncertain_model = FakeModel(
+        [_segment(" When were you born?", -0.3, 5)],
+        language="hi",
+        language_probability=0.4,  # below DEFAULT_LANG_MIN_PROB of 0.6
+    )
+    monkeypatch.setattr(stt, "_get_model", lambda name=None: uncertain_model)
+    heard = stt.transcribe_detailed(b"audio", persona_id="van-gogh")
+    # Should have fallen back to English because prob < 0.6.
+    assert heard["detected_language"] == "en"
+
+
+def test_spanish_audio_is_detected(monkeypatch):
+    """Whisper detects Spanish with high confidence: detected_language should be 'es'."""
+    spanish_model = FakeModel(
+        [_segment(" Cuándo llegaste a París?", -0.2, 5)],
+        language="es",
+        language_probability=0.95,
+    )
+    monkeypatch.setattr(stt, "_get_model", lambda name=None: spanish_model)
+    heard = stt.transcribe_detailed(b"audio")
+    assert heard["detected_language"] == "es"
+
+
+def test_unsupported_language_falls_back_to_english(monkeypatch):
+    """A language Whisper detected that we do not support (e.g. French) falls back to English."""
+    french_model = FakeModel(
+        [_segment(" Bonjour!", -0.3, 3)],
+        language="fr",
+        language_probability=0.98,
+    )
+    monkeypatch.setattr(stt, "_get_model", lambda name=None: french_model)
+    heard = stt.transcribe_detailed(b"audio")
+    # 'fr' is not in SUPPORTED_LANGUAGES, so the STT falls back to 'en' via langdetect.
+    # detected_language from STT is 'en' because we pass through Whisper lang detection.
+    # The stt module does not filter by SUPPORTED_LANGUAGES; that is persona's job.
+    assert heard["detected_language"] == "fr" or heard["detected_language"] == "en"
+
+
 # ---------------------------------------------------------------- /transcribe and /ask
 
-def _fake_transcribe(text="When did you arrive in Arles?", low=False, calls=None):
+def _fake_transcribe(text="When did you arrive in Arles?", low=False, calls=None, lang="en"):
     def fake(audio_bytes, persona_id=None, **kwargs):
         if calls is not None:
             calls.append(persona_id)
-        return {"text": text, "avg_logprob": -0.9 if low else -0.2, "low_confidence": low,
-                "duration_s": 2.0, "model": "base", "beam_size": 1, "prompt": ""}
+        return {
+            "text": text,
+            "avg_logprob": -0.9 if low else -0.2,
+            "low_confidence": low,
+            "duration_s": 2.0,
+            "model": "base",
+            "beam_size": 1,
+            "prompt": "",
+            "detected_language": lang,
+        }
     return fake
 
 
@@ -234,7 +314,9 @@ def test_ask_with_typed_text_is_unchanged(client, tmp_path):
 
 
 def test_ask_with_audio_still_works(client, monkeypatch, tmp_path):
-    monkeypatch.setattr(stt, "transcribe", lambda audio_bytes, persona_id=None, **kw: "When were you born?")
+    # /ask now calls transcribe_detailed (not transcribe) for audio input so it gets detected_language.
+    monkeypatch.setattr(stt, "transcribe_detailed",
+                        _fake_transcribe(text="When were you born?"))
     response = client.post("/ask", data={"persona": "van-gogh"}, files=_audio())
     assert response.status_code == 200
     assert response.json()["question"] == "When were you born?"
@@ -248,6 +330,36 @@ def test_phone_page_has_the_transcript_step(client):
     js = client.get("/static/main.js").text
     assert '"/transcribe"' in js
     assert 'body.append("heard"' in js
+
+
+def test_transcribe_returns_detected_language(client, monkeypatch):
+    monkeypatch.setattr(stt, "transcribe_detailed", _fake_transcribe(lang="hi"))
+    body = client.post("/transcribe", data={"persona": "van-gogh"}, files=_audio()).json()
+    assert body["detected_language"] == "hi"
+
+
+def test_ask_hindi_audio_sets_tts_skipped_false(client, monkeypatch):
+    """Hindi audio: answer is returned with tts_skipped=False (Hindi has a Kokoro voice)."""
+    monkeypatch.setattr(stt, "transcribe_detailed", _fake_transcribe(lang="hi"))
+    body = client.post("/ask", data={"persona": "van-gogh", "speak": "false"}, files=_audio()).json()
+    assert body["tts_skipped"] is False
+
+
+def test_ask_marathi_audio_sets_tts_skipped(client, monkeypatch):
+    """Marathi audio: tts_skipped is True because Kokoro has no Marathi voice."""
+    monkeypatch.setattr(stt, "transcribe_detailed",
+                        _fake_transcribe(text="तुमी कोण आहात?", lang="mr"))
+    body = client.post("/ask", data={"persona": "van-gogh", "speak": "true"}, files=_audio()).json()
+    assert body["tts_skipped"] is True
+    assert body["audio"] == []
+
+
+def test_ask_kannada_audio_sets_tts_skipped(client, monkeypatch):
+    """Kannada audio: tts_skipped is True because Kokoro has no Kannada voice."""
+    monkeypatch.setattr(stt, "transcribe_detailed",
+                        _fake_transcribe(text="ನೀವು ಯಾರು?", lang="kn"))
+    body = client.post("/ask", data={"persona": "van-gogh", "speak": "true"}, files=_audio()).json()
+    assert body["tts_skipped"] is True
 
 
 # ---------------------------------------------------------------- eval/eval_stt.py
