@@ -16,7 +16,9 @@ P7.
   reasoning effort, speech to text Whisper small, the question classifier and the claim checker on.
 - Run by: Pratham
 - Person: P7, a teammate's roommate, not part of the team, who had tried an earlier version once
-  before. Consent for the product log only; there were no recordings.
+  before. He agreed to try the product for our course project, but was not asked separately about
+  keeping the log, which holds only the three questions we gave him and the answers. There were no
+  recordings.
 - Tasks: the three questions in `task_sheet.md`, given word for word and asked by voice. P7 did not
   add questions of his own.
 - In the server log the session is labelled P7.
