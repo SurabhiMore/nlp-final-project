@@ -33,18 +33,9 @@ Needs Python 3.10 to 3.12 (Kokoro does not install on Python 3.13; `av` is pinne
 On a Mac, `python` usually does not exist and `python3` is often 3.9, so check `python3.12 --version`
 first. If you don't have it, install it with `brew install python@3.12` or from python.org.
 
-### Option A: Run natively on your machine (Fastest)
-
-```bash
-python3.12 -m venv .venv           # Windows: py -3.12 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python -m spacy download en_core_web_sm
-cp .env.example .env               # Windows: copy .env.example .env
-```
-
-Then put a language model in `.env`. We use, and report numbers for, `openai/gpt-oss-120b` on
-Groq's free tier. Make a free key at https://console.groq.com/keys and set:
+You also need a language model for the answers. We use, and report numbers for,
+`openai/gpt-oss-120b` on Groq's free tier. Make a free key at https://console.groq.com/keys, and
+once you have a `.env` file (made in the steps below), set:
 
 ```bash
 LLM_BASE_URL=https://api.groq.com/openai/v1
@@ -54,6 +45,16 @@ LLM_REASONING_EFFORT=low
 ```
 
 To try everything else without a key, set `LLM_PROVIDER=offline` instead.
+
+### Option A: Run natively on your machine (Fastest)
+
+```bash
+python3.12 -m venv .venv           # Windows: py -3.12 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+cp .env.example .env               # Windows: copy .env.example .env
+```
 
 Check the test questions and start the server:
 
