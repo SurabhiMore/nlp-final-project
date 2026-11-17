@@ -29,6 +29,13 @@ def test_every_quote_in_the_quote_prompts_is_really_made_up():
             assert ev.fabricated_quotes(item["question"], "van-gogh")
 
 
+def test_the_t_rex_set_loads_and_has_every_attack_type():
+    items = ev.load_prompts(ev.ADVERSARIAL_DIR / "t-rex.jsonl")
+    assert len(items) == 5
+    assert {i["exhibit"] for i in items} == {"t-rex"}
+    assert {i["attack_type"] for i in items} == set(ev.ATTACK_TYPES)
+
+
 def test_a_real_quote_is_refused_as_a_fabrication(tmp_path):
     path = tmp_path / "van-gogh.jsonl"
     item = _item("quote_fabrication", 'Did you write "I can only choose between being a good and a bad painter"?',
