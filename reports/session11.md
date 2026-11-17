@@ -33,7 +33,7 @@ north_star:
 
 ## User evidence
 - **P7, on his own phone.** One person from outside the team used the running product on his own phone through a free Cloudflare tunnel. It was our first test on a visitor's own phone, and our first outside user test since Session 8. #70 planned three people, and only one could be done this week. He asked 3 questions we gave him, by voice. All 3 were heard right the first time with no edits, both factual answers were right and cited (vg-12, three versions of The Bedroom; tr-08, about 8.8 tonnes), every answer was spoken, and the roar played. Speech to text took 0.8 to 1.1 s and the server answered 0.5 to 0.6 s later. He rated it 3.5 to 4 out of 5 for use in a museum, and would change the look of the page first, "more creative and interesting" ([summary](../artifacts/evidence/session11/README.md), [notes](../artifacts/evidence/session11/P7.md), [log](../artifacts/evidence/session11/P7_log.jsonl)) (evidence: #70, PR #78).
-- What went wrong: the first tunnel dropped after about 17 minutes, so the first attempt never reached the server. Unknown visitors, probably crawlers, loaded the public page within minutes, and anyone with the link could use up our model key's daily quota. The README now says to keep the laptop awake and try HTTP/2 if the link drops (evidence: #70, PR #78).
+- What did not work: the first tunnel dropped mid-test, after about 17 minutes, so P7's first try left no log. We also did not get a person from outside the team to do the README setup test (#74). Unknown visitors, probably crawlers, loaded the public page within minutes, and anyone with the link could use up our model key's daily quota. The README now says to keep the laptop awake and try HTTP/2 if the link drops (evidence: #70, PR #78).
 
 ## What we learned
 - On the same model and code, the persona does not cost accuracy: 62 against 61 of 64, p = 1.00. The 64 questions are too few to show a difference either way, so the final report should present the modes as equally accurate rather than claim persona is better (evidence: #73).
@@ -44,7 +44,7 @@ north_star:
 
 ## Next week
 - Demo day: December 1. Rehearse the demo script once with a timer before Session 12 and write the real times in it.
-- More phone tests with people asking their own questions, as #70 planned (two more people).
+- Kshiti's phone tests, moved from this week: two more people asking their own questions, as #70 planned.
 - Run the final numbers once in Session 12, on the questions visitors write, with `openai/gpt-oss-120b`, as the final report outline says.
 - Run the 5 T. rex adversarial prompts against the model and add them to the robustness results.
 - The setup test with a person from outside the team (#74).
@@ -52,7 +52,7 @@ north_star:
 - vg-08: decide whether to accept the search miss or try a fix that does not hurt T. rex.
 
 ## Each member
-- **Pratham Bharati (Product):** Ran the phone test with P7 and wrote it up, wrote the demo-day script, the final report outline, roadmap v6 and lean canvas v5, and ran a timed setup dry run that fixed three README problems (evidence: #70, PR #78; #74, PR #75).
+- **Pratham Bharati (Product):** Wrote this week's issues, the demo script, the final report outline and README, roadmap v6 and lean canvas v5, and fixed three README setup problems found on a fresh clone (now about 2 minutes from clone to a spoken answer). Ran this week's user test with P7 on his own phone (evidence: #74, PR #75; #70, PR #78).
 - **Saurabh Gujar (Engineering):** Added Hindi and Spanish voice: language detection with an English fallback in speech to text, and Hindi and Spanish speech in Kokoro (evidence: #71, PR #76).
 - **Surabhi More (Data&Eval):** Made the key-fact check fair, rescored Sessions 7, 8 and 10 offline, explained the vg-07 and vg-08 misses, and reran the T. rex multilingual evaluation on gpt-oss-120b (evidence: #72, PR #77).
 - **Kshiti Deshpande (Users&Research):** Wrote five adversarial prompts for the T. rex, one per attack type, with a test that they cover every type (evidence: #80, PR #81).
