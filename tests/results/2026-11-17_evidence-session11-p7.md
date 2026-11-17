@@ -1,7 +1,7 @@
 # Test report
 
-- Run: 2026-11-17 14:29 (UTC-05:00)
-- Code tested: commit 51e064f on branch evidence/session11-p7, no uncommitted changes
+- Run: 2026-11-17 14:30 (UTC-05:00)
+- Code tested: commit 92def7b on branch evidence/session11-p7, no uncommitted changes
 - Command: python -m pytest -m "slow or not slow" --save-report
 - Python 3.12.15 on Darwin
 - Result: 517 passed, 1 skipped in 9.7 s
@@ -17,11 +17,11 @@
 | test_off_topic_decline_is_kept_as_written | test_answers.py | passed | 0.00 |
 | test_off_topic_decline_that_does_not_say_no_gets_a_clear_line | test_answers.py | passed | 0.00 |
 | test_off_topic_answer_from_model_knowledge_is_not_shown | test_answers.py | passed | 0.00 |
-| test_invalid_citation_is_removed_and_valid_one_kept | test_answers.py | passed | 0.00 |
+| test_invalid_citation_is_removed_and_valid_one_kept | test_answers.py | passed | 0.01 |
 | test_citing_a_real_passage_that_was_not_supplied_is_rejected | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[not-json] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[cut-off] | test_answers.py | passed | 0.01 |
-| test_malformed_reply_never_crashes_and_never_shows_raw_output[empty-object] | test_answers.py | passed | 0.01 |
+| test_malformed_reply_never_crashes_and_never_shows_raw_output[empty-object] | test_answers.py | passed | 0.00 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[null-answer] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[answer-is-object] | test_answers.py | passed | 0.01 |
 | test_malformed_reply_never_crashes_and_never_shows_raw_output[citations-is-number] | test_answers.py | passed | 0.01 |
@@ -46,7 +46,7 @@
 | test_introduction_without_citation_is_still_answered[Who are you?] | test_answers.py | passed | 0.00 |
 | test_introduction_without_citation_is_still_answered[Are you real?] | test_answers.py | passed | 0.01 |
 | test_roar_request_without_citation_keeps_the_sound | test_answers.py | passed | 0.00 |
-| test_ask_returns_the_same_fields_when_the_model_reply_is_broken | test_answers.py | passed | 0.03 |
+| test_ask_returns_the_same_fields_when_the_model_reply_is_broken | test_answers.py | passed | 0.02 |
 | test_frozen_passages_cover_both_exhibits | test_answers.py | passed | 0.00 |
 | test_evaluation_scores_the_same_reply_before_and_after | test_answers.py | passed | 0.00 |
 | test_detect_language[\u0906\u092a\u0915\u093e \u091c\u0928\u094d\u092e \u0915\u092c \u0914\u0930 \u0915\u0939\u093e\u0901 \u0939\u0941\u0906 \u0925\u093e?-hi] | test_answers.py | passed | 0.00 |
@@ -439,7 +439,7 @@
 | test_each_question_is_logged_without_audio | test_smoke.py | passed | 0.01 |
 | test_roar_is_served_only_for_the_t_rex | test_smoke.py | passed | 0.00 |
 | test_phone_page_is_served | test_smoke.py | passed | 0.00 |
-| test_voice_round_trip | test_smoke.py | passed | 5.00 |
+| test_voice_round_trip | test_smoke.py | passed | 4.95 |
 | test_topic_of[van-gogh-What is 17 times 23?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Can you help me write my chemistry homework?-off_topic] | test_stats.py | passed | 0.00 |
 | test_topic_of[t-rex-Who are you?-the_guide] | test_stats.py | passed | 0.00 |
@@ -514,7 +514,7 @@
 | test_suggest_threshold_separates_misheard_from_right_clips | test_stt.py | passed | 0.00 |
 | test_run_scores_every_setting_and_writes_a_report | test_stt.py | passed | 0.02 |
 | test_run_without_recordings_says_where_to_put_them | test_stt.py | passed | 0.00 |
-| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 1.88 |
+| test_whisper_with_the_exhibit_prompt_is_no_worse_than_without | test_stt.py | passed | 1.91 |
 | test_parse_year | test_timecheck.py | passed | 0.00 |
 | test_explicit_year_after_end_is_flagged | test_timecheck.py | passed | 0.00 |
 | test_year_inside_time_not_flagged | test_timecheck.py | passed | 0.00 |
