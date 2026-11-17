@@ -8,7 +8,9 @@ Usage:
 
 Reads eval/questions/multilingual/{persona}.jsonl, POSTs each question to the
 running /ask endpoint (default http://localhost:8000), collects the JSON
-responses, writes the full replies to eval/results/multilingual_replies.json,
+responses, writes the full replies to:
+  eval/results/multilingual_replies_{persona}.json  (one file per exhibit)
+  eval/results/multilingual_replies.json            (combined, all exhibits)
 and prints a results table. Set ASK_URL to override the base URL.
 """
 
@@ -25,7 +27,8 @@ import requests as http
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 QUESTIONS_DIR = Path(__file__).parent / "questions" / "multilingual"
-REPLIES_FILE  = Path(__file__).parent / "results" / "multilingual_replies.json"
+RESULTS_DIR   = Path(__file__).parent / "results"
+REPLIES_FILE  = RESULTS_DIR / "multilingual_replies.json"
 TOP_K         = 8                   # must match server TOP_K (app/server.py default)
 BASE_URL      = os.getenv("ASK_URL", "http://localhost:8000")
 
@@ -141,12 +144,30 @@ def run(persona_filter="all"):
         print(f"       answer   : {snippet}\n")
         time.sleep(0.5)   # be polite to rate limits
 
-    # Save full replies
-    REPLIES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    # Save per-exhibit files, then rebuild the combined file from all exhibit files.
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Group this run's replies by persona and write one file per exhibit.
+    by_persona: dict = {}
+    for entry in full_replies:
+        by_persona.setdefault(entry["persona"], []).append(entry)
+
+    for pid, entries in by_persona.items():
+        exhibit_file = RESULTS_DIR / f"multilingual_replies_{pid}.json"
+        exhibit_file.write_text(
+            json.dumps(entries, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        print(f"\nExhibit replies saved → {exhibit_file.relative_to(Path(__file__).parent.parent)}")
+
+    # Rebuild the combined file by merging all per-exhibit files that exist on disk.
+    # This preserves the other exhibit's data when only one persona is rerun.
+    combined = []
+    for exhibit_file in sorted(RESULTS_DIR.glob("multilingual_replies_*.json")):
+        combined.extend(json.loads(exhibit_file.read_text(encoding="utf-8")))
     REPLIES_FILE.write_text(
-        json.dumps(full_replies, ensure_ascii=False, indent=2), encoding="utf-8"
+        json.dumps(combined, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    print(f"\nFull replies saved to {REPLIES_FILE.relative_to(Path(__file__).parent.parent)}\n")
+    print(f"Combined replies saved → {REPLIES_FILE.relative_to(Path(__file__).parent.parent)}\n")
 
     return rows
 

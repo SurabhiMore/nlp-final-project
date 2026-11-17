@@ -1,0 +1,474 @@
+[
+  {
+    "id": "tr-multi-01",
+    "persona": "t-rex",
+    "question": "¿Cuándo viviste en la Tierra?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "¿Cuándo viviste en la Tierra?",
+      "detected_language": "es",
+      "search_query": "when did you live on earth",
+      "passages": 8,
+      "status": "answered",
+      "answer": "Viví entre hace 69 y 66 millones de años, al final del Cretácico tardío.",
+      "sentences": [
+        "Viví entre hace 69 y 66 millones de años, al final del Cretácico tardío"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0000",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Tyrannosaurus is a genus of large theropod dinosaur. The type species Tyrannosaurus rex (rex meaning 'king' in Latin), often shortened to T. rex or colloquially T-Rex, is one of the best represented theropods. It lived t"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 561,
+        "total_ms": 561
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-02",
+    "persona": "t-rex",
+    "question": "¿Cuántos dedos tenías en cada mano?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "¿Cuántos dedos tenías en cada mano?",
+      "detected_language": "es",
+      "search_query": "how many fingers each hand",
+      "passages": 8,
+      "status": "answered",
+      "answer": "Tenía dos dedos con garras en cada mano, aunque conservaba un pequeño tercer metacarpo como vestigio de un tercer dedo.",
+      "sentences": [
+        "Tenía dos dedos con garras en cada mano, aunque conservaba un pequeño tercer metacarpo como vestigio de un tercer dedo"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0018",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "The lower arm bones, the ulna and radius, were straight elements, much shorter than the humerus. The second metacarpal was longer and wider than the first, whereas normally in theropods the opposite is true. The forelimb"
+        },
+        {
+          "id": "t-rex-wiki-0000",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Tyrannosaurus is a genus of large theropod dinosaur. The type species Tyrannosaurus rex (rex meaning 'king' in Latin), often shortened to T. rex or colloquially T-Rex, is one of the best represented theropods. It lived t"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 740,
+        "total_ms": 740
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-03",
+    "persona": "t-rex",
+    "question": "¿Qué tan fuerte era tu mordida?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "¿Qué tan fuerte era tu mordida?",
+      "detected_language": "es",
+      "search_query": "bite strength",
+      "passages": 8,
+      "status": "answered",
+      "answer": "Mi mordida podía ejercer entre 35 000 y 57 000 newtons, la más poderosa de cualquier animal terrestre conocido.",
+      "sentences": [
+        "Mi mordida podía ejercer entre 35 000 y 57 000 newtons, la más poderosa de cualquier animal terrestre conocido"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0090",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Most paleontologists have always accepted that Tyrannosaurus was an active predator and, like most large carnivores, would also opportunistically scavenge. By far the largest carnivore in its environment, T. rex was most"
+        },
+        {
+          "id": "t-rex-wiki-0001",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Relative to its large and powerful hind limbs, the forelimbs of Tyrannosaurus were short but unusually powerful for their size, and they had two clawed digits. The most complete specimen measures 12.3–12.4 m (40–41 ft) i"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 16910,
+        "total_ms": 16910
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-04",
+    "persona": "t-rex",
+    "question": "आप पृथ्वी पर कब जीवित थे?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "आप पृथ्वी पर कब जीवित थे?",
+      "detected_language": "hi",
+      "search_query": "when were you alive on earth",
+      "passages": 8,
+      "status": "answered",
+      "answer": "मैं लगभग 69 से 66 मिलियन साल पहले, देर क्रीटेशियस के अंत में पृथ्वी पर जीवित था।",
+      "sentences": [
+        "मैं लगभग 69 से 66 मिलियन साल पहले, देर क्रीटेशियस के अंत में पृथ्वी पर जीवित था।"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0000",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Tyrannosaurus is a genus of large theropod dinosaur. The type species Tyrannosaurus rex (rex meaning 'king' in Latin), often shortened to T. rex or colloquially T-Rex, is one of the best represented theropods. It lived t"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 23964,
+        "total_ms": 23964
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-05",
+    "persona": "t-rex",
+    "question": "आपके प्रत्येक हाथ में कितनी उंगलियां थीं?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "आपके प्रत्येक हाथ में कितनी उंगलियां थीं?",
+      "detected_language": "hi",
+      "search_query": "how many fingers on each hand",
+      "passages": 8,
+      "status": "answered",
+      "answer": "मेरे प्रत्येक हाथ में दो नुकीली उंगलियां थीं, साथ में एक छोटा अवशेष‑जैसा तीसरा मेटाकार्पल था।",
+      "sentences": [
+        "मेरे प्रत्येक हाथ में दो नुकीली उंगलियां थीं, साथ में एक छोटा अवशेष‑जैसा तीसरा मेटाकार्पल था।"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0018",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "The lower arm bones, the ulna and radius, were straight elements, much shorter than the humerus. The second metacarpal was longer and wider than the first, whereas normally in theropods the opposite is true. The forelimb"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 23887,
+        "total_ms": 23887
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-06",
+    "persona": "t-rex",
+    "question": "आपके काटने की ताकत (बाइट फोर्स) कितनी थी?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "आपके काटने की ताकत (बाइट फोर्स) कितनी थी?",
+      "detected_language": "hi",
+      "search_query": "bite force value",
+      "passages": 8,
+      "status": "answered",
+      "answer": "विज्ञानियों ने पाया कि एक वयस्क टायरानोसॉरस लगभग 35,000 से 57,000 न्यूटन (लगभग 7,868‑12,814 पाउंड‑फ़ोर्स) की जबरदस्त काटने की ताकत रखता था।",
+      "sentences": [
+        "विज्ञानियों ने पाया कि एक वयस्क टायरानोसॉरस लगभग 35,000 से 57,000 न्यूटन (लगभग 7,868‑12,814 पाउंड‑फ़ोर्स) की जबरदस्त काटने की ताकत रखता था।"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0090",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Most paleontologists have always accepted that Tyrannosaurus was an active predator and, like most large carnivores, would also opportunistically scavenge. By far the largest carnivore in its environment, T. rex was most"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 24374,
+        "total_ms": 24374
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-07",
+    "persona": "t-rex",
+    "question": "तुम्ही पृथ्वीवर कधी अस्तित्वात होता?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "तुम्ही पृथ्वीवर कधी अस्तित्वात होता?",
+      "detected_language": "mr",
+      "search_query": "when did you exist on Earth",
+      "passages": 8,
+      "status": "answered",
+      "answer": "मी ६९ ते ६६ दशलक्ष वर्षांपूर्वी, उशिरा क्रीटेशियस काळात, आजच्या पश्चिम उत्तर अमेरिकेत राहिलो होतो.",
+      "sentences": [
+        "मी ६९ ते ६६ दशलक्ष वर्षांपूर्वी, उशिरा क्रीटेशियस काळात, आजच्या पश्चिम उत्तर अमेरिकेत राहिलो होतो"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0000",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Tyrannosaurus is a genus of large theropod dinosaur. The type species Tyrannosaurus rex (rex meaning 'king' in Latin), often shortened to T. rex or colloquially T-Rex, is one of the best represented theropods. It lived t"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 21798,
+        "total_ms": 21798
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-08",
+    "persona": "t-rex",
+    "question": "तुमच्या प्रत्येक हाताला किती बोटे होती?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "तुमच्या प्रत्येक हाताला किती बोटे होती?",
+      "detected_language": "mr",
+      "search_query": "how many fingers each hand",
+      "passages": 8,
+      "status": "answered",
+      "answer": "माझ्या प्रत्येक हातात दोन मोठे नख असलेले बोट होते, आणि त्यासोबत एक लहान, अवशेष स्वरूपाचा तिसरा बोटही होता",
+      "sentences": [
+        "माझ्या प्रत्येक हातात दोन मोठे नख असलेले बोट होते, आणि त्यासोबत एक लहान, अवशेष स्वरूपाचा तिसरा बोटही होता"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0018",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "The lower arm bones, the ulna and radius, were straight elements, much shorter than the humerus. The second metacarpal was longer and wider than the first, whereas normally in theropods the opposite is true. The forelimb"
+        },
+        {
+          "id": "t-rex-wiki-0000",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Tyrannosaurus is a genus of large theropod dinosaur. The type species Tyrannosaurus rex (rex meaning 'king' in Latin), often shortened to T. rex or colloquially T-Rex, is one of the best represented theropods. It lived t"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 16902,
+        "total_ms": 16902
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-09",
+    "persona": "t-rex",
+    "question": "तुमच्या जबड्याची चावण्याची ताकद किती होती?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "तुमच्या जबड्याची चावण्याची ताकद किती होती?",
+      "detected_language": "mr",
+      "search_query": "jaw bite force",
+      "passages": 8,
+      "status": "answered",
+      "answer": "माझी चावण्याची ताकद अंदाजे 35,000‑57,000 न्यूटन (सुमारे 7,800‑12,800 पाउंड‑फोर्स) होती, जी सर्व स्थलीय प्राण्यांपैकी सर्वात जास्त होती.",
+      "sentences": [
+        "माझी चावण्याची ताकद अंदाजे 35,000‑57,000 न्यूटन (सुमारे 7,800‑12,800 पाउंड‑फोर्स) होती, जी सर्व स्थलीय प्राण्यांपैकी सर्वात जास्त होती"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0090",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Most paleontologists have always accepted that Tyrannosaurus was an active predator and, like most large carnivores, would also opportunistically scavenge. By far the largest carnivore in its environment, T. rex was most"
+        },
+        {
+          "id": "t-rex-wiki-0001",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Relative to its large and powerful hind limbs, the forelimbs of Tyrannosaurus were short but unusually powerful for their size, and they had two clawed digits. The most complete specimen measures 12.3–12.4 m (40–41 ft) i"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 24864,
+        "total_ms": 24864
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-10",
+    "persona": "t-rex",
+    "question": "ನೀವು ಭೂಮಿಯ ಮೇಲೆ ಯಾವಾಗ ಜೀವಿಸಿದ್ದೀರಿ?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "ನೀವು ಭೂಮಿಯ ಮೇಲೆ ಯಾವಾಗ ಜೀವಿಸಿದ್ದೀರಿ?",
+      "detected_language": "kn",
+      "search_query": "when did you live on earth",
+      "passages": 8,
+      "status": "answered",
+      "answer": "ನಾನು ಸುಮಾರು 69 ರಿಂದ 66 ಮಿಲಿಯನ್ ವರ್ಷಗಳ ಹಿಂದೆ, ಅಂದರೆ ಕ್ರೆಟೇಶಿಯಸ್ ಕೊನೆಯ ಹಂತದಲ್ಲಿ ಜೀವಿಸಿದ್ದೆ.",
+      "sentences": [
+        "ನಾನು ಸುಮಾರು 69 ರಿಂದ 66 ಮಿಲಿಯನ್ ವರ್ಷಗಳ ಹಿಂದೆ, ಅಂದರೆ ಕ್ರೆಟೇಶಿಯಸ್ ಕೊನೆಯ ಹಂತದಲ್ಲಿ ಜೀವಿಸಿದ್ದೆ"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0000",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Tyrannosaurus is a genus of large theropod dinosaur. The type species Tyrannosaurus rex (rex meaning 'king' in Latin), often shortened to T. rex or colloquially T-Rex, is one of the best represented theropods. It lived t"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 25039,
+        "total_ms": 25039
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-11",
+    "persona": "t-rex",
+    "question": "ನಿಮ್ಮ ಪ್ರತಿಯೊಂದು ಕೈಯಲ್ಲಿ ಎಷ್ಟು ಬೆರಳುಗಳು ಇದ್ದವು?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "ನಿಮ್ಮ ಪ್ರತಿಯೊಂದು ಕೈಯಲ್ಲಿ ಎಷ್ಟು ಬೆರಳುಗಳು ಇದ್ದವು?",
+      "detected_language": "kn",
+      "search_query": "how many fingers on each hand",
+      "passages": 8,
+      "status": "answered",
+      "answer": "ಪ್ರತಿ ಕೈಯಲ್ಲೂ ಎರಡು ಬೆರಳುಗಳಿದ್ದವು.",
+      "sentences": [
+        "ಪ್ರತಿ ಕೈಯಲ್ಲೂ ಎರಡು ಬೆರಳುಗಳಿದ್ದವು"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0000",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Tyrannosaurus is a genus of large theropod dinosaur. The type species Tyrannosaurus rex (rex meaning 'king' in Latin), often shortened to T. rex or colloquially T-Rex, is one of the best represented theropods. It lived t"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 22697,
+        "total_ms": 22697
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  },
+  {
+    "id": "tr-multi-12",
+    "persona": "t-rex",
+    "question": "ನಿಮ್ಮ ಕಡಿತದ ಬಲ ಎಷ್ಟು ಪ್ರಬಲವಾಗಿತ್ತು?",
+    "response": {
+      "request_id": "",
+      "persona": "t-rex",
+      "mode": "persona",
+      "question": "ನಿಮ್ಮ ಕಡಿತದ ಬಲ ಎಷ್ಟು ಪ್ರಬಲವಾಗಿತ್ತು?",
+      "detected_language": "kn",
+      "search_query": "cutting power strength",
+      "passages": 8,
+      "status": "answered",
+      "answer": "ನನ್ನ ಕಚ್ಚು ಬಲವು 35,000 ರಿಂದ 57,000 ನ್ಯೂಟನ್ (ಸುಮಾರು 7,868 ರಿಂದ 12,814 ಪೌಂಡ್‑ಫೋರ್ಸ್) ವರೆಗೆ ಇರಬಹುದು, ಇದು ಭೂಮಿಯಲ್ಲಿನ ಯಾವುದೇ ಭೂಮಿಯ ಪ್ರಾಣಿಯಿಗಿಂತ ಹೆಚ್ಚು ಶಕ್ತಿಯುತ.",
+      "sentences": [
+        "ನನ್ನ ಕಚ್ಚು ಬಲವು 35,000 ರಿಂದ 57,000 ನ್ಯೂಟನ್ (ಸುಮಾರು 7,868 ರಿಂದ 12,814 ಪೌಂಡ್‑ಫೋರ್ಸ್) ವರೆಗೆ ಇರಬಹುದು, ಇದು ಭೂಮಿಯಲ್ಲಿನ ಯಾವುದೇ ಭೂಮಿಯ ಪ್ರಾಣಿಯಿಗಿಂತ ಹೆಚ್ಚು ಶಕ್ತಿಯುತ"
+      ],
+      "citations": [
+        {
+          "id": "t-rex-wiki-0090",
+          "source": "Wikipedia: Tyrannosaurus",
+          "url": "https://en.wikipedia.org/w/index.php?title=Tyrannosaurus&oldid=1376818858",
+          "licence": "CC BY-SA 4.0",
+          "snippet": "Most paleontologists have always accepted that Tyrannosaurus was an active predator and, like most large carnivores, would also opportunistically scavenge. By far the largest carnivore in its environment, T. rex was most"
+        }
+      ],
+      "sound": null,
+      "audio": [],
+      "timings": {
+        "retrieval_ms": 0,
+        "llm_ms": 27126,
+        "total_ms": 27126
+      },
+      "model": "openai/gpt-oss-120b",
+      "check": null
+    }
+  }
+]
