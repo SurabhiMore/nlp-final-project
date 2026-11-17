@@ -4,14 +4,25 @@ Answers are split into sentences and each sentence is turned into its own
 audio clip, so the phone can start playing the first sentence while the rest
 is still being made.
 
-Kokoro voice names start with a letter for the accent: "a" for American
-English, "b" for British English (for example "af_heart", "bm_lewis").
+Kokoro voice names start with a letter for the accent/language:
+  a   American English   (e.g. "af_heart", "am_onyx")
+  b   British English    (e.g. "bm_lewis")
+  h   Hindi              (e.g. "hf_alpha", "hm_omega")
+  e   Spanish            (e.g. "ef_dora", "em_alex")
 
 Each exhibit's persona.json sets its voice, speed and, optionally, pitch.
 Kokoro has no pitch control of its own, so for a pitch below 1 we generate the
 speech faster by the same factor and then stretch the audio back out. That
 lowers the pitch (and makes the voice sound bigger, which suits a large
 creature) while the speaking speed stays as set.
+
+Kokoro requires espeak-ng for non-English voices (Hindi, Spanish). Install it
+via your system package manager (apt install espeak-ng) or via the Dockerfile.
+
+voice_for_language() maps a detected ISO 639-1 language code to the right
+Kokoro voice. Marathi (mr) and Kannada (kn) have no Kokoro voice, so it returns
+None for those. Callers should check for None and show the answer text only
+without attempting to synthesize audio.
 """
 
 import io
@@ -30,11 +41,45 @@ _SENTENCE_END = re.compile(r"(?<=[.!?])[\"')\]]*\s+")
 _CLAUSE_BREAK = re.compile(r"(?<=[,;:])\s+")
 # A full stop after one of these does not end a sentence: "T. rex", "H. F. Osborn", "Dr. Smith".
 _ABBREVIATION = re.compile(r"(?:\b[A-Z]|\b(?:Mr|Mrs|Ms|Dr|St|Prof|Jr|Sr|vs|etc|No|approx|e\.g|i\.e))\.$")
+# Devanagari danda (।) used as a full stop in Hindi and Marathi.
+_DEVANAGARI_DANDA = re.compile(r"।\s*")
+
+# Maps ISO 639-1 language code to the Kokoro voice to use.
+# None means Kokoro has no voice for that language; callers should skip audio.
+_LANG_VOICE = {
+    "en": None,   # caller picks the exhibit's configured voice
+    "hi": "hf_alpha",
+    "es": "ef_dora",
+    "mr": None,   # no Marathi voice in Kokoro
+    "kn": None,   # no Kannada voice in Kokoro
+}
+
+# Kokoro lang codes that need espeak-ng installed on the host.
+_ESPEAK_LANG_CODES = {"h", "e"}
+
+
+def voice_for_language(lang):
+    """Return the Kokoro voice name for a detected language, or None to skip TTS.
+
+    Returns None for languages Kokoro cannot speak (Marathi, Kannada) so the
+    caller knows to show the answer text only. For English, also returns None
+    because the caller should use the exhibit's configured persona voice instead.
+    """
+    return _LANG_VOICE.get(lang)
 
 
 def split_sentences(text):
-    """Split an answer into sentences, joining very short pieces onto the next one."""
+    """Split an answer into sentences, joining very short pieces onto the next one.
+
+    Handles both Latin-script punctuation (.!?) and the Devanagari danda (।)
+    used in Hindi and Marathi.
+    """
     text = " ".join((text or "").split())
+    if not text:
+        return []
+    # Replace dandas with a period-and-space so the rest of the logic works uniformly.
+    text = _DEVANAGARI_DANDA.sub(". ", text).strip()
+    text = " ".join(text.split())
     if not text:
         return []
     parts = []
@@ -81,12 +126,11 @@ def speech_chunks(text):
 
 def _pipeline_for(voice):
     lang_code = (voice or "a")[0]
-    if lang_code not in ("a", "b"):
-        raise ValueError(f"Voice '{voice}' is not an English Kokoro voice")
+    if lang_code not in ("a", "b", "h", "e"):
+        raise ValueError(f"Voice '{voice}' uses unsupported lang code '{lang_code}'")
     with _lock:
         if lang_code not in _pipelines:
             from kokoro import KPipeline
-
             _pipelines[lang_code] = KPipeline(lang_code=lang_code, repo_id="hexgrad/Kokoro-82M")
     return _pipelines[lang_code]
 

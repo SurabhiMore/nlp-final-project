@@ -213,7 +213,7 @@ def test_ask_returns_the_same_fields_when_the_model_reply_is_broken(client, mode
     body = response.json()
     assert set(body) == {"request_id", "persona", "mode", "question", "status", "answer", "sentences",
                          "citations", "sound", "audio", "timings", "detected_language", "search_query",
-                         "passages", "unbacked_claims"}
+                         "passages", "unbacked_claims", "tts_skipped"}
     assert body["status"] == "not_in_sources"
     assert body["citations"] == []
 

@@ -30,16 +30,43 @@ Tyrannosaurus rex (a creature, with only expert sources). The same code runs bot
 ## Run it locally
 
 Needs Python 3.10 to 3.12 (Kokoro does not install on Python 3.13; `av` is pinned to `<19` and `preshed` to `<3.0.14` in `requirements.txt`).
+On a Mac, `python` usually does not exist and `python3` is often 3.9, so check `python3.12 --version`
+first. If you don't have it, install it with `brew install python@3.12` or from python.org.
+
+You also need a language model for the answers. We use, and report numbers for,
+`openai/gpt-oss-120b` on Groq's free tier. Make a free key at https://console.groq.com/keys, and
+once you have a `.env` file (made in the steps below), set:
+
+```bash
+LLM_BASE_URL=https://api.groq.com/openai/v1
+LLM_API_KEY=your-key
+LLM_MODEL=openai/gpt-oss-120b
+LLM_REASONING_EFFORT=low
+```
+
+To try everything else without a key, set `LLM_PROVIDER=offline` instead.
 
 ### Option A: Run natively on your machine (Fastest)
 
 ```bash
-python -m venv .venv
+python3.12 -m venv .venv           # Windows: py -3.12 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python -m spacy download en_core_web_sm
-cp .env.example .env               # fill in your LLM API key and settings
+cp .env.example .env               # Windows: copy .env.example .env
 ```
+
+**Hindi and Spanish voice (optional):** Kokoro uses `espeak-ng` to generate phonemes for non-English voices. Without it, Hindi and Spanish TTS will raise an error when first called. English voices work fine without it.
+
+```bash
+# macOS
+brew install espeak-ng
+
+# Ubuntu / Debian / Docker
+sudo apt-get install -y espeak-ng
+```
+
+Marathi (mr) and Kannada (kn) have no Kokoro voice. When a visitor asks in those languages the answer text is shown, but no audio is played.
 
 Check the test questions and start the server:
 
@@ -48,7 +75,14 @@ python -m eval.datasets --check
 uvicorn app.server:app --reload
 ```
 
-Open http://localhost:8000 in your browser.
+Open http://localhost:8000 in your browser. The first spoken question downloads the Whisper model
+and the first spoken answer downloads the Kokoro voice, a few hundred MB in all, so each is slow
+once. A warning about `HF_TOKEN` during the download can be ignored.
+
+If the server stops the first time it speaks, with an espeak error about `phontab`, the folder
+you cloned into has too long a path for espeak-ng, which Kokoro uses: the path to
+`.venv/.../espeakng_loader/espeak-ng-data` must stay under 160 characters. Clone the repo into a
+shorter folder.
 
 ### Option B: Run with Docker
 
@@ -85,6 +119,11 @@ Browsers (specifically Safari on iOS and Chrome on Android) **block microphone a
    cloudflared tunnel --url http://localhost:7860
    ```
 
+   Keep the laptop open, awake and plugged in while people test. If it sleeps, the tunnel drops
+   and the link stops working for good, so you need a new one. On a Mac,
+   `caffeinate -i cloudflared tunnel --url http://localhost:8000` keeps it awake while the tunnel
+   runs. If the link still drops, add `--protocol http2`.
+
 3. **Open the HTTPS URL on your phone:**
    Cloudflare outputs a public link like `https://random-words.trycloudflare.com`. Open that URL on your phone's browser (tested on both iOS and Android). The microphone permission prompt will appear.
    *(Note for iPhone users: Ensure your physical Silent switch is OFF so Safari plays Web Audio. On Android, check that media volume is turned up).*
@@ -92,7 +131,7 @@ Browsers (specifically Safari on iOS and Chrome on Android) **block microphone a
 4. **Generate QR codes for testing exhibits:**
    Run the QR generator whenever you start a tunnel session:
    ```bash
-   python scripts/generate_qr.py --space-url https://random-words.trycloudflare.com
+   python scripts/generate_qr.py --url https://random-words.trycloudflare.com
    ```
    This generates `artifacts/qr-t-rex.png` and `artifacts/qr-van-gogh.png` pointing to that active tunnel URL, ready for testers to scan.
 

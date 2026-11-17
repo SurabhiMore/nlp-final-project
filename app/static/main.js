@@ -159,11 +159,13 @@
     el.stop.hidden = true;
   }
 
-  async function fetchClip(text) {
+  async function fetchClip(text, lang) {
     const body = new FormData();
     body.append("persona", el.exhibit.value);
     body.append("text", text);
+    if (lang) body.append("lang", lang);
     const response = await fetch("/speak", { method: "POST", body: body });
+    if (response.status === 204) return null;
     if (!response.ok) throw new Error("speech failed");
     const data = await response.arrayBuffer();
     if (!audioContext) unlockAudio();
@@ -196,7 +198,7 @@
     });
   }
 
-  async function speakSentences(sentences, onFirstAudio, soundUrl) {
+  async function speakSentences(sentences, onFirstAudio, soundUrl, lang) {
     unlockAudio();
     if (audioContext && audioContext.state === "suspended") {
       try { await audioContext.resume(); } catch (e) {}
@@ -206,14 +208,16 @@
     const id = playbackId;
     el.stop.hidden = false;
     try {
-      let next = sentences.length ? fetchClip(sentences[0]) : null;
+      let next = sentences.length ? fetchClip(sentences[0], lang) : null;
       const sound = soundUrl ? fetchSound(soundUrl) : null;
       for (let i = 0; i < sentences.length; i += 1) {
         const buffer = await next;
         if (id !== playbackId) return;
-        next = i + 1 < sentences.length ? fetchClip(sentences[i + 1]) : null;
-        if (i === 0 && onFirstAudio) onFirstAudio();
-        await playBuffer(buffer, id);
+        next = i + 1 < sentences.length ? fetchClip(sentences[i + 1], lang) : null;
+        if (buffer) {
+          if (i === 0 && onFirstAudio) onFirstAudio();
+          await playBuffer(buffer, id);
+        }
       }
       if (sound) {
         const buffer = await sound;
@@ -350,7 +354,7 @@
         const seconds = ((performance.now() - askedAt) / 1000).toFixed(1);
         const timing = node.querySelector(".timing");
         timing.textContent += ", voice started after " + seconds + " s";
-      }, data.sound && data.sound.url);
+      }, data.sound && data.sound.url, data.detected_language);
     } catch (error) {
       // Keep the turn card visible but mark it as an error state
       node.setAttribute("data-state", "error");
