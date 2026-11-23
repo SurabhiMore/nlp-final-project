@@ -1,20 +1,38 @@
 # Echoes.ai: final report
 
-Outline, November 16 (#74). The finished report is 2 to 5 pages under these five headings. Each
-section below lists what it will use. The final numbers come from one run in Session 12, on the
-questions visitors wrote in Session 11 (#70, #72), with `openai/gpt-oss-120b`, the model in the
-demo.
+Draft, November 23 (#86). "Problem and users" is written. The other four sections are outlines
+until their owners write them: Product (Saurabh, #84), NLP method and evaluation (Surabhi, #82),
+User evidence (Kshiti, #83) and Ethics and limitations (Aditi, #85). The finished report is 2 to 5
+pages. The final numbers come from one run on the questions visitors write (#70, #82), with
+`openai/gpt-oss-120b`, the model in the demo.
 
 ## Problem and users
 
-- Visitors give a plaque a few seconds, and an audio guide plays the same recording for everyone
-  and can't answer a question. Curators have to buy, charge and repair guide devices and record
-  new tracks for every exhibit ([lean canvas](../../artifacts/lean_canvas.md), "Users and their
-  problem").
-- What exists: plaques, rented audio guides, human docents, and AI chatbots that are mostly text
-  and don't publish how accurate they are (lean canvas, "What exists today").
-- Who we tested with: 6 people from outside the team in Sessions 5, 7 and 8, and the phone test
-  in Session 11 (#70, [user research plan](../../artifacts/user_research_plan.md)).
+Museum visitors give a plaque a few seconds and move on. An audio guide plays the same recording to
+everyone and can't take a question, and a human docent, the best option, is rare and runs on a
+schedule. Curators have their own problem: guide devices have to be bought, charged and repaired,
+and every new exhibit means recording new tracks ([lean canvas](../../artifacts/lean_canvas.md)).
+
+Talking to a historical figure through AI is not new. The Met ran "Chat with Natalie" for a
+fashion exhibition ([article](https://mymodernmet.com/ai-history-chatbots/)), and
+[Hello History](https://www.hellohistory.ai/) offers chats with historical figures. These are
+mostly text, none we found says how accurate its answers are, and language models that play a
+character are known to make up facts and quotes
+([TimeChara, ACL 2024](https://aclanthology.org/2024.findings-acl.197/)).
+
+Echoes.ai lets a visitor scan the QR code next to an exhibit and ask it a question out loud on
+their own phone, with nothing to install. The exhibit answers in its own voice, from sources it
+cites, and says so when its sources don't cover the question. The same code runs two very
+different exhibits: Vincent van Gogh, who left his own letters, and a Tyrannosaurus rex, known
+only through what scientists have written.
+
+Our users are museum visitors, some of them children, and the curators who run the exhibits and
+want to know what visitors ask. Seven people from outside the team tried it in Sessions 5, 7, 8 and
+11, on a laptop at first and in Session 11 on their own phone (see User evidence).
+
+We judge it by one number, grounded answer accuracy: of the held-out visitor questions, how many
+get a correct answer backed by a cited source. A question the exhibit should not answer, such as
+one about something after its time, counts as correct only when it declines.
 
 ## Product
 
