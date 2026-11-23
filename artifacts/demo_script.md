@@ -96,14 +96,22 @@ The curator page then showed the questions grouped by topic.
 
 ## Timing
 
-Rehearse once with a timer, with everyone talking, and write the real time of each part here.
+A run-through by Pratham alone on November 23: every part read out loud at presenting speed, and
+the live demo done for real in the browser on localhost with real model answers. All nine questions
+were heard right and answered as the script expects. A rehearsal with everyone talking is still
+worth doing before December 1.
 
 | Part | Planned | Real |
 |---|---|---|
-| The problem | 1:30 | |
-| How it works | 1:30 | |
-| Live demo | 4:00 | |
-| Does it work? | 2:00 | |
-| What visitors did | 1:30 | |
-| Limits and ethics | 1:30 | |
-| Total | 12:00 | |
+| The problem | 1:30 | 1:28 |
+| How it works | 1:30 | 1:13 |
+| Live demo | 4:00 | 7:04 |
+| Does it work? | 2:00 | 1:21 |
+| What visitors did | 1:30 | 1:06 |
+| Limits and ethics | 1:30 | 1:11 |
+| Total | 12:00 | 13:23 |
+
+The live demo ran 3 minutes over. Each question took about 45 seconds, mostly waiting for the whole
+answer to be spoken, while the talking parts came in 1:41 under. Dropping questions 2 and 8 saves
+about 1:35, which would have made it about 11:50. "Does it work?" still needs about 15 seconds for
+the final numbers, so that brings it to about 12:00.
