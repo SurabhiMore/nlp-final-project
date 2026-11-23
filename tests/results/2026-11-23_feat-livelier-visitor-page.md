@@ -1,15 +1,15 @@
 # Test report
 
-- Run: 2026-11-23 10:47 (UTC-05:00)
-- Code tested: commit 5a2de4d on branch feat/livelier-visitor-page, no uncommitted changes
+- Run: 2026-11-23 10:51 (UTC-05:00)
+- Code tested: commit 10dcb99 on branch feat/livelier-visitor-page, no uncommitted changes
 - Command: python -m pytest --save-report
 - Python 3.11.14 on Darwin
-- Result: 569 passed, 2 not run in 4.1 s
+- Result: 569 passed, 2 not run in 4.2 s
 - All tests that ran passed.
 
 | Test | File | Result | Time (s) |
 |---|---|---|---|
-| test_supported_answer_keeps_its_citation | test_answers.py | passed | 0.13 |
+| test_supported_answer_keeps_its_citation | test_answers.py | passed | 0.15 |
 | test_honest_not_in_sources_is_kept_as_written | test_answers.py | passed | 0.00 |
 | test_decline_that_answers_from_model_knowledge_is_replaced[rex-means-king] | test_answers.py | passed | 0.00 |
 | test_decline_that_answers_from_model_knowledge_is_replaced[theo-art-dealer] | test_answers.py | passed | 0.00 |
@@ -42,7 +42,7 @@
 | test_parse_reply_never_raises[sound-is-number] | test_answers.py | passed | 0.00 |
 | test_parse_reply_never_raises[whitespace] | test_answers.py | passed | 0.00 |
 | test_json_wrapped_in_extra_text_is_still_read | test_answers.py | passed | 0.01 |
-| test_introduction_without_citation_is_still_answered[Hello!] | test_answers.py | passed | 0.00 |
+| test_introduction_without_citation_is_still_answered[Hello!] | test_answers.py | passed | 0.01 |
 | test_introduction_without_citation_is_still_answered[Who are you?] | test_answers.py | passed | 0.01 |
 | test_introduction_without_citation_is_still_answered[Are you real?] | test_answers.py | passed | 0.01 |
 | test_roar_request_without_citation_keeps_the_sound | test_answers.py | passed | 0.00 |
@@ -99,7 +99,7 @@
 | test_exhibit_persona_tokens_never_flagged | test_claims.py | passed | 0.00 |
 | test_number_words_match_digits_bidirectionally | test_claims.py | passed | 0.00 |
 | test_empty_answer_or_passages | test_claims.py | passed | 0.00 |
-| test_session07_p2_failure_regression | test_claims.py | passed | 0.00 |
+| test_session07_p2_failure_regression | test_claims.py | passed | 0.01 |
 | test_session07_p4_failure_regression | test_claims.py | passed | 0.00 |
 | test_eval_claims_harness_runs | test_claims.py | passed | 0.03 |
 | test_clearly_unrelated_questions_are_off_topic[van-gogh-What is 17 times 23?] | test_classifier.py | passed | 0.00 |
@@ -261,13 +261,13 @@
 | test_regressions_and_improvements_are_reported | test_compare_retrieval.py | passed | 0.00 |
 | test_dropping_out_of_the_top_10_is_a_regression | test_compare_retrieval.py | passed | 0.00 |
 | test_different_question_sets_are_refused | test_compare_retrieval.py | passed | 0.00 |
-| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.20 |
-| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.55 |
+| test_question_file_passes_validation[t-rex] | test_datasets.py | passed | 0.21 |
+| test_question_file_passes_validation[van-gogh] | test_datasets.py | passed | 0.57 |
 | test_question_counts_and_id_conventions[van-gogh-vg-] | test_datasets.py | passed | 0.00 |
 | test_question_counts_and_id_conventions[t-rex-tr-] | test_datasets.py | passed | 0.00 |
 | test_question_ids_are_globally_unique | test_datasets.py | passed | 0.00 |
-| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.20 |
-| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.55 |
+| test_answerable_questions_have_verified_supporting_chunks[t-rex] | test_datasets.py | passed | 0.21 |
+| test_answerable_questions_have_verified_supporting_chunks[van-gogh] | test_datasets.py | passed | 0.56 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[t-rex] | test_datasets.py | passed | 0.00 |
 | test_unanswerable_traps_have_empty_evidence_and_facts[van-gogh] | test_datasets.py | passed | 0.00 |
 | test_validation_detects_duplicate_ids | test_datasets.py | passed | 0.00 |
@@ -455,8 +455,8 @@
 | test_ask_with_typed_text_and_speak_true | test_server.py | passed | 0.01 |
 | test_ask_with_typed_hindi_and_speak_true | test_server.py | passed | 0.01 |
 | test_both_exhibits_load | test_smoke.py | passed | 0.00 |
-| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.20 |
-| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.55 |
+| test_question_file_passes_the_check[t-rex] | test_smoke.py | passed | 0.21 |
+| test_question_file_passes_the_check[van-gogh] | test_smoke.py | passed | 0.56 |
 | test_search_returns_ranked_passages[t-rex] | test_smoke.py | passed | 0.00 |
 | test_search_returns_ranked_passages[van-gogh] | test_smoke.py | passed | 0.00 |
 | test_search_finds_the_passage_for_an_exact_wording_question | test_smoke.py | passed | 0.01 |
@@ -513,7 +513,7 @@
 | test_build_prompt_does_not_repeat_names | test_stt.py | passed | 0.00 |
 | test_build_prompt_stays_within_the_word_limit | test_stt.py | passed | 0.00 |
 | test_build_prompt_without_any_names | test_stt.py | passed | 0.00 |
-| test_every_exhibit_gets_a_prompt_with_its_name[t-rex] | test_stt.py | passed | 0.01 |
+| test_every_exhibit_gets_a_prompt_with_its_name[t-rex] | test_stt.py | passed | 0.02 |
 | test_every_exhibit_gets_a_prompt_with_its_name[van-gogh] | test_stt.py | passed | 0.04 |
 | test_average_logprob_weights_segments_by_tokens | test_stt.py | passed | 0.00 |
 | test_average_logprob_of_nothing_is_none | test_stt.py | passed | 0.00 |
@@ -543,7 +543,7 @@
 | test_ask_kannada_audio_sets_tts_skipped | test_stt.py | passed | 0.00 |
 | test_word_errors_counts_substitutions_deletions_and_insertions | test_stt.py | passed | 0.00 |
 | test_wer_ignores_case_punctuation_and_accents | test_stt.py | passed | 0.00 |
-| test_reference_set_is_forty_held_out_questions_copied_exactly | test_stt.py | passed | 0.00 |
+| test_reference_set_is_forty_held_out_questions_copied_exactly | test_stt.py | passed | 0.01 |
 | test_find_clips_skips_named_folders_and_unknown_ids | test_stt.py | passed | 0.00 |
 | test_check_lists_missing_clips | test_stt.py | passed | 0.00 |
 | test_summarize_counts_flags_against_mistakes | test_stt.py | passed | 0.00 |
