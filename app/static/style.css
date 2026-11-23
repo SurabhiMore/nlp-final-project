@@ -15,21 +15,23 @@
   --accent-ink: #0f0f17;
   --warn:       #d4933a;
 
-  /* -- answer state tokens ----------------------------------------- */
-  --state-ok-bg:          #142218;
+  /* -- answer state tokens -----------------------------------------
+     Backgrounds are the exhibit's card colour with a light tint of the
+     state colour, so cards match whichever exhibit theme is active. */
   --state-ok-border:      #4a9970;
   --state-ok-label:       #6fcf97;
+  --state-ok-bg:          color-mix(in srgb, var(--state-ok-border) 7%, var(--card));
 
-  --state-low-bg:         #1f1a10;
   --state-low-border:     #c97a30;
   --state-low-label:      #e8a84c;
+  --state-low-bg:         color-mix(in srgb, var(--state-low-border) 12%, var(--card));
 
-  --state-err-bg:         #1f1210;
   --state-err-border:     #c0392b;
   --state-err-label:      #e74c3c;
+  --state-err-bg:         color-mix(in srgb, var(--state-err-border) 12%, var(--card));
 
-  --state-loading-bg:     #15151f;
   --state-loading-border: #5a5670;
+  --state-loading-bg:     var(--card);
 
   /* -- brand ------------------------------------------------------- */
   --glow:       rgba(var(--accent-rgb), 0.35);
