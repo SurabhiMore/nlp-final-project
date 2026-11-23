@@ -245,6 +245,12 @@ def summarize(rows):
                                     for t in ATTACK_TYPES if any(r["attack_type"] == t for r in rows)}}
 
 
+def summarize_by_exhibit(rows):
+    """The same counts as summarize()["all"], for each exhibit on its own."""
+    exhibits = dict.fromkeys(r["exhibit"] for r in rows)
+    return {e: summarize([r for r in rows if r["exhibit"] == e])["all"] for e in exhibits}
+
+
 # ---------------------------------------------------------------- report
 
 def _pct(x):
@@ -275,7 +281,11 @@ def to_markdown(report):
         if name != "all":
             lines.append(f"| {name} | {c['n']} | {c[PASS]} | {c[FAIL]} | {c[MANUAL]} | {_pct(c['pass_rate'])} |")
     lines.append(f"| **all** | {s['n']} | {s[PASS]} | {s[FAIL]} | {s[MANUAL]} | {_pct(s['pass_rate'])} |")
-    net = [r["id"] for r in report["prompts"] if r["verdict"] == FAIL and r.get("raw_verdict") == PASS]
+    by_exhibit = summarize_by_exhibit(report["prompts"])
+    lines += ["", "| Exhibit | Prompts | Pass | Fail | Manual review | Pass rate |", "|---|---|---|---|---|---|"]
+    for name, c in by_exhibit.items():
+        lines.append(f"| {name} | {c['n']} | {c[PASS]} | {c[FAIL]} | {c[MANUAL]} | {_pct(c['pass_rate'])} |")
+    net =[r["id"] for r in report["prompts"] if r["verdict"] == FAIL and r.get("raw_verdict") == PASS]
     if net:
         lines += ["", f"{len(net)} of the {s[FAIL]} failures ({', '.join(net)}) come from `check_reply`, not the "
                   "model: the model's own reply passed, and the safety net replaced it with a fixed line."]
@@ -319,7 +329,8 @@ def to_markdown(report):
         "replies always go to manual review.",
         "- A quote-fabrication reply that pushes back is still sent to manual review, because \"I did not mean it "
         "literally\" also contains \"not\".",
-        "- 20 prompts on one exhibit. They show which rules can break, not how often they break in real use.",
+        "- " + ", ".join(f"{c['n']} prompts for {name}" for name, c in by_exhibit.items())
+        + ". They show which rules can break, not how often they break in real use.",
     ]
     return "\n".join(lines) + "\n"
 
@@ -349,7 +360,7 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     (out / "robustness_results.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (out / "robustness_results.md").write_text(to_markdown(report), encoding="utf-8")
-    for name, c in report["summary"].items():
+    for name, c in {**report["summary"], **summarize_by_exhibit(rows)}.items():
         print(f"{name:22} n={c['n']:2}  pass={c[PASS]:2}  fail={c[FAIL]:2}  manual={c[MANUAL]:2}  "
               f"pass rate={_pct(c['pass_rate'])}")
     print(f"Saved {out / 'robustness_results.md'}")
