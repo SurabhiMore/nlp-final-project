@@ -36,8 +36,39 @@ in a saved run. Ask them all again on the demo laptop after the Session 12 code 
 | 9 | T. rex | "What is the capital of France?" (voice) | Declines at once, with no call to the model | The classifier | tr-21, same file (0 ms model time) |
 | 10 | Curator page | Open "Curator stats" in the footer | Questions by topic, including the ones we just asked | What a museum gets | #61 |
 
-If the demo runs long, drop 2 and 8. If #71 (voice in Hindi and Spanish) is merged and works in
-rehearsal, ask question 6 by voice instead.
+If the demo runs long, drop 2 and 8. Since #71, the answer to question 6 is spoken in a Hindi
+voice. Ask question 6 by voice only if a Hindi speaker has tried it in rehearsal; we could not test
+a spoken Hindi question on our check below.
+
+## Check on main, November 23
+
+All nine questions, asked in order on main at e7ea205 with `openai/gpt-oss-120b`, the way the page
+asks them: speech to text, then `/ask`, then `/speak` for each sentence. The spoken questions came
+from the Mac's `say` voice (Samantha), on localhost with no tunnel, so this times the machine, not
+the talking.
+
+| # | Heard right | What happened | Answer on screen | First word spoken | Answer spoken for |
+|---|---|---|---|---|---|
+| 1 | yes | The Potato Eaters, cited | 3.2 s | 3.6 s | 4.0 s |
+| 2 | yes | three versions, cited | 2.7 s | 3.1 s | 3.4 s |
+| 3 | yes | declined, after his time | 3.0 s | 3.3 s | 5.2 s |
+| 4 | yes | no record of a childhood dog | 15.0 s | 15.5 s | 4.4 s |
+| 5 | yes | "I am an AI guide speaking as Vincent van Gogh." | 18.9 s | 19.3 s | 4.3 s |
+| 6 | typed | answered in Hindi, cited, spoken in Hindi | 1.2 s | 3.2 s | 8.7 s |
+| 7 | yes | a short line, then the roar | 5.1 s | 5.5 s | 3.7 s, plus the roar |
+| 8 | yes | scales, with feathers possible, 2 sources | 19.9 s | 20.4 s | 13.8 s |
+| 9 | yes | declined at once by the classifier | 2.2 s | 2.5 s | 7.3 s |
+
+The curator page then showed the questions grouped by topic.
+
+- Questions 4, 5 and 8 waited 13 to 17 s for the model, because we asked them back to back. Asked
+  25 s apart, the same model answered in 0.5 to 1.8 s, so this was most likely the free tier's
+  per-minute limit. In the demo, the talking between questions gives that gap.
+- With normal answer times, waiting for and listening to all nine answers takes about 90 s. With
+  the asking and switching exhibits, the live demo needs about 2.5 of its 4 minutes, which leaves
+  about 1.5 minutes for talking.
+- The first Hindi answer on a laptop downloads the Hindi voice. Here that took about 15 minutes
+  the first time, and under 2 s after that.
 
 ## On the day
 
@@ -49,7 +80,10 @@ rehearsal, ask question 6 by voice instead.
 - Start the tunnel, make the QR codes (`python scripts/generate_qr.py --url <tunnel link>`), and
   open the page on the phone once to allow the microphone. On an iPhone, turn the silent switch
   off.
-- Ask question 1 once before we go on, to warm everything up.
+- Before we go on, ask question 1 and question 6 once. Question 6 makes the laptop download the
+  Hindi voice, which can take minutes the first time.
+- Leave about 20 seconds between questions, so the free tier's per-minute limit does not slow the
+  answers down.
 
 ## If something fails
 
@@ -62,4 +96,14 @@ rehearsal, ask question 6 by voice instead.
 
 ## Timing
 
-Rehearse once with a timer before Session 12 and write the real times for each part here.
+Rehearse once with a timer, with everyone talking, and write the real time of each part here.
+
+| Part | Planned | Real |
+|---|---|---|
+| The problem | 1:30 | |
+| How it works | 1:30 | |
+| Live demo | 4:00 | |
+| Does it work? | 2:00 | |
+| What visitors did | 1:30 | |
+| Limits and ethics | 1:30 | |
+| Total | 12:00 | |
