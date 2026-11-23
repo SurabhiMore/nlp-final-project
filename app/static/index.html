@@ -3,13 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Echoes.ai — talk to museum exhibits. Ask questions about art, history, and science, and hear the exhibit answer in its own voice.">
   <title>Echoes.ai</title>
   <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
   <header class="top">
-    <h1>Echoes.ai</h1>
+    <h1>Echoes<span class="brand-dot">.</span>ai</h1>
     <label class="picker">
       <span class="visually-hidden">Choose an exhibit</span>
       <select id="exhibit"></select>
@@ -18,12 +22,77 @@
 
   <main>
     <section class="intro">
+      <!-- Decorative picture of the chosen exhibit; style.css shows the one that matches #exhibit. -->
+      <figure class="exhibit-art" aria-hidden="true">
+        <svg class="art art-van-gogh" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="vg-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#14245a"/>
+              <stop offset="1" stop-color="#2d4f97"/>
+            </linearGradient>
+            <radialGradient id="vg-halo">
+              <stop offset="0" stop-color="#ffe9a0" stop-opacity=".9"/>
+              <stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="320" height="140" fill="url(#vg-sky)"/>
+          <g fill="none" stroke-linecap="round">
+            <path d="M-10 58 C40 30 80 78 130 52 S210 22 250 50 S300 70 330 46" stroke="#9fc1ee" stroke-width="5" opacity=".55"/>
+            <path d="M-10 70 C45 44 85 92 135 64 S215 36 255 62 S305 82 330 58" stroke="#d9e7f7" stroke-width="2" opacity=".5"/>
+            <path d="M120 60 c10 -18 34 -18 40 -2 c5 14 -12 22 -20 13 c-6 -7 2 -14 8 -9" stroke="#e9f1fb" stroke-width="3" opacity=".7"/>
+            <path d="M60 30 C90 14 120 22 140 34" stroke="#6f95d6" stroke-width="3" opacity=".6"/>
+          </g>
+          <circle cx="272" cy="32" r="24" fill="url(#vg-halo)"/>
+          <circle cx="272" cy="32" r="11" fill="#f7d66b"/>
+          <circle cx="278" cy="29" r="8" fill="#2a4790"/>
+          <g fill="url(#vg-halo)">
+            <circle cx="40" cy="22" r="11"/><circle cx="196" cy="20" r="10"/>
+            <circle cx="230" cy="80" r="8"/><circle cx="96" cy="44" r="7"/>
+          </g>
+          <g fill="#fbe7a1">
+            <circle cx="40" cy="22" r="3.5"/><circle cx="196" cy="20" r="3"/>
+            <circle cx="230" cy="80" r="2.5"/><circle cx="96" cy="44" r="2"/>
+          </g>
+          <path d="M0 122 C60 108 110 116 160 110 S260 104 320 114 V140 H0 Z" fill="#1a2c5c"/>
+          <g fill="#0f1a38">
+            <rect x="170" y="112" width="14" height="12"/><path d="M168 113 l9 -8 l9 8 Z"/>
+            <rect x="196" y="114" width="12" height="10"/><path d="M194 115 l8 -7 l8 7 Z"/>
+            <rect x="214" y="104" width="4" height="18"/><path d="M213 105 l3 -12 l3 12 Z"/>
+          </g>
+          <g fill="#f7d66b"><rect x="174" y="116" width="3" height="3"/><rect x="200" y="117" width="3" height="3"/></g>
+          <path d="M46 140 C34 112 40 80 52 34 C58 70 62 60 60 88 C70 100 70 122 66 140 Z" fill="#101c16"/>
+          <path d="M52 48 C49 72 46 96 50 136" stroke="#1d3a2b" stroke-width="2" fill="none"/>
+        </svg>
+        <svg class="art art-t-rex" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="tr-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1d2a1c"/>
+              <stop offset=".6" stop-color="#7a5a2a"/>
+              <stop offset="1" stop-color="#d08a3c"/>
+            </linearGradient>
+          </defs>
+          <rect width="320" height="140" fill="url(#tr-sky)"/>
+          <circle cx="250" cy="96" r="30" fill="#f3b658" opacity=".85"/>
+          <path d="M20 128 L72 62 L84 66 L94 60 L150 128 Z" fill="#3a2a1c"/>
+          <path d="M80 60 c-6 -14 8 -18 4 -30 c10 6 12 18 4 28" fill="#6b5a4a" opacity=".6"/>
+          <path d="M76 66 L84 74 L90 64 Z" fill="#e0662c" opacity=".8"/>
+          <g fill="#152015">
+            <path d="M150 88 Q185 70 205 69 Q214 61 222 55 L250 51 Q259 52 259 60 L259 66 L241 68 L253 72 L251 77 L233 77 Q229 85 227 90 L236 94 L235 98 L225 96 Q223 104 215 108 L221 126 L230 130 L212 130 L204 111 L198 111 L201 126 L208 130 L190 130 L188 108 Q174 100 150 88 Z"/>
+            <rect y="126" width="320" height="14"/>
+            <path d="M282 128 c2 -30 4 -50 10 -62" stroke="#152015" stroke-width="4" fill="none"/>
+            <path d="M292 66 c-14 -6 -26 0 -32 8 c12 -4 22 -4 32 -8 Z M292 66 c10 -10 24 -10 30 -4 c-12 0 -20 2 -30 4 Z M292 66 c-4 -12 -14 -18 -24 -18 c8 6 16 12 24 18 Z M292 66 c6 -12 16 -16 26 -14 c-10 4 -18 8 -26 14 Z"/>
+            <path d="M8 128 c4 -14 10 -22 18 -26 c-6 8 -9 16 -10 26 Z M14 128 c-2 -12 -8 -20 -14 -22 c4 6 6 14 6 22 Z"/>
+          </g>
+          <circle cx="247" cy="57" r="1.6" fill="#d08a3c"/>
+        </svg>
+      </figure>
       <p id="greeting" class="greeting">Loading exhibits...</p>
       <p id="period" class="period"></p>
     </section>
 
     <section class="ask">
       <button id="talk" class="talk" type="button" aria-describedby="talk-help">
+        <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         <span id="talk-label">Hold to ask</span>
       </button>
       <p id="talk-help" class="help">Press and hold, ask your question, then let go.</p>
@@ -40,7 +109,7 @@
 
       <form id="text-form" class="text-form">
         <label for="text-question" class="visually-hidden">Or type a question</label>
-        <input id="text-question" type="text" placeholder="Or type a question" autocomplete="off" maxlength="300">
+        <input id="text-question" type="text" placeholder="Or type a question…" autocomplete="off" maxlength="300">
         <button type="submit">Ask</button>
       </form>
 
@@ -55,7 +124,7 @@
     You are talking to an AI guide. Answers come from museum and public sources and can still be wrong.
     Your voice is turned into text and not stored.
     <span id="session-note" class="session-note" hidden></span>
-  <a href="/stats.html" class="curator-link" style="font-size:.8rem">Curator stats</a>
+  <a href="/stats.html" class="curator-link">Curator stats</a>
 </footer>
 
   <template id="turn-template">
