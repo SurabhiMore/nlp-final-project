@@ -1,7 +1,7 @@
 # Session 12 task sheet: visitors on their own phones, with their own questions
 
-This round finishes #70: two more people from outside the team, P8 and P9, each on their own phone
-through the Cloudflare tunnel, with both exhibits. P7 was tested in Session 11
+This round finishes #70: three more people from outside the team, P8, P9 and P10, each on their
+own phone through the Cloudflare tunnel, with both exhibits. P7 was tested in Session 11
 (`artifacts/evidence/session11/`). Each session takes about 15 minutes. The general method is in
 `artifacts/user_research_plan.md`, and this sheet starts from `session08/task_sheet.md`.
 
@@ -13,7 +13,7 @@ through the Cloudflare tunnel, with both exhibits. P7 was tested in Session 11
    `caffeinate -i cloudflared tunnel --url http://localhost:8000`
    If the link drops, start it again with `--protocol http2`.
 3. Make the QR codes for this person:
-   `python scripts/generate_qr.py --url <tunnel link> --session P8` (P9 for the next person).
+   `python scripts/generate_qr.py --url <tunnel link> --session P8` (P9 and P10 for the next people).
    This writes `artifacts/qr-van-gogh-P8.png` and `artifacts/qr-t-rex-P8.png`, with `?session=P8`
    in the link. They are not committed.
 4. Scan one on your own phone first: the footer should say "Test session P8", and one spoken test
@@ -108,6 +108,6 @@ End questions:
 4. Add their written questions to `eval/questions/final/visitor_questions.jsonl`, one per line,
    exactly as written (fix only obvious typos):
    `{"exhibit": "van-gogh", "question": "...", "person": "P8"}` (`exhibit` is `van-gogh` or `t-rex`).
-5. Once both people have been tested, write `README.md` in this folder: setup, a results table,
+5. Once all three people have been tested, write `README.md` in this folder: setup, a results table,
    what went wrong, the three biggest problems the testers hit, and what we change because of it
    (same layout as `session11/README.md`). Report how many people actually took part.
