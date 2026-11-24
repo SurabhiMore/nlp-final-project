@@ -16,7 +16,9 @@ own phone through the Cloudflare tunnel, with both exhibits. P7 was tested in Se
    `python scripts/generate_qr.py --url <tunnel link> --session P8` (P9 and P10 for the next people).
    This writes `artifacts/qr-van-gogh-P8.png` and `artifacts/qr-t-rex-P8.png`, with `?session=P8`
    in the link. They are not committed.
-4. Scan one on your own phone first: the footer should say "Test session P8", and one spoken test
+4. Wait about a minute after starting a tunnel. A phone that tries a brand-new link too early can
+   show "This site can't be reached" for a while; turn airplane mode on and off and try again.
+   Scan one on your own phone first: the footer should say "Test session P8", and one spoken test
    question should show "I heard:" with Send and Record again.
 5. Have the question sheet (`question_sheet.md`), this sheet and the record template below ready.
 6. Close the tunnel between people and after the last one. Anyone with the link can use our model
