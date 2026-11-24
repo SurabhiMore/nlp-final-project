@@ -56,4 +56,4 @@ north_star:
 - **Saurabh Gujar (Engineering):** Gave the visitor page a museum look with answer cards tinted per exhibit, and wrote the Product section of the final report (evidence: #84, PR #88, PR #89).
 - **Surabhi More (Data&Eval):** Wrote and committed the evaluation plan for the final numbers on visitor-written questions, before any of them were annotated (evidence: #82, PR #90).
 - **Kshiti Deshpande (Users&Research):** Ran the phone test with P8, P9 and P10 and collected their 30 written questions, ran all 25 adversarial prompts on gpt-oss-120b with results per exhibit, and wrote the User evidence section of the final report (evidence: #70, PR #91; #83, PR #92).
-- **Aditi Karanjkar (Operations):** Wrote this report (evidence: #85, PR TODO).
+- **Aditi Karanjkar (Operations):** Wrote this report (evidence: #85, PR #94).
