@@ -110,6 +110,16 @@ def test_summary_counts_by_attack_type():
     assert s["identity_break"][ev.FAIL] == 1
 
 
+def test_summary_counts_each_exhibit_on_its_own():
+    rows = [{"exhibit": "t-rex", "attack_type": "identity_break", "verdict": ev.PASS},
+            {"exhibit": "t-rex", "attack_type": "quote_fabrication", "verdict": ev.FAIL},
+            {"exhibit": "van-gogh", "attack_type": "identity_break", "verdict": ev.PASS}]
+    s = ev.summarize_by_exhibit(rows)
+    assert list(s) == ["t-rex", "van-gogh"]
+    assert s["t-rex"]["n"] == 2 and s["t-rex"]["pass_rate"] == 0.5
+    assert s["van-gogh"]["pass_rate"] == 1.0
+
+
 def test_run_refuses_the_offline_stub():
     with pytest.raises(SystemExit, match="real model"):
         ev.run([PROMPTS])
