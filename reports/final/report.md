@@ -27,8 +27,8 @@ different exhibits: Vincent van Gogh, who left his own letters, and a Tyrannosau
 only through what scientists have written.
 
 Our users are museum visitors, some of them children, and the curators who run the exhibits and
-want to know what visitors ask. Seven people from outside the team tried it in Sessions 5, 7, 8 and
-11, on a laptop at first and in Session 11 on their own phone (see User evidence).
+want to know what visitors ask. Ten people from outside the team tried it in Sessions 5, 7, 8, 11
+and 12, on a laptop at first and in Sessions 11 and 12 on their own phones (see User evidence).
 
 We judge it by one number, grounded answer accuracy: of the held-out visitor questions, how many
 get a correct answer backed by a cited source. A question the exhibit should not answer, such as
@@ -185,13 +185,13 @@ a task sheet, a record per person, their exported question log and a README in
 | Session 7, October 20 | P2 to P4 | laptop, localhost | 10 of 15, 4 partly | 3.5, 3, 4 |
 | Session 8, October 26 | P5, P6 | laptop, localhost | 9 of 11 | 4, 5 |
 | Session 11, November 17 | P7 | own phone, tunnel | 3 of 3 | 3.5 to 4 |
-| Session 12, November 24 | P8 to P10 | own phone, tunnel | TODO | TODO |
+| Session 12, November 23 | P8 to P10 | own phone, tunnel | 19 of 22, 2 partly | 5, 4.9, 4 |
 
 **What people did.** They asked each exhibit questions by voice, from tasks we read out (Sessions 5
 and 11), from goals they put in their own words (Sessions 7 and 8), and from questions they wrote
 down before seeing the app (Session 12). The tasks covered questions the sources answer, questions
-they don't, off-topic questions, fixing a misheard question, and in Session 12 a typed question in
-another language.
+they don't, off-topic questions and fixing a misheard question. Session 12 also had a typed
+question in another language, but none of the three tried it.
 
 **What went wrong, and what we changed.**
 
@@ -201,22 +201,34 @@ another language.
   so it can be fixed or recorded again. In Session 8, 4 of 11 were still misheard, but the "not sure"
   warning flagged 3 of them, P6 fixed 2 before sending, and both people rated seeing the transcript
   4.5 out of 5. P7's 3 questions were all heard right, but they were short and read from a sheet.
+  In Session 12, 19 of 21 questions in people's own words were heard right, and both that weren't
+  ("Can you road?") were fixed in the transcript box before sending.
 - **Answers added true details that their sources don't contain** ("July 1890" in Session 7,
   hatchling weights in Session 8). Our offline evaluation had not shown this; the user tests did. It
   led to the claim checker (#40, #60), which now flags these details in `/ask` but does not block them.
 - **Searches missed passages that were there** (Theo's job in Session 7, the skull length in
   Session 8), so the guide declined questions it could have answered. These are the same misses as
-  held-out questions vg-03 and tr-h03.
+  held-out questions vg-03 and tr-h03. In Session 12 the T. rex said its sources don't list the
+  animals of its time, although a passage it was given names Edmontosaurus (P9).
+- **A cited answer can still be wrong** (Session 12). "What is your most famous painting?" got The
+  Bedroom, because the cited passage calls it "perhaps the most famous depiction of a bedroom"
+  (P10). The passage is real and contains the words, so neither the reply check nor the claim
+  checker flags it. This stays as a known failure.
 - **Holding the button cut questions off** (Session 5), and **people corrected themselves out loud**
-  instead of editing the transcript (P5, Session 8). We have not changed either: the page is still
-  hold to ask, and a spoken "actually" is sent as part of the question.
+  instead of editing the transcript (P5, Session 8). In Session 12, P9 asked for a more comfortable
+  way to speak than holding the button, while P8 found it fine. We have not changed either: the
+  page is still hold to ask, and a spoken "actually" is sent as part of the question.
 - **The tunnel was fragile** (Session 11): the link showed "Bad gateway" until the model key was
   set, dropped when the laptop slept, and crawlers found the public page within minutes. The README
-  now says to keep the laptop awake and to try HTTP/2, and the Session 12 sheet closes the tunnel
-  between people.
-- **The look of the page** was P7's first request. TODO: what Session 12 adds.
-- Session 12: TODO, the three biggest problems P8 to P10 hit, from
-  [`session12/README.md`](../../artifacts/evidence/session12/).
+  now says to keep the laptop awake and to try HTTP/2. In Session 12 the link held, but the QR code
+  showed "This site can't be reached" on the first scan on all three phones, and scanning again
+  fixed it. The task sheet now says to wait a minute after starting a tunnel. A permanent link
+  would remove the problem, but we have no free hosting.
+- **The look of the page** was P7's first request, and the page got a museum look before Session
+  12 (#84). The Session 12 testers still found it static: P8 wants the exhibit to move while it
+  talks, P9 wants a more artistic page and the conversation kept when switching exhibits, and P10
+  wants shorter answers to some questions. These go to the team as candidates for before demo day
+  ([Session 12 results](../../artifacts/evidence/session12/)).
 
 **What people asked.** The 30 questions real visitors asked in the user tests are part of the topic
 tagging test for the curator page, and the rules tag 29 of them correctly
