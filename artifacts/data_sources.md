@@ -88,6 +88,19 @@ id | persona_id | text | source | source_type | section | own_words | url | lice
 
 The raw downloads and a `manifest.json` (URL, revision, download date and MD5 hash for each source) are saved in `personas/<id>/sources/`, which is not committed. `personas/<id>/corpus_stats.json`, which is committed, records how many passages and words came from each source.
 
+### Pictures and models on the animated page
+
+The animated page (`/live`) shows the museums' own images. They are committed in `app/static/live/` so the page works without reaching the museums.
+
+| What | Where it came from | Licence | Used for |
+| --- | --- | --- | --- |
+| *Self-Portrait* (1887) and the other 8 Van Gogh paintings our Art Institute passages cite | [Art Institute of Chicago](https://www.artic.edu) IIIF images, 843 pixels wide, resized | Images of public domain works, CC0 | The talking portrait, and a cited painting that paints itself |
+| *Wheat Field with Cypresses* (1889) | [The Met](https://www.metmuseum.org/art/collection/search/436535), the copy the Met gave to Wikimedia Commons (DT1567) | CC0 | The moving painting behind the portrait |
+| T. rex model | [Quaternius](https://poly.pizza/m/UYtneO5FpF) on Poly Pizza | CC0 | The T. rex scene |
+| three.js r170 | [threejs.org](https://threejs.org), from npm | MIT | Drawing both scenes |
+
+`app/static/live/art/manifest.json` links each museum page our passages cite to its picture, so an answer citing *The Bedroom* can show it. The stroke order maps next to each painting are made from the painting itself (`*-order.png`), so it paints itself along its own brushstrokes.
+
 The guide tells visitors which source an answer came from: every answer on the phone page lists its passages with a link to the original and the licence. The README has a credits section for Project Gutenberg, Wikipedia, the Art Institute of Chicago, the Met and the Smithsonian. None of these sources contain personal data.
 
 ---

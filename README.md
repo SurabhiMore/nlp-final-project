@@ -135,6 +135,26 @@ Browsers (specifically Safari on iOS and Chrome on Android) **block microphone a
    ```
    This generates `artifacts/qr-t-rex.png` and `artifacts/qr-van-gogh.png` pointing to that active tunnel URL, ready for testers to scan.
 
+### The animated page (/live)
+
+`/live` is the same app with exhibits that move: Vincent's self-portrait talks in front of his
+own moving painting, and the T. rex wakes up from a fossil and roars. The answers, sources and
+voices are the same as on the plain page, which stays at `/`.
+
+- Open `http://localhost:8000/live`, or the tunnel link with `/live` added. For QR codes, add
+  `--live`: `python scripts/generate_qr.py --url https://random-words.trycloudflare.com --live`
+  writes `artifacts/qr-van-gogh-live.png` and `artifacts/qr-t-rex-live.png`.
+- Hold the round button and talk, or tap it to start and tap again to send. Check what it heard,
+  fix any word, then send. Typing works too. Tap the T. rex's head, arms, legs or tail for a
+  question about that part.
+- The mouth follows the voice: `/speak` with `timing=true` sends when each sound and word is
+  spoken (the `X-Echoes-Timing` header, from `tts.synthesize_timed`).
+- The stage reacts to the answer: a cited painting paints itself, a cited letter writes itself,
+  a question after the exhibit's time ages the scene, and the T. rex's camera moves to the body
+  part it talks about. The code is in `app/static/live/`, and three.js is in
+  `app/static/vendor/three/`, so the page needs no CDN.
+- Phones need WebGL for the moving exhibit. Without it the page still answers, with a still stage.
+
 To rebuild the passages from the sources, run `python scripts/build_corpus.py --all`. This
 downloads the latest version of each source, so if Wikipedia has changed, the passages and
 the numbers in `eval/results/` can shift a little. After one online build, `--offline`
@@ -229,6 +249,11 @@ and its licence. The sources we use:
 - The T. rex roar: "Epic T-Rex Roaring Sound Effect - Powerful Dinosaur" by PWLPL, from
   [Pixabay](https://pixabay.com/sound-effects/nature-epic-t-rex-roaring-sound-effect-powerful-dinosaur-444199/),
   under the Pixabay Content License. It is AI-generated, not a recording.
+- On the animated page: Van Gogh's *Self-Portrait* (1887), *The Bedroom* (1889) and seven more
+  of his paintings from the [Art Institute of Chicago](https://www.artic.edu) (images CC0);
+  *Wheat Field with Cypresses* (1889) from [The Met](https://www.metmuseum.org/art/collection/search/436535)
+  (image CC0); the T. rex model by [Quaternius](https://poly.pizza/m/UYtneO5FpF) (CC0); and
+  [three.js](https://threejs.org) r170 (MIT).
 
 None of these institutions endorse this project. Details and known problems with each source
 are in `artifacts/data_sources.md`.

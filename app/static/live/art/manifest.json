@@ -1,0 +1,92 @@
+{
+ "https://www.artic.edu/artworks/28560": {
+  "image": "aic-28560.jpg",
+  "order": "aic-28560-order.png",
+  "title": "The Bedroom",
+  "date": "1889",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.artic.edu/artworks/80607": {
+  "image": "aic-80607.jpg",
+  "order": "aic-80607-order.png",
+  "title": "Self-Portrait",
+  "date": "1887",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": true
+ },
+ "https://www.artic.edu/artworks/27954": {
+  "image": "aic-27954.jpg",
+  "order": "aic-27954-order.png",
+  "title": "Terrace and Observation Deck at the Moulin de Blute-Fin, Montmartre",
+  "date": "Early 1887",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.artic.edu/artworks/64957": {
+  "image": "aic-64957.jpg",
+  "order": "aic-64957-order.png",
+  "title": "Grapes, Lemons, Pears, and Apples",
+  "date": "1887",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.artic.edu/artworks/109314": {
+  "image": "aic-109314.jpg",
+  "order": "aic-109314-order.png",
+  "title": "Fishing in Spring, the Pont de Clichy (Asnières)",
+  "date": "1887",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.artic.edu/artworks/28862": {
+  "image": "aic-28862.jpg",
+  "order": "aic-28862-order.png",
+  "title": "A Peasant Woman Digging in Front of Her Cottage",
+  "date": "c. 1885",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.artic.edu/artworks/202382": {
+  "image": "aic-202382.jpg",
+  "order": "aic-202382-order.png",
+  "title": "Avenue of Pollard Birches and Poplars",
+  "date": "March 1884",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.artic.edu/artworks/79349": {
+  "image": "aic-79349.jpg",
+  "order": "aic-79349-order.png",
+  "title": "The Drinkers",
+  "date": "1890",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.artic.edu/artworks/27949": {
+  "image": "aic-27949.jpg",
+  "order": "aic-27949-order.png",
+  "title": "Madame Roulin Rocking the Cradle (La berceuse)",
+  "date": "1889",
+  "museum": "Art Institute of Chicago",
+  "licence": "image CC0",
+  "self": false
+ },
+ "https://www.metmuseum.org/art/collection/search/436535": {
+  "image": "wheat-field.jpg",
+  "order": null,
+  "title": "Wheat Field with Cypresses",
+  "date": "1889",
+  "museum": "The Metropolitan Museum of Art",
+  "licence": "image CC0",
+  "backdrop": true
+ }
+}
