@@ -1,32 +1,140 @@
 # Echoes.ai: final report
 
-Outline, November 16 (#74). The finished report is 2 to 5 pages under these five headings. Each
-section below lists what it will use. The final numbers come from one run in Session 12, on the
-questions visitors wrote in Session 12 (#70, #72), with `openai/gpt-oss-120b`, the model in the
-demo.
+Draft, November 23 (#86). "Problem and users" is written. The other four sections are outlines
+until their owners write them: Product (Saurabh, #84), NLP method and evaluation (Surabhi, #82),
+User evidence (Kshiti, #83) and Ethics and limitations (Aditi, #85). The finished report is 2 to 5
+pages. The final numbers come from one run on the questions visitors write (#70, #82), with
+`openai/gpt-oss-120b`, the model in the demo.
 
 ## Problem and users
 
-- Visitors give a plaque a few seconds, and an audio guide plays the same recording for everyone
-  and can't answer a question. Curators have to buy, charge and repair guide devices and record
-  new tracks for every exhibit ([lean canvas](../../artifacts/lean_canvas.md), "Users and their
-  problem").
-- What exists: plaques, rented audio guides, human docents, and AI chatbots that are mostly text
-  and don't publish how accurate they are (lean canvas, "What exists today").
-- Who we tested with: 10 people from outside the team, 6 on a laptop in Sessions 5, 7 and 8 and 4
-  on their own phones in Sessions 11 and 12 (#70, [user research plan](../../artifacts/user_research_plan.md)).
+Museum visitors give a plaque a few seconds and move on. An audio guide plays the same recording to
+everyone and can't take a question, and a human docent, the best option, is rare and runs on a
+schedule. Curators have their own problem: guide devices have to be bought, charged and repaired,
+and every new exhibit means recording new tracks ([lean canvas](../../artifacts/lean_canvas.md)).
+
+Talking to a historical figure through AI is not new. The Met ran "Chat with Natalie" for a
+fashion exhibition ([article](https://mymodernmet.com/ai-history-chatbots/)), and
+[Hello History](https://www.hellohistory.ai/) offers chats with historical figures. These are
+mostly text, none we found says how accurate its answers are, and language models that play a
+character are known to make up facts and quotes
+([TimeChara, ACL 2024](https://aclanthology.org/2024.findings-acl.197/)).
+
+Echoes.ai lets a visitor scan the QR code next to an exhibit and ask it a question out loud on
+their own phone, with nothing to install. The exhibit answers in its own voice, from sources it
+cites, and says so when its sources don't cover the question. The same code runs two very
+different exhibits: Vincent van Gogh, who left his own letters, and a Tyrannosaurus rex, known
+only through what scientists have written.
+
+Our users are museum visitors, some of them children, and the curators who run the exhibits and
+want to know what visitors ask. Seven people from outside the team tried it in Sessions 5, 7, 8 and
+11, on a laptop at first and in Session 11 on their own phone (see User evidence).
+
+We judge it by one number, grounded answer accuracy: of the held-out visitor questions, how many
+get a correct answer backed by a cited source. A question the exhibit should not answer, such as
+one about something after its time, counts as correct only when it declines.
 
 ## Product
 
-- A visit: the QR code, the phone page, hold to ask, fix the transcript if it misheard, then a
-  spoken answer one sentence at a time with source cards (#15, #29, #41, #51).
-- One codebase, two very different exhibits. Only `persona.json` and the sources change
-  (`personas/`).
-- Other languages: typed questions in Hindi, Marathi, Kannada and Spanish (#50, #63), and voice
-  if #71 lands.
-- The curator page: questions by topic, and the questions the sources could not answer (#53, #61).
-- How it runs: a laptop and a free tunnel, and why there is no permanent link (#51, section 4.6
-  of [`artifacts/architecture.md`](../../artifacts/architecture.md)).
+### What a visit looks like
+
+A visitor walks up to an exhibit and scans the QR code beside it. A page opens on their own phone,
+with nothing to install and no account. It opens on that exhibit, with its picture and colours at
+the top and a greeting in its voice: "Hello, small mammal. I am Tyrannosaurus rex." (#15, #84).
+
+They hold down the round talk button, ask their question out loud and let go. Before anything is
+answered, the page shows what it heard in an "I heard" box. The visitor can fix a word, record
+again or send it. If speech recognition was unsure, the box says so and asks them to check it.
+We added this step after the Session 7 user tests, where 6 of 12 spoken questions were misheard
+(#41). Visitors can also type instead.
+
+The answer appears as text within about a second and is then spoken in the exhibit's own voice,
+one sentence at a time. Each next sentence is made while the current one plays (#15). Under the
+answer are source cards: which museum or encyclopedia each fact came from, its licence, and the
+passage itself (#29). When the sources don't cover a question, the exhibit says so ("I have no
+record of a childhood dog in my letters") instead of inventing an answer. A question about
+something after its time, such as Van Gogh on Guernica, gets a polite refusal. An off-topic
+question, such as the capital of France, is turned down at once without calling the language
+model (#52). The T. rex can also roar on request: it says a short line, then plays the sound.
+
+Questions can be asked in Hindi, Marathi, Kannada and Spanish, and the answer comes back in the
+same language (#50, #63). Hindi and Spanish also work by voice, both asked and spoken back (#71).
+Marathi and Kannada answers are shown as text only, because Kokoro has no voice for them. Visitors' audio is turned
+into text and never saved.
+
+A curator opens "Curator stats" from the footer. It shows how many questions each exhibit got,
+what visitors ask about grouped by topic, and which questions the sources could not answer. That
+last list shows where a museum could add sources (#53, #61).
+
+### How the parts fit together
+
+```mermaid
+flowchart TD
+  Phone["Phone page (app/static)"]
+  subgraph Laptop["Laptop: one FastAPI server (app/server.py)"]
+    STT["/transcribe<br/>Whisper small + exhibit vocabulary prompt"]
+    Ask["/ask"]
+    CLS["Question classifier<br/>declines off-topic questions at once"]
+    RET["Search: BM25, top 8 passages<br/>(other languages translated first)"]
+    LLM["gpt-oss-120b on Groq<br/>speaks as the exhibit, cites passages"]
+    CHK["Reply check and claim checker"]
+    TTS["/speak<br/>Kokoro, the exhibit's voice"]
+    LOG[("Question log, no audio")]
+    STATS["/stats.html curator page"]
+    Ask --> CLS --> RET --> LLM --> CHK
+    Ask --> LOG --> STATS
+  end
+  P[("personas/&lt;exhibit&gt;/<br/>persona.json + licensed passages")]
+  Phone -- "1. recording" --> STT
+  STT -- "what was heard" --> Phone
+  Phone -- "2. checked question" --> Ask
+  CHK -- "answer, status, source cards" --> Phone
+  Phone -- "3. one sentence at a time" --> TTS
+  TTS -- "audio" --> Phone
+  P -.-> Laptop
+```
+
+The phone page talks to one FastAPI server through four requests. `/transcribe` turns the
+recording into text with Whisper. The `small` model gets a vocabulary prompt built from the
+exhibit's own names, such as Theo, Arles or Maastrichtian, so it spells them right (#41).
+
+`/ask` does the answering. The question classifier first catches questions the exhibit should not
+answer, such as off-topic ones or ones that name a year after the exhibit's time (#52).
+Otherwise a BM25 search picks the 8 passages most likely to hold the answer from that exhibit's
+sources. Questions in other languages are translated for the search. gpt-oss-120b then answers in
+character from those passages and names the ones it used. It also gives the reply a status:
+answered, not in the sources, outside its time, or declined. The reply check makes sure what the
+visitor sees is backed by the passages. An "answered" reply with no valid citation becomes "not
+in my sources". A reply that can't be read, or a decline that answers anyway, is replaced with a
+fixed line (#28, #62). The claim checker logs any detail the
+passages do not back (#40, #60). The answer comes back with its source cards.
+
+The page then calls `/speak` for each sentence, and Kokoro reads it in the exhibit's voice, or in
+a Hindi or Spanish voice when the visitor asked in that language. Every question is logged
+without audio, and `/stats` builds the curator page from that log.
+
+Both exhibits run on the same code. Everything that makes Van Gogh different from the T. rex
+lives in `personas/<exhibit>/`: `persona.json` (name, time period, speaking style, voice,
+greeting and sounds) and the licensed passages it may cite. Adding an exhibit means adding a
+folder, not changing code.
+
+It runs on a laptop. A free Cloudflare tunnel gives phones a temporary https link, and
+`scripts/generate_qr.py` turns that link into the QR codes. There is no permanent link because
+we could not host Whisper and Kokoro for free (#51, section 4.6 of
+[`artifacts/architecture.md`](../../artifacts/architecture.md)). The older picture in
+`artifacts/images/system_architecture.png` is from the September design. It still shows a
+Hugging Face Space and audio streamed in one request, so the diagram above replaces it.
+
+In a rehearsal on November 23, with nothing else running, each step took about this long:
+
+| Step | Time |
+|---|---|
+| Transcript | 2.6 to 3.0 s |
+| Answer text | 0.5 to 1.4 s |
+| First spoken sentence | 0.4 to 0.6 s more |
+
+Asking questions back to back hits Groq's free-tier limit per minute, and answers then took 10 to
+21 s ([demo script](../../artifacts/demo_script.md)).
 
 ## NLP method and evaluation
 
