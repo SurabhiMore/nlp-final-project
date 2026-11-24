@@ -16,7 +16,7 @@ finishes #70 together with P7 from Session 11. People are numbered on from sessi
   text Whisper small, the question classifier and the claim checker on.
 - Run by: Kshiti
 - People: three grad students at UMD, friends of a teammate, none part of the team. All three
-  agreed to the product log; there were no recordings. P8 and P10 agreed to their written
+  agreed to the product log; there were no recordings. All three agreed to their written
   questions being used for the evaluation.
 - Tasks: the five in `task_sheet.md`. Each person first wrote their questions on the question
   sheet, then asked mostly from their own list.
