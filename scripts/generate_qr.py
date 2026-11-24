@@ -4,6 +4,7 @@ Run this once the server and tunnel are live and you know the URL:
 
     python scripts/generate_qr.py --space-url https://random-words.trycloudflare.com
     python scripts/generate_qr.py --url https://random-words.trycloudflare.com --session P8
+    python scripts/generate_qr.py --url https://random-words.trycloudflare.com --live
 
 Two PNG files are written to artifacts/:
     artifacts/qr-van-gogh.png
@@ -59,16 +60,22 @@ def main() -> None:
         "--session",
         help="Label a user test, e.g. P8: adds ?session=P8 to the links and -P8 to the file names",
     )
+    parser.add_argument(
+        "--live",
+        action="store_true",
+        help="Point the codes at the animated page (/live) instead of the plain page, and add -live to the file names",
+    )
     args = parser.parse_args()
 
     # Strip trailing slashes so we can always append the path cleanly.
     base = args.url.rstrip("/")
+    page = "/live" if args.live else "/"
     session = f"&session={args.session}" if args.session else ""
-    suffix = f"-{args.session}" if args.session else ""
+    suffix = ("-live" if args.live else "") + (f"-{args.session}" if args.session else "")
 
     exhibits = [
-        ("van-gogh", f"{base}/?persona=van-gogh{session}"),
-        ("t-rex",    f"{base}/?persona=t-rex{session}"),
+        ("van-gogh", f"{base}{page}?persona=van-gogh{session}"),
+        ("t-rex",    f"{base}{page}?persona=t-rex{session}"),
     ]
 
     for persona_id, url in exhibits:

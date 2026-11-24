@@ -179,6 +179,111 @@ def synthesize(text, voice="af_heart", speed=1.0, pitch=1.0):
     return buffer.getvalue()
 
 
+# ---------------------------------------------------------------- timing for the live page
+#
+# Kokoro predicts how long each phoneme lasts (Result.pred_dur, in frames of 1/40 s),
+# so the live page can shape the exhibit's mouth for every sound as it is spoken,
+# and light up each word of the subtitles on time.
+
+FRAMES_PER_SECOND = 40.0
+_SHAPE_OF = {}
+for _chars, _shape in (
+    ("pbm", "PP"), ("fv", "FF"), ("θð", "TH"), ("tdnlɾʔ", "DD"), ("kɡgŋhx", "KK"),
+    ("ʃʒʧʤj", "CH"), ("sz", "SS"), ("ɹɚɝr", "RR"), ("ɑaæʌɐɒ", "AA"), ("ɛeɜəᵊ", "EH"),
+    ("iɪᵻy", "IH"), ("ɔo", "OH"), ("uʊw", "UU"),
+):
+    for _char in _chars:
+        _SHAPE_OF[_char] = _shape
+# misaki writes some diphthongs as one capital letter: A = eɪ, I = aɪ, W = aʊ, Y = ɔɪ, O = oʊ, Q = əʊ
+_DIPHTHONGS = {"A": ("EH", "IH"), "I": ("AA", "IH"), "W": ("AA", "UU"), "Y": ("OH", "IH"), "O": ("OH", "UU"), "Q": ("EH", "UU")}
+_VOWEL_SHAPES = {"AA", "EH", "IH", "OH", "UU"}
+_PAUSES = set(".,!?;:—–…\"“”()[]")
+
+
+def mouth_shapes(phonemes, durations, start=0.0):
+    """Turn Kokoro phonemes and their durations (in 1/40 s frames) into timed mouth shapes.
+
+    Returns [start_s, length_s, shape, stress] lists. shape is one of sil, PP (m, b, p),
+    FF, TH, DD, KK, CH, SS, RR, AA, EH, IH, OH, UU; stress is 2 for a vowel with primary
+    stress, 1 for secondary stress and 0 otherwise. Stress marks, length marks and spaces
+    add their time to the sound before them, and punctuation is a pause.
+    """
+    segs, t, stress = [], float(start), 0
+    for char, frames in zip(phonemes, durations):
+        sec = float(frames) / FRAMES_PER_SECOND
+        if char in "ˈˌ":
+            stress = 2 if char == "ˈ" else 1
+            if segs:
+                segs[-1][1] += sec
+        elif char in "ː ":
+            if segs:
+                segs[-1][1] += sec
+        elif char in _PAUSES:
+            segs.append([t, sec, "sil", 0])
+        elif char in _DIPHTHONGS:
+            first, second = _DIPHTHONGS[char]
+            segs.append([t, sec * 0.6, first, stress])
+            segs.append([t + sec * 0.6, sec * 0.4, second, 0])
+            stress = 0
+        else:
+            shape = _SHAPE_OF.get(char, "DD")
+            vowel = shape in _VOWEL_SHAPES
+            segs.append([t, sec, shape, stress if vowel or shape == "RR" else 0])
+            if vowel:
+                stress = 0
+        t += sec
+    return segs
+
+
+def synthesize_timed(text, voice="af_heart", speed=1.0, pitch=1.0):
+    """Like synthesize, but also say when each sound and each word is spoken.
+
+    Returns (wav_bytes, {"segs": [[start, length, shape, stress], ...],
+    "words": [[word, start, end, space_after], ...]}) with times in seconds from the
+    start of the clip. Mouth shapes come for every voice; words only where Kokoro
+    gives word timings (English).
+    """
+    if not 0.5 <= pitch <= 1.5:
+        raise ValueError("pitch should be between 0.5 and 1.5")
+    pipeline = _pipeline_for(voice)
+    pieces, segs, words, offset = [], [], [], 0.0
+    for result in pipeline(text, voice=voice, speed=speed / pitch):
+        audio = getattr(result, "audio", None)
+        if audio is None and isinstance(result, tuple):
+            audio = result[-1]
+        if audio is None:
+            continue
+        audio = _to_numpy(audio)
+        phonemes = getattr(result, "phonemes", None) or ""
+        durations = getattr(result, "pred_dur", None)
+        if durations is not None and len(durations) == len(phonemes) + 2:
+            frames = [int(d) for d in durations]
+            segs += mouth_shapes(phonemes, frames[1:-1], offset + frames[0] / FRAMES_PER_SECOND)
+        for token in getattr(result, "tokens", None) or []:
+            if token.start_ts is not None and token.end_ts is not None and token.text.strip():
+                words.append([token.text, offset + token.start_ts, offset + token.end_ts, 1 if token.whitespace else 0])
+        offset += len(audio) / SAMPLE_RATE
+        pieces.append(audio)
+    if not pieces:
+        return b"", {"segs": [], "words": []}
+    audio = np.concatenate(pieces)
+    if pitch != 1.0:
+        audio = _stretch(audio, 1.0 / pitch)
+        for seg in segs:
+            seg[0] /= pitch
+            seg[1] /= pitch
+        for word in words:
+            word[1] /= pitch
+            word[2] /= pitch
+    buffer = io.BytesIO()
+    sf.write(buffer, audio, SAMPLE_RATE, format="WAV", subtype="PCM_16")
+    timing = {
+        "segs": [[round(s[0], 3), round(s[1], 3), s[2], s[3]] for s in segs],
+        "words": [[w[0], round(w[1], 3), round(w[2], 3), w[3]] for w in words],
+    }
+    return buffer.getvalue(), timing
+
+
 def synthesize_sentences(text, voice="af_heart", speed=1.0, pitch=1.0):
     """Make one audio clip per piece of the answer (see speech_chunks).
 

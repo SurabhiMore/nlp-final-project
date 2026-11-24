@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Echoes.ai: talk to museum exhibits and hear them answer in their own voice, from their sources.">
+  <title>Echoes.ai</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Figtree:wght@400;500;600;700&family=Homemade+Apple&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/static/live/live.css">
+  <script type="importmap">
+  { "imports": { "three": "/static/vendor/three/three.module.min.js", "three/addons/": "/static/vendor/three/addons/" } }
+  </script>
+</head>
+<body data-exhibit="">
+  <header class="top">
+    <a class="brand" href="/live">Echoes<span>.</span>ai</a>
+    <nav class="exhibits" id="exhibits" aria-label="Exhibits"></nav>
+  </header>
+
+  <main class="main">
+    <section class="stage" id="stage" aria-label="The exhibit">
+      <canvas id="gl"></canvas>
+      <canvas id="warp"></canvas>
+
+      <div class="ov plate glass"><div class="name" id="plate-name">Echoes.ai</div><div class="meta" id="plate-meta"></div></div>
+      <div class="ov tools">
+        <span class="pill glass" id="pill" data-state="idle" role="status" aria-live="polite"><span class="dot"></span><span id="pill-text">Ready</span></span>
+        <button class="tool glass" id="fs" type="button">Full screen</button>
+      </div>
+
+      <div class="ov letter" id="letter" hidden></div>
+      <div class="ov art-label glass" id="art-label" hidden></div>
+      <div class="ov callout" id="callout" hidden><div class="big" id="callout-big"></div><div class="cap" id="callout-cap"></div></div>
+      <div class="ov stamp" id="stamp" hidden><b>After my time</b><span id="stamp-meta"></span></div>
+      <div class="ov pages" id="pages" hidden aria-hidden="true">
+        <div class="cap">Searching my letters</div>
+        <div class="page last"><b>No record</b></div>
+        <div class="page" style="animation-delay:.9s"></div>
+        <div class="page" style="animation-delay:.7s"></div>
+        <div class="page" style="animation-delay:.5s"></div>
+        <div class="page" style="animation-delay:.3s"></div>
+        <div class="page" style="animation-delay:.1s"></div>
+      </div>
+      <div class="ov chip" id="chip" hidden></div>
+      <div class="ov hint glass" id="hint" hidden>Tap its head, arms, legs or tail</div>
+      <div class="ov subs" id="subs" hidden aria-hidden="true"></div>
+
+      <div class="ov heard glass" id="heard" role="group" aria-labelledby="heard-label" hidden>
+        <label id="heard-label" for="heard-text">I heard</label>
+        <p id="heard-warning" class="warn" hidden>I'm not sure I heard that right. Please check it before you send it.</p>
+        <textarea id="heard-text" rows="2" maxlength="300" autocomplete="off"></textarea>
+        <div class="row">
+          <button class="btn primary" id="heard-send" type="button">Send</button>
+          <button class="btn" id="heard-redo" type="button">Record again</button>
+          <span class="hint-text">Fix any word before sending</span>
+        </div>
+      </div>
+
+      <div class="ov talk">
+        <span class="talk-label glass" id="orb-label">Hold to talk, or tap</span>
+        <button class="orb" id="orb" type="button" data-state="idle" aria-label="Hold to talk, or tap to start and tap again to send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+        </button>
+      </div>
+
+      <div class="ov counter" id="counter" hidden><div><div class="yr" id="yr"></div><div class="cap" id="cap"></div></div></div>
+
+      <div class="ov cover" id="cover" hidden>
+        <div class="card">
+          <h2 id="cover-title">Step into the painting</h2>
+          <p id="cover-text"></p>
+          <button class="cta" id="cover-btn" type="button">Enter with sound</button>
+        </div>
+      </div>
+      <div class="ov fallback" id="fallback" hidden><p>This browser has 3D graphics turned off, so the exhibit cannot move, but you can still ask it anything below.</p></div>
+    </section>
+
+    <section class="side" aria-label="Your questions and the answers">
+      <form id="text-form" class="type">
+        <label for="text-question" class="visually-hidden">Or type a question</label>
+        <input id="text-question" type="text" placeholder="Or type a question…" autocomplete="off" maxlength="300">
+        <button type="submit" class="btn primary">Ask</button>
+      </form>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <button id="stop" class="btn stop" type="button" hidden>Stop speaking</button>
+      <div id="conversation" class="conversation" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="note">
+    <p>You are talking to an AI guide. Answers come from museum and public sources and can still be wrong. Your voice is turned into text and not stored. <span id="session-note" class="session-note" hidden></span></p>
+    <p class="links"><a href="/stats.html">Curator stats</a> · <a href="/">Plain page</a></p>
+    <details class="credits">
+      <summary>Picture and sound credits</summary>
+      <p>Self-Portrait (1887), The Bedroom (1889) and the other Van Gogh paintings shown: Art Institute of Chicago, images CC0.
+        Wheat Field with Cypresses (1889): The Metropolitan Museum of Art, image CC0. T. rex model: Quaternius, CC0.
+        Roar: PWLPL on Pixabay, AI-generated (Pixabay Content License). Voices made with Kokoro. 3D with three.js (MIT).</p>
+    </details>
+  </footer>
+
+  <template id="turn-template">
+    <article class="turn">
+      <p class="q"></p>
+      <p class="a"></p>
+      <p class="badge" hidden></p>
+      <ul class="sources" hidden></ul>
+      <p class="note"></p>
+    </article>
+  </template>
+
+  <script type="module" src="/static/live/app.js"></script>
+</body>
+</html>

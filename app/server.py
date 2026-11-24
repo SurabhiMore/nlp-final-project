@@ -33,6 +33,7 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 
+from app.citations import best_quote
 from pipeline import config
 
 try:
@@ -113,6 +114,15 @@ def home():
     return HTMLResponse("<h1>Echoes.ai</h1><p>The phone page has not been added yet.</p>")
 
 
+@app.get("/live", response_class=HTMLResponse)
+def live_page():
+    """The animated exhibit page (static/live.html). The plain page stays at /."""
+    page = STATIC_DIR / "live.html"
+    if not page.exists():
+        raise HTTPException(status_code=404, detail="The live page has not been added yet.")
+    return FileResponse(page)
+
+
 @app.get("/health")
 def health():
     return {
@@ -134,6 +144,8 @@ def personas():
             "subject_type": p["subject_type"],
             "greeting": p["greeting"],
             "time_period": p["time_period"]["label"],
+            "years": [p["time_period"].get("start"), p["time_period"].get("end")],
+            "sounds": sorted((p.get("sounds") or {}).keys()),
         }
         for p in config.list_personas()
     ]
@@ -248,6 +260,7 @@ async def ask(
             "url": by_id[cid].get("url", ""),
             "licence": by_id[cid].get("licence", ""),
             "snippet": by_id[cid]["text"][:220],
+            "quote": best_quote(by_id[cid]["text"], result["answer"]),
         }
         for cid in result["citations"]
         if cid in by_id
@@ -362,12 +375,19 @@ async def ask(
 
 
 @app.post("/speak")
-def speak_sentence(persona: str = Form(...), text: str = Form(...), lang: str = Form("en")):
+def speak_sentence(
+    persona: str = Form(...),
+    text: str = Form(...),
+    lang: str = Form("en"),
+    timing: bool = Form(False),
+):
     """Turn one sentence into speech in the right voice for the detected language.
 
     For English, the exhibit's configured persona voice is used.
     For Hindi and Spanish, the Kokoro multilingual voice is used.
     For Marathi and Kannada, returns 204 No Content because Kokoro has no voice.
+    With `timing` set, the X-Echoes-Timing header also carries when each sound and
+    word is spoken (base64 JSON from tts.synthesize_timed), for the live page.
     """
     if tts is None:
         raise HTTPException(status_code=503, detail="Text to speech is not merged yet.")
@@ -390,15 +410,22 @@ def speak_sentence(persona: str = Form(...), text: str = Form(...), lang: str = 
 
     start = time.perf_counter()
     if multilang_voice is not None:
-        wav = tts.synthesize(text, voice=multilang_voice)
+        voice_args = {"voice": multilang_voice}
     else:
-        wav = tts.synthesize(
-            text,
-            voice=exhibit["voice"]["kokoro_voice"],
-            speed=float(exhibit["voice"].get("speed", 1.0)),
-            pitch=float(exhibit["voice"].get("pitch", 1.0)),
-        )
-    return Response(content=wav, media_type="audio/wav", headers={"X-TTS-ms": str(_ms(start))})
+        voice_args = {
+            "voice": exhibit["voice"]["kokoro_voice"],
+            "speed": float(exhibit["voice"].get("speed", 1.0)),
+            "pitch": float(exhibit["voice"].get("pitch", 1.0)),
+        }
+    headers = {}
+    if timing:
+        wav, timed = tts.synthesize_timed(text, **voice_args)
+        packed = json.dumps(timed, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        headers["X-Echoes-Timing"] = base64.b64encode(packed).decode("ascii")
+    else:
+        wav = tts.synthesize(text, **voice_args)
+    headers["X-TTS-ms"] = str(_ms(start))
+    return Response(content=wav, media_type="audio/wav", headers=headers)
 
 
 @app.get("/sound/{persona_id}/{name}")
