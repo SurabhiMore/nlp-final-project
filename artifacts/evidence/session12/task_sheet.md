@@ -21,8 +21,9 @@ own phone through the Cloudflare tunnel, with both exhibits. P7 was tested in Se
    Scan one on your own phone first: the footer should say "Test session P8", and one spoken test
    question should show "I heard:" with Send and Record again.
 5. Have the question sheet (`question_sheet.md`), this sheet and the record template below ready.
-6. Close the tunnel between people and after the last one. Anyone with the link can use our model
-   key's daily quota.
+6. One tunnel can serve all three people if they test close together; only the `--session` label
+   changes. Close it during long gaps and after the last person, because anyone with the link can
+   use our model key's daily quota.
 
 ## Moderator script
 
